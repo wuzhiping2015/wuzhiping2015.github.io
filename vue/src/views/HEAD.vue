@@ -1,5 +1,6 @@
 <template>
-	<div id="dome">
+	<div class="HEAD">
+
 
 		<div id="shortcut">
 			<div class="w" role="navigation" aria-label="顶部导航" tabindex="0">
@@ -7,8 +8,10 @@
 					<li>
 						<router-link to="/" tag="li">欢迎! 登录</router-link>
 					</li>
-					<router-link to="/Index" tag="li">首页</router-link>
+					<router-link to="/" tag="li">首页</router-link>
 					<router-link to="/erjiluyou" tag="li">二级路由</router-link>
+
+
 
 					<li @mouseenter.stop="lihover" @mouseleave.stop="invisible" style="position: relative;">
 						二级路由
@@ -24,7 +27,7 @@
 							</li>
 						</ul>
 					</li>
-					<router-link to="/Main" tag="li">Main</router-link>
+					<router-link to="/Index" tag="li">事件 请求</router-link>
 
 					<router-link to="/bb" tag="li">循环 切换 事件</router-link>
 					<router-link to="/bbb" tag="li">VUE 常用</router-link>
@@ -52,8 +55,6 @@
 				<router-link to="/ceshi" tag="li">魔板</router-link>
 				<router-link to="/anli" tag="li">案例1</router-link>
 				<router-link to="/shop" tag="li">商城</router-link>
-
-				<router-link to="/model" tag="li">移动端</router-link>
 			</ul>
 		</div>
 
@@ -73,23 +74,9 @@
 
 			<span @click="goto('/bendiqingqiu')" class="ceshi" :class="{on:'/bendiqingqiu'===$router.history.current.path}">AJAX
 				请求</span>
-			<img src="@/assets/11.gif" style="display: block;width: 40px;	margin: 0 auto;" />
+
 		</div>
 
-
-
-		<chachao :title="title">
-			<p slot="left" class="left" @click="goto('/shop')"><b>插槽</b> shop</p>
-			<p slot="right" class="right" @click="goto('/erjiluyou')">插槽 login</p>
-		</chachao>
-		<!-- <img :src="src1" style="width: 100px;"> -->
-		<!-- 路由出口 -->
-		<router-view></router-view>
-
-		<!--判断哪些显示 -->
-
-
-		<FOOT v-show="'/shop'!=$router.history.current.path"></FOOT>
 
 	</div>
 
@@ -101,34 +88,21 @@
 	} from "@/assets/comment.js";
 	import Vue from "vue";
 
-	import chachao from '@/views/chachao.vue'
-	import FOOT from '@/views/FOOT'
-	import HEAD from '@/views/HEAD'
-
 	import Router from 'vue-router'
 
-
-	let data = {
-		ishow: false,
-		title: "首页我的订单"
-		/* src1: require('assets/images/a.gif'), */
-	};
-	let vm = new Vue({});
 	let app = {};
-
+	let data = {
+		a: "这是一个测试文件,你知道VUE 的进步测试么",
+		b: "",
+		cccc: ["ab", "dd", "cc", "we", "er"],
+		mycolor: "footer"
+	};
 	export default {
-		name: "dome",
+		name: "HEAD",
 		data() {
 			app = this;
 			return data;
 		},
-		components: {
-			chachao,
-			FOOT,
-			HEAD
-		},
-
-
 		mounted() {
 
 			/*  console.log(99999999999999999);
@@ -200,9 +174,6 @@
 
 			console.log(this.$router.history.current.path + "-------------");
 
-
-
-
 			/* console.log("创建前：");
 			     console.log(this.$data); */
 		},
@@ -246,20 +217,7 @@
 	};
 </script>
 
-
-<style scoped>
-	/* @import 'https://unpkg.com/element-ui/lib/theme-chalk/index.css';
-    @import 'https://getbootstrapadmin.com/remark/global/css/bootstrap.min.css?v4.0.2'; */
-
-	@import "assets/first-screen.chunk.css";
-
-	@import "assets/bootstrap.css";
-
-	#dome {
-		padding: 4rem 0 4rem 0;
-	}
-
-	/* @import  'assets/element_index.css';  */
+<style>
 	.fr a {
 		margin-right: 20px;
 	}

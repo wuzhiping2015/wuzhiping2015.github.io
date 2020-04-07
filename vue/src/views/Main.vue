@@ -42,7 +42,7 @@
     },
     methods: {
       login() {
-        this.$router.replace("/login");
+        this.$router.replace("/");
       },
       demo() {
         this.$router.replace("/Index");
@@ -56,11 +56,11 @@
     },
     mixins: [CommonHi],
     mounted() {
-      //	console.log(this.$router);
+     	console.log(this.$router);
     },
     created() {
-      //console.log("创建完成：111111111111");
-      //console.log(this.$router);
+      console.log("创建完成：111111111111");
+      console.log(this.$router);
     }
   };
 </script>

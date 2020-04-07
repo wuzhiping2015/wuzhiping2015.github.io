@@ -71,7 +71,7 @@
 
 
 <script>
-  import abcd from "@/com/moban";
+  import abcd from "@/shop/shop.vue";
 
   let vm = {};
 

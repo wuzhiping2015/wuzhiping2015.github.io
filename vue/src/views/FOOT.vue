@@ -1,6 +1,6 @@
 <template>
-  <div class="FOOT">
-    <h1> {{mycolor}} footerfooterfooterfooter</h1>
+  <div id="FOOT">
+    <h1> {{mycolor}}    组件哪些显示哪些隐藏</h1>
   </div>
 
 </template>
@@ -11,7 +11,7 @@
     a: "这是一个测试文件,你知道VUE 的进步测试么",
     b: "",
     cccc: ["ab", "dd", "cc", "we", "er"],
-    mycolor: "footer"
+    mycolor: "FOOT"
   };
   export default {
     name: "FOOT",

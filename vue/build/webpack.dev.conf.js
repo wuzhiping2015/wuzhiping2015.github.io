@@ -13,6 +13,26 @@ const portfinder = require('portfinder')
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
+
+
+/* datura接口 20170302 */
+var express = require('express') 
+var app = express()
+var appData = require('../goods.json')
+var goods = appData.goods
+var apiRoutes = express.Router()
+apiRoutes.get('/goods', function(req, res){
+  res.json({
+    data: goods
+  })
+})
+app.use('/api', apiRoutes)
+
+/* datura接口 20170302 */
+
+
+
+
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
