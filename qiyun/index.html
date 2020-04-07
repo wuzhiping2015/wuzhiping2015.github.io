@@ -1,151 +1,153 @@
-<!DOCTYPE html>
-<html lang="en">
-
-	<head>
+<html><head>
 		<meta charset="UTF-8">
-		<title>企云</title>
-		<link rel="stylesheet" type="text/css" href="assets/css/index.css">
-		<link rel="stylesheet" type="text/css" href="assets/css/nanoscroller.css">
+		<title>dome</title>
+		<link rel="stylesheet" type="text/css" href="assets/css/global.css">
 	</head>
+	<body>
+		<div class="wrapper">
+	        <div class="container">
+	        	<div class="QY_box">
+	        		<div class="QY_search">
+				     <div class="pop_search">
+                        <i class="icon_inp"></i>
+                        <input type="text" class="input-royals"  placeholder="请输入编号或名称">
+                     </div>
+                     <a class="btn btn-search" href="javascript:;">查询</a>
+                </div>
+                <!--------------------------------------搜索-------------------------------------->
+		        	<div class="QY_tit">编辑项目（团队） </div>  
+	               <div class="clearfix">
+                        <ul class="form-grid font8">
+                            <li class="col-sm-6">
+                                <label class="form-lab"><span class="required">*</span>项目(团队)编号</label>
+                                <div class="form-control">
+                                    <input class="inp" type="text">
+                                </div>
+                            </li>
+                            
+                            <li class="col-sm-6">
+                              <label class="form-lab">状态</label>
+                                <div class="form-control">
+                                  <span class="radio-inline">
+                                        <label class="radio">
+                                           <i class="QY_com_icon">&nbsp;</i>
+                                            <input type="checkbox">
+                                            <em>供应商</em>
+                                        </label>
+                                        <label class="radio action">
+                                            <i class="QY_com_icon">&nbsp;</i>
+                                            <input type="checkbox">
+                                            <em>客户(个体)</em>
+                                        </label>
+                                    </span>
+                                </div>
+                            </li>
+							 <li class="col-sm-6">
+                              <label class="form-lab">多选</label>
+                                <div class="form-control">
+                                  <span class="radio-inline">
+                                        <label class="checkbox">
+                                           <i class="QY_com_icon">&nbsp;</i>
+                                            <input type="checkbox">
+                                            <em>供应商</em>
+                                        </label>
+                                        <label class="checkbox action">
+                                            <i class="QY_com_icon">&nbsp;</i>
+                                            <input type="checkbox">
+                                            <em>客户(个体)</em>
+                                        </label>
+                                    </span>
+                                </div>
+                               </li>
+                            <li class="col-sm-6">
+                                <label class="form-lab"><span class="required">*</span>项目(团队)编号</label>
+                                <div class="form-control">
+                                    <input class="inp inp-lg" type="text">
+                                </div>
+                            </li>
+                             
+                            
+                            <li class="col-sm-6  col-lg-4 col-xl-3">
+                                <label class="form-lab">法人证件号码</label>
+                                <div class="form-control">
+                                    <input class="inp inp-lg" type="text">
+                                </div>
+                            </li>
+                            
+                            
+                            
+                            <li class="col-sm-6  col-lg-4 col-xl-3">
+                                <label class="form-lab">纳税人性质</label>
+                                <div class="form-control">
+                                    <label class="select select-lg">
+                                        <input type="text" placeholder="test">
+                                        <em class="QY_com_icon"></em>
+                                    </label>
+                                </div>
+                            </li>
+                            
+                            
+                            <li class="col-sm-6  col-lg-4 col-xl-3">
+                                <label class="form-lab">营业期限</label>
+                                <div class="form-control">
+                                    <div class="input-group">
+                                        <div class="datepicker" style="width: 50%">
+                                            <input type="text">
+                                            <img src="assets/images/sprite/date-icon.png">
+                                        </div>
+                                        <span class="form-text">~</span>
+                                        <div class="datepicker" style="width: 50%">
+                                            <input type="text">
+                                            <img src="assets/images/sprite/date-icon.png">
+                                        </div>
+                                    </div>
 
-	<body >
-		<!----------------------------------QY_header---------------------------------->
-		<div class="QY_header">
-
-			<div class="QY_hleft">
-				<span class="tit">
-		                        厦门商集企业谘询有限责任公司
-		        </span>
-				<span class="area_notice">
-		            <i class="icon icon_g"></i>公告
-		            <i class="icon icon_s"></i>
-		              <a href="#">系统更新时间 2015-01-01</a> 
-	           </span>
-			</div>
-		</div>
-		<!----------------------------------QY_Sliderbar---------------------------------->
-		<div class="QY_Sliderbar">
-			<img src="assets/images/default/logo.png" width="188" height="51" title="深圳商集企业服务有限公司" />
-			<div class="nano">
-				<div class="nano-content">
-					<ul class="sidebar_list">
-						<li class="action">
-							<a href="javascript:;">
-								<i class="QY_ficon">&nbsp;</i>组织管理<i class="QY_ficon tip">&nbsp;</i>
-								<em>&nbsp;</em>
-							</a>
-							<ul class="sidebar_tree">
-								<li>
-									<a href="#">
-										<i class="round"></i> 这是动态数据1
-									</a>
-								</li>
-								<li>
-									<a href="#">
-										<i class="round"></i> 这是动态数据2
-									</a>
-								</li>
-								<li>
-									<a href="#">
-										<i class="round"></i> 这是动态数据3
-									</a>
-								</li>
-								<li>
-									<a href="#">
-										<i class="round"></i> 这是动态数据4
-									</a>
-								</li>
-							</ul>
-						</li>
-						<li>
-							<a href="javascript:;"><i class="QY_ficon">&nbsp;</i>人员管理<i class="QY_ficon tip">&nbsp;</i></a>
-						</li>
-						<li>
-							<a href="javascript:;"><i class="QY_ficon">&nbsp;</i>人员管理<i class="QY_ficon tip">&nbsp;</i></a>
-						</li>
-						<li>
-							<a href="javascript:;"><i class="QY_ficon">&nbsp;</i>人员管理<i class="QY_ficon tip">&nbsp;</i></a>
-						</li>
-						<li>
-							<a href="javascript:;"><i class="QY_ficon">&nbsp;</i>人员管理<i class="QY_ficon tip">&nbsp;</i></a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-		<!--------------------------------------QY_Combox-------------------------------------->
-		<div class="QY_Combox">
-			<div class="wrapper">
-				<!------个人事务   带审批任务------>
-				<div class="QY_row">
-					<div class="col-sm-4">
-						<div class="QY_rowtit"><a href="#" title="更多">&nbsp;</a>个人事务</div>
-						<div class="sm4_list">
-							<a href="javascript:;" title="财务">
-								<span><i>3</i></span>
-								<em>财务</em>
-							</a>
-							<a href="javascript:;" class="rs" title="人事">
-								<span><i>3</i></span>
-								<em>人事</em>
-							</a>
-							<a href="javascript:;" class="cg" title="采购">
-								<span><i>5</i></span>
-								<em>采购</em>
-							</a>
-							<a href="javascript:;" class="qt" title="其他">
-								<span><i>12</i></span>
-								<em>其他</em>
-							</a>
-						</div>
-						
-					</div>
-					<div class="col-sm-8">
-							<div class="QY_rowtit"><a href="#" title="更多">&nbsp;</a>待审批任务</div>
-							<div class="sm8_newlist">
-								<a href="#" title="财务">
-									<em>赖雅轩</em><i>财务</i><span>[报到]徐娇,厦门商集有限责任公司-研发中心</span>
-								</a>
-								<a href="#" title="人事" class="rs">
-									<em>赖雅轩</em><i>人事</i><span>[报到]徐娇,厦门商集有限责任公司-研发中心</span>
-								</a>
-								<a href="#" title="采购" class="rs">
-									<em>赖雅轩</em><i>采购</i><span>[报到]徐娇,厦门商集有限责任公司-研发中心</span>
-								</a>
-								<a href="#" title="项目" class="xm">
-									<em>赖雅轩</em><i>项目</i><span>[报到]徐娇,厦门商集有限责任公司-研发中心</span>
-								</a>
-							</div>
-					</div>
-				</div>
-				<!------BANA------>
-				<div class="QY_bana">
-					<img src="assets/images/default/QY_bana.jpg" width="100%" />
-				</div>
-				<!------自定义菜单------>
-				<div class="QY_subbox">
-					<div class="sb_tip">
-						<h5>自定义菜单</h5></div>
-					<div class="sb_list">
-						<ul class="clearfix">
-							<li  title="我的任务">通讯录查询 <i>&nbsp;</i></li>
-							<li class="i1" title="我的任务">我的任务 <i>&nbsp;</i></li>
-							<li class="i2" title="报销申请">报销申请 <i>&nbsp;</i></li>
-							<li class="i3" title="我的信息">我的信息 <i>&nbsp;</i></li>
-							<li class="i4" title="我的日程">我的日程 <i>&nbsp;</i></li>
-							<li class="i5" title="添加菜单">&nbsp;</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-		<script src="assets/js/jquery-1.10.1.js"></script>
-		<script src="assets/js/jquery.nanoscroller.js"></script>
-		<script>
-			$(function() {
-				$(".nano").nanoScroller();
-			});
-		</script>
-	</body>
-
-</html>
+                                </div>
+                            </li>
+                            <li class="col-sm-6">
+                              <label class="form-lab">状态</label>
+                                <div class="form-control">
+                                    <input class="inp inp-royal" type="text" placeholder="有效" disabled="disabled">
+                                </div>
+                            </li>
+                            <li class="col-sm-12">
+                              <label class="form-lab">备注</label>
+                                <div class="form-control">
+                                  <textarea class="textarea"></textarea>
+                                </div>
+                            </li>
+                            <li class="col-sm-12">
+                              <label class="form-lab">&nbsp;</label>
+                                <div class="form-control">
+                                   <a class="btn btn-info mr10" href="javascript:;">保存</a>
+                                   <a class="btn btn-primary mr10" href="javascript:;">取消</a>
+                                   <a class="btn btn-add" href="javascript:;"><em>+</em>新增申请</a>
+                                   <a class="btn btn-search" href="javascript:;">查询</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                 </div> 
+	        </div>
+        </div>
+  <div style="padding: 20px;" class="links">
+  	 <a href="index1.html">企云首页</a>
+  	  <a href="注册.html">注册</a>
+  	 <a href="人员管理/编辑项目(团队).html">编辑项目</a>
+  	 <a href="人员管理/编辑项目(组织).html">编辑项目组织</a>
+  	 <a href="人员管理/岗位编辑.html">岗位编辑</a>
+  	  <a href="人员管理/岗位列表.html">岗位列表</a>
+  	 <a href="人员管理/我的审批.html">我的审批</a>
+  	 <a href="人员管理/员工管理.html">员工管理</a>
+  	 <a href="人员管理/新增员工.html">新增员工</a>
+  	  <a href="人员管理/添加菜单.html">添加菜单</a>
+  	  <a href="人员管理/添加人员.html">添加人员</a>
+  </div>
+<style>
+	.links{border:1px solid #dedede;}
+	.links a{
+		display: block
+	}
+	
+</style>
+</body></html>
