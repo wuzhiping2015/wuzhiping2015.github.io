@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>vue</title>
+  </head>
+  <script type="text/javascript" src="vue.js"></script>
+
+  <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
+  <link rel="stylesheet" href="animate.min.css">
+</head>
+
+<body>
+
+
+  <div id="app">
+
+    <h3 v-show="!b">111111</h3>
+
+
+    <button @click.stop="btn1(this)">按钮1</button>
+    <h3 v-if="b==1">
+      v-if
+    </h3>
+    <h3 v-else>
+      v-else
+    </h3>
+    <input type="text" v-model="b" />
+    <h4 v-text="msg"></h4>
+    <h4 v-html="msg"></h4>
+    <input type="text" v-bind:placeholder="msg" v-model="e" debounce="5000" />
+    {{e}}
+
+    <div v-bind:class="[c,d,{ff:t,g:b}]">{{msg}}222</div>
+    <div v-bind:class="c">{{msg}}1111</div>
+    <div v-bind:class="c">{{msg}}1111</div>
+    <ul>
+      <li v-for="(arr,i) in arr ">{{i}} {{arr.t}}</li>
+    </ul>
+    <input v-model="arr1">;
+    <h4>{{msg.split(",")}}</h4>
+
+    <div id="aa" class="a">
+      111111111
+    </div>
+
+    <input v-model="a" number />
+    <input v-model="q" number />
+    <button @click="a+=1">BTN1</button>
+    <h1>{{a}} **** {{2}} *** {{ab}} </h1>
+
+    <input v-on:keyup.13="submit" />
+
+    <ce msg="msg"></ce>
+
+    <h1 v-html="link"></h1>
+
+    <h1> {{ t }}</h1>
+    <button @click="t=false">测试</button>
+    <button @click="BB1">BB1</button>
+
+    <button class="didi-btn" :class="{'f':f,'f1':f}" @click="handleClick($event)">
+      11111
+    </button>
+
+
+
+    <h1> 计算公式 msgsplit：--- {{msgsplit }}</h1>
+
+
+    一个输入判断： <input type="text" v-model="a">
+    姓名：{{fullname}}
+    <p v-if='a==1'> a 为1 显示</p>
+    <p v-else-if="a==2"> a 为2 为显示</p>
+    <p v-else> 否则不执行</p>
+
+
+    <p v-for="n in 4">{{n}}</p>
+
+
+    <template v-if="list.length">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>商品名称</th>
+            <th>商品单价</th>
+            <th>购买数量</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item,index) in list">
+            <td>{{index+1}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.price}}</td>
+            <td>
+              <button @click="jian(index)" :disabled="item.count==1">-</button>
+              {{item.count}}
+              <button @click="jia(index)">+</button>
+            </td>
+            <td>
+              <button @click="yichu(index)">移除</button>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="5">
+              总价 {{totalprice}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </template>
+
+
+ <h1 v-if="1==1" @click="say('hi',$event)">2222</h1>
+ <h1 v-else>333</h1>
+<ceshi></ceshi>
+<di></di>
+  </div>
+  <script>
+
+
+var di=Vue.extend({
+  template:'<div>A custom component!</div>',
+  replace:true,
+});
+
+Vue.component("di",di);
+Vue.component("ceshi",{
+  template:'<div>测试一个表丢</div>'
+});
+
+
+
+
+    var data = {
+      link: "<a href='#'>这是一个超级链接</a>",
+      a: 1,
+      b: 2,
+      q: 12,
+      c: "a",
+      d: "d",
+      e: "e",
+      f: "f",
+      t: true,
+      f: false,
+      msg: "一个测试文件",
+      arr1: '',
+      arr: [{
+        t: "八十"
+      },
+      {
+        t: "腾讯"
+      },
+      ]
+
+      , list: [
+
+        {
+          id: 1,
+          name: "iphone 7",
+          price: 1222,
+          count: 7,
+        },
+        {
+          id: 2,
+          name: "特批 7",
+          price: 12,
+          count: 1,
+        },
+        {
+          id: 3,
+          name: "net wort 7",
+          price: 222,
+          count: 3,
+        },
+        {
+          id: 3,
+          name: "net wort 7",
+          price: 222,
+          count: 3,
+        },
+        {
+          id: 3,
+          name: "net wort 7",
+          price: 222,
+          count: 3,
+        },
+        {
+          id: 3,
+          name: "net wort 7",
+          price: 222,
+          count: 3,
+        },
+
+      ]
+    }
+
+
+
+
+
+    var reg = /\b\d{5,8}\b/g;
+
+
+    Vue.component('ce', {
+      template: `<div> 一个新的组件 {{ msg }}</div>`,
+      props: ['msg'],
+    })
+
+
+ 
+    var vm = new Vue({
+      el: "#app",
+      data: data,
+      created() {
+        console.log("创建完成：");
+        console.log(this.$data);
+      },
+      computed: {
+        // 一个计算属性
+        // console.log('计算一个属性');
+        ab: function () {
+          c = this.a + this.b;
+          return c;
+        },
+        msgsplit() {
+          // return this.msg.split(",").reverse().join(",");
+          // return this.a + this.b;
+          return this.arr[0]["t"];
+        },
+
+        fullname: {
+          get() {
+            return this.a + this.b + 999;
+          },
+          set(newValue) {
+            var names = newValue.split("");
+            this.a = names[0];
+            this.b = names[names.length - 1];
+          }
+        },
+
+
+        //计算价格
+
+        totalprice() {
+          var total = 0;
+          for (var i = 0; i < this.list.length; i++) {
+            var item = this.list[i];
+            total += item.price * item.count;
+          }
+          return total.toString().replace(/\B(?=(\d{3})+$)/g, ',');
+        },
+
+
+      },
+      beforeMount() {
+        console.log("挂载前：");
+        console.log(this.$data);
+      },
+      mounted() {
+        $("body").resize();
+        setTimeout(function () {
+
+        }, 200);
+      },
+      beforeUpdate() {
+        /*  console.log('=即将更新渲染=');
+         console.log(this.$data); */
+      },
+      updated() {
+        console.log('==更新成功==');
+        if (!reg.test(this.b)) {
+
+        }
+        console.log(this.$data);
+      },
+      unbind: function () {
+        //清理工作
+        //例如,删除bind() 添加的事件监听
+        console.log('添加事件监听');
+
+        if (!reg.test(this.q)) {
+          alert(1);
+        }
+        console.log(b);
+      },
+      //事件
+      methods: {
+        say:function(x,event){
+            console.log(event);
+        }
+        ,
+        fet: function () {
+          console.log(11);
+        },
+        /*   BB1: () => {
+            this.t = false;
+          }, */
+        BB1() {
+          this.t = false;
+          console.log(vm.t);
+          console.log(this.t);
+        },
+        jian(index) {
+          if (this.list[index].count === 1) return;
+          this.list[index].count--;
+        },
+        jia(index) {
+          this.list[index].count++;
+        },
+        yichu(index) {
+          this.list.splice(index, 1);
+        },
+
+
+
+
+        btn1(e) {
+          this.q = 1;
+          data.q = "";
+          console.log(e);
+        }
+      }
+      /*beforeDestory(){
+          console.log("销毁前：");
+      },
+      destoryed(){
+          console.log("销毁完成：");
+      }*/
+    });
+
+    // 调用一个事件
+    vm.fet();
+  </script>
+
+
+
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+
+    .d {
+      color: red;
+    }
+
+    .a {
+      font-size: 12px;
+    }
+
+    .g {
+      font-weight: 600;
+    }
+
+    .ff {
+      font-weight: 900;
+    }
+  </style>
+
+
+
+
+</body>
+
+</html>

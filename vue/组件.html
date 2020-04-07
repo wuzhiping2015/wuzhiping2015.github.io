@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <html xmlns="http://www.w3.org/1999/xhtml">
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>vue</title>
+      </head>
+      <script type="text/javascript" src="vue.js"></script>
+
+      <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
+      <link rel="stylesheet" href="animate.min.css">
+  </head>
+
+  <body>
+
+    <div id="app">
+      <zhujian></zhujian>
+      <zhujian1></zhujian1>
+      <!-- 组件 -->
+      <my-comment></my-comment>
+
+      <app-nav></app-nav>
+      <app-slidebar></app-slidebar>
+      <app-content></app-content>
+
+      <!-- 模板分离 -->
+      <!-- data数据 -->
+      <my-comment1></my-comment1>
+      <my-comment1></my-comment1>
+      <my-comment1></my-comment1>
+      <jczj></jczj>
+    </div>
+
+
+
+    <!-- <div id="news">
+    <bolg-post v-for="(i,t) in posts" v-bind:key="t.id" v-bind:title="t.title"></bolg-post>
+
+    </div>
+
+
+    <script>
+      var vm = new Vue({
+        el: "#news",
+        data: {
+          posts: [{
+              id: 1,
+              title: 'My journey with Vue'
+            },
+            {
+              id: 2,
+              title: 'Blogging with Vue'
+            },
+            {
+              id: 3,
+              title: 'Why Vue is so fun'
+            }
+          ]
+        }
+      });
+    </script> -->
+
+    <script>
+      var data = {
+        cc: 0,
+        mess: "一个打他数据"
+      }
+
+      Vue.component("jczj", {
+        template: "<div class='一个测试基础组件'>{{cc}}{{mess}}</div>",
+        data: function() {
+          return data
+        }
+      })
+
+
+      Vue.component("my-comment1", {
+        template: "<div>一个测试文件 {{mess}}     <button @click='cc+=2'>按钮1  ： {{cc}}</button>  </div>",
+        data: function() {
+          return data
+        }
+      })
+
+
+
+
+
+      Vue.component("zhujian", {
+        template: "<div>组件2222化开发</div>"
+      });
+
+      Vue.component("zhujian1", {
+        template: "<div>组件444444444444化开发</div>"
+      });
+
+      Vue.component("app-nav", {
+        template: "<div>头部</div>"
+      });
+      Vue.component("app-slidebar", {
+        template: "<h1>菜单</h1>"
+      });
+      Vue.component("app-content", {
+        template: "<h1>内容区域</h1>"
+      });
+
+
+
+      var headerTitle = {
+        template: "<h3>组件练习</h3>"
+      }
+      var headerContent = {
+        template: "<p>一个段落</p>"
+      }
+
+      var header = {
+        template: `<div class="hd">,
+                   <header-content></header-content>
+                   <header-title></header-title>
+              </div>`,
+
+        components: {
+          "header-content": headerContent,
+          "header-title": headerTitle
+        }
+      }
+
+
+
+      var vm = new Vue({
+        el: "#app",
+        components: {
+          "my-comment": header
+        }
+      })
+    </script>
+
+
+
+
+
+  </body>
+</html>

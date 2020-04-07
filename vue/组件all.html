@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <html xmlns="#www.w3.org/1999/xhtml">
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>vue</title>
+  </head>
+  <script type="text/javascript" src="src/assets/js/vue.js"></script>
+
+  <script type="text/javascript"  src="src/assets/js/jquery-3.4.1.min.js"></script>
+  <link rel="stylesheet" href="src/assets/css/animate.min.css">
+</head>
+
+<body>
+  <style>
+    body {
+      margin: 10px;
+      padding: 10px;
+    }
+
+    * {
+      margin: 5px;
+    }
+
+    ul {
+      padding-top: 10px;
+      padding-left: 10px;
+      clear: both;
+      height: auto;
+      overflow: hidden;
+    }
+
+    .ul input {
+      width: 60px;
+    }
+
+    li {
+      float: left;
+      list-style: none;
+    }
+  </style>
+  <div id="big">
+
+
+
+    <input placeholder="m" v-model="el[0].adr">
+    {{el[0]}}
+
+
+
+
+    <input v-model="el[0].adr" />
+    <input v-model="el[0].value" />
+
+    <ul class="ul">
+      <li v-for="(el,x) in el">
+        {{x}}: adr:{{el.adr}}-- value: {{el.value}}
+        <input placeholder="adr" v-model='el.adr'>
+        <input placeholder="value" v-model='el.value'>
+      </li>
+    </ul>
+
+    <div>
+      <label>
+        <input type="radio" value="空间" v-model="values">空间
+      </label>
+      <label>
+        <input type="radio" value="新浪" v-model="values">新浪
+      </label>
+      选中的是:{{values}}</div>
+
+    <div>
+
+      <label><input type="checkbox" value="新浪" v-model.lazy="check">新浪</label>
+      <label><input type="checkbox" value="空间" v-model.lazy="check">空间</label>
+      <label><input type="checkbox" value="复选框" v-model.lazy="check">复选框</label>
+    </div>
+    <div>选中的是:<span v-show="check.length!=0">{{check}}-->{{check.length}}</span> </div>
+
+    <input v-model="values">
+
+    <p>{{ total }}</p>
+    <br>
+
+
+    <div style="border: 1px solid orange;width: 300px; float: left;">
+       组件输入显示
+      <ceshimoban v-bind:msg="values"></ceshimoban>
+
+    </div>
+
+
+
+    <div style="border: 2px solid yellowgreen;width: 300px; float: left;">
+      组件控制显示隐藏
+      <ceshimoban v-bind:el="html" v-bind:c="c[0]['a']" v-bind:d="c[0]['a']" v-bind:f="msg"></ceshimoban>
+
+    </div>
+
+
+
+    <div style="border: 1px solid red;width: 300px; float: left;">
+      组件调用循环列表
+      <ceshimoban v-bind:array="el" v-on:increment="incrementTotal"></ceshimoban>
+    </div>
+
+
+
+
+
+  </div>
+
+
+
+  <script>
+
+    let sum = (sun, sun2) => {
+
+    }
+
+   /* let ab = [, 2, 3, 4, 5];
+
+    ab.forEach(element => (i, v) {
+      console.log(v);
+    }); */
+
+
+    const a = "12";
+    console.log(a);
+
+    let name;
+    name = "12";
+    console.log(name);
+
+    const u = 11;
+
+    console.log(u);
+
+    let [name1, sex, age] = ["wu", "男", 15];
+    console.log(name1);
+    console.log(sex);
+    console.log(age);
+
+
+    let TTThtml = `<div><ul class="cf row-1"><li><a href="#www.sina.com.cn/" id="f5864" target="_blank">新浪</a> •
+      <a href="#weibo.com/" target="_blank">微博</a></li>
+      <li><a href="#www.163.com/" id="f5866" target="_blank">网易</a>
+      </li> <h1>{{el}}</h1>   <H3 v-show="c==0? true :false" > {{c}}  </H3>
+      </ul>
+         <input type="" v-model="f">
+         <input type="" v-model="values">
+         <div><input type="" v-model="c">输入 0 和  1 看我显示</div>
+         <h4>{{msg}}</h4>
+         <h2>{{f}}</h2>
+         <ul>
+           <li v-for="arrs in array">{{arrs.value}}</li>
+         </ul>
+        <button v-on:click="incrementHandler">{{ values }}</button>
+     </div>`;
+
+    Vue.component("ceshimoban", {
+      template: TTThtml,
+      props: ['msg', 'el', "c", "d", "f", 'array'],
+      data: function () {
+        return {
+          values: 0
+        }
+      },
+      methods: {
+        incrementHandler: function () {
+          this.values += 1
+          this.$emit('increment')
+        }
+      },
+    })
+
+
+
+
+    let ddd = [{
+      adr: 19,
+      value: "件可"
+    },
+    {
+      adr: 35,
+      value: "以为 "
+    },
+    {
+      adr: 36,
+      value: "props "
+    },
+    {
+      adr: 37,
+      value: "证要"
+    },
+    {
+      adr: 29,
+      value: "指定验"
+    },
+    {
+      adr: 21,
+      value: "一个字"
+    },
+    ]
+    vm = new Vue({
+      el: "#big",
+      data: {
+        total: 0,
+        el: ddd,
+        values: "新浪",
+        msg: "组件文字",
+        check: [],
+        adr: "set adr",
+        value: "set value",
+        html:ddd,
+        c: [{ a: 1 }, { b: 0 }]
+      },
+      methods: {
+        incrementTotal: function () {
+          this.total += 1
+        }
+      }
+    });
+  </script>
+
+</body>
+
+</html>

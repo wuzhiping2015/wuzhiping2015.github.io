@@ -1,0 +1,98 @@
+{
+  "users": [{
+      "name": "QQQQ",
+      "phone": "BBBBBB",
+      "email": "henry@email.com",
+      "id": 1,
+      "age": 33,
+      "companyId": 1
+    },
+    {
+      "name": "QQQ",
+      "phone": "BBBBBBBBB",
+      "email": "bucky@email.com",
+      "id": 2,
+      "age": 34,
+      "companyId": 2
+    },
+    {
+      "name": "cccccccc",
+      "phone": "BBBBBBBB",
+      "email": "emily@email.com",
+      "id": 3,
+      "age": 43,
+      "companyId": 3
+    },
+    {
+      "name": "cccccccc",
+      "phone": "BBBBBBBB",
+      "email": "emily@email.com",
+      "id": 3,
+      "age": 43,
+      "companyId": 3
+    }
+
+  ],
+  "companies": [{
+      "id": 1,
+      "name": "Apple",
+      "description": "Apple is good"
+    },
+    {
+      "id": 2,
+      "name": "Miciosoft",
+      "description": "Miciosoft is good"
+    },
+    {
+      "id": 3,
+      "name": "Google",
+      "description": "Google is good"
+    }
+  ],
+
+  "photos": [{
+      "albumId": 1,
+      "id": 1,
+      "title": "accusamus beatae ad facilis cum similique qui sunt",
+      "url": "/static/img/a.03ce928.gif",
+      "thumbnailUrl": "https://via.placeholder.com/150/92c952"
+    },
+    {
+      "albumId": 1,
+      "id": 2,
+      "title": "reprehenderit est deserunt velit ipsam",
+      "url": "/static/img/a.03ce928.gif",
+      "thumbnailUrl": "https://via.placeholder.com/150/771796"
+    },
+    {
+      "albumId": 1,
+      "id": 3,
+      "title": "officia porro iure quia iusto qui ipsa ut modi",
+      "url": "/static/img/a.03ce928.gif",
+      "thumbnailUrl": "https://via.placeholder.com/150/24f355"
+    },
+    {
+      "albumId": 1,
+      "id": 4,
+      "title": "culpa odio esse rerum omnis laboriosam voluptate repudiandae",
+        "url": "/static/img/a.03ce928.gif",
+      "thumbnailUrl": "https://via.placeholder.com/150/d32776"
+    },
+    {
+      "albumId": 1,
+      "id": 5,
+      "title": "natus nisi omnis corporis facere molestiae rerum in",
+       "url": "/static/img/a.03ce928.gif",
+      "thumbnailUrl": "https://via.placeholder.com/150/f66b97"
+    },
+    {
+      "albumId": 1,
+      "id": 6,
+      "title": "accusamus ea aliquid et amet sequi nemo",
+       "url": "/static/img/a.03ce928.gif",
+      "thumbnailUrl": "https://via.placeholder.com/150/56a8c2"
+    }
+
+  ]
+
+}

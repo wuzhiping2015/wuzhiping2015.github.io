@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>vue</title>
+  </head>
+  <script type="text/javascript" src="vue.js"></script>
+
+  <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
+  <link rel="stylesheet" href="animate.min.css">
+</head>
+
+<body style="position:absolute">
+  <div id="vm1">
+    <p>{{ m }}</p>
+
+    <label><input type="checkbox" v-model="check"></label>
+    {{check}}
+    <p v-bind:class="{'check':check} ">
+      {{m}}
+    </p>
+
+    <p>
+      运算5-5+2*6:{{5-5+2*6}}<br />
+      判断:{{check ?"yes":"no"}}<br />
+      字符串截取:<span v-bind:class="{'check':check}">{{m.substring(2,8)}}</span><br />
+      <div v-bind:id="'list_'+id">一个菜鸟_{{id}}</div>
+    </p>
+
+    <p><span v-if="check">vue一个判断</span></p>
+
+    <div>双向数据绑定：<input v-model="m">数据有多长：{{m.trim().length}}</div>
+
+    <input type="button" id="id_3" value="按钮1" @click="Btn(this,3)">
+
+    <div class="m"></div>
+    <div @click="btn1(this)" :class="{'check':check}" v-if="check">
+      <em style="color:red;">过滤器:</em>{{m | filt}}
+    </div>
+
+    <div>是否看到了：<span v-if="check1">看到了666</span></div>
+
+
+    <template v-if="check1">
+      <div style="border:1px solid red;">
+        <p>VUE菜鸟</p>
+        <p>菜鸟</p>
+        <div>
+    </template>
+
+    <div id="app">
+      <div v-if="id > 5" style="color:red">
+        {{t}} yes
+      </div>
+      <div v-else style="color:blue">
+        {{t}}No
+      </div>
+    </div>
+
+    <div>
+      循环语句：
+      <ul>
+        <li v-for="item in arr">{{ item.name  }}</li>
+      </ul>
+      v-for 迭代对象:
+      <ul>
+        <li v-for="(item,index,key)  in va">
+          {{key}}:-{{index}} :- {{item}}
+        </li>
+      </ul>
+      <p>
+    </div>
+
+
+    <div>
+      *************计算属性实类: *************
+      <br />
+      {{m}}<br />
+      属性实类:{{comSubstr_m}}
+
+      <br>
+      {{comSubstr_m1() }}
+      <br />
+
+      <input type="button" value="按钮2" @click="btn2(this,2)">{{}}
+      <input type="button" value="按钮4" @click="id+=1">{{id}}
+      <br />
+      computed:计算属性--<span style="color:red">{{site}}</span>
+
+
+
+      <div id="site" style="color:blue"> </div>
+
+      *************事件监听 *************
+      <br />
+      <input type="button" value="按钮2" @click="jiantin++">
+      {{jiantin}}
+
+      <br />
+      <input type="button" value="监听3" @click="id++">
+      {{id}}
+    </div>
+
+
+
+    **************购物车**************
+    <table>
+      <tr>
+        <th>序号</th>
+        <th>商品名称</th>
+        <th>商品价格</th>
+        <th>购买数量</th>
+        <th>操作</th>
+      </tr>
+      <tr v-for="iphone in Ip_Json">
+        <td>{{ iphone.id }}</td>
+        <td>{{ iphone.name }}</td>
+        <td>{{ iphone.price }}</td>
+        <td>
+          <button v-bind:disabled="iphone.count===0" @click="iphone.count-=1">-</button>
+          {{iphone.count}}
+          <button @click="iphone.count+=1">+</button>
+        </td>
+        <td>
+          <button @click="iphone.count=0">移除</button>
+        </td>
+      </tr>
+    </table>
+    总价：{{totalPirce()}}
+
+
+    **************样式**************
+
+    <div v-bind:class="{yangs:yangs,ys2:yangs}">样式</div>
+
+
+    <div v-bind:class="yangshi2">样式2</div>
+    <div v-bind:class="[ys2,yangs]">样式3</div>
+    <div v-bind:class="[ys2,check1?yangs:'']">样式4</div>
+
+
+
+
+    <input type="button" value="事件处理" @click="id+=1">
+
+    <input type="button" value="事件处理1" @click="sj">
+
+
+    <select v-model="select" name="fruit">
+      <option value="">选择一个网站</option>
+      <option value="baidu">baidu</option>
+      <option value="google">google</option>
+    </select>
+    <div>选择的是{{select}}</div>
+
+  </div>
+
+
+
+  <script>
+    var data = {
+      m: "一个新的测试文件",
+      check: true,
+      check1: true,
+      yangs: true,
+      id: 9,
+      jiantin: 1,
+      ok: true,
+      t: "个判断是否大于5:",
+      url: 'http://www.runoob.com',
+      ys2: "ys2",
+      yangs: "yangs",
+
+      yangshi2: {
+        yangs: true,
+        ys2: true
+      },
+      arr: [{
+        name: "a"
+      },
+      {
+        name: "b"
+      },
+      {
+        name: "c"
+      }
+      ],
+      va: {
+        ok: true,
+        t: "个判断是否大于5:",
+        url: 'http://www.runoob.com',
+      },
+      Ip_Json: [{
+        id: 1,
+        name: 'iphone 8',
+        price: 5099,
+        count: 1
+      },
+      {
+        id: 2,
+        name: 'iphone xs',
+        price: 8699,
+        count: 2
+      },
+      {
+        id: 3,
+        name: 'iphone xr',
+        price: 6499,
+        count: 3
+      }
+      ]
+
+
+    }
+    var vm1 = new Vue({
+      el: '#vm1',
+      data: data,
+
+      //事件执行
+      methods: {
+        Btn: function (e, x) { //按钮传参
+          data.check1 = false;
+          data.id = data.m.length;
+
+          $('.check').removeAttr("style");
+          if (5 <= (data.m.length)) {
+            $("#id_" + x).val("按钮1").css("color", "#000");
+            $(".m").html(data.m.length);
+          } else {
+            $("#id_" + x).val("我变了").css("color", "red");
+            $(".m").html("文字太长了");
+            data.check1 = true;
+          }
+
+        },
+        btn1: function (e) {
+          $('.check').css({
+            "color": "#000",
+            "fontSize": "15px"
+          });
+        },
+        btn2: function (e, x) {
+          return e + "-" + x
+        },
+        comSubstr_m1: function () {
+          return this.m.substring(2, 6);
+        },
+
+        //购物车计算
+        totalPirce: function () {
+          var money = 0;
+          for (var i = 0, len = this.Ip_Json.length; i < len; i++) {
+            money += this.Ip_Json[i].price * this.Ip_Json[i].count;
+          }
+          return (money);
+
+        },
+        sj: function (event) {
+          console.log(this.m);
+          if (event) {
+            console.log(event.type);
+          }
+
+        }
+      },
+
+      //计算属性实类
+      //使用 computed 性能会更好，但是如果你不希望缓存，你可以使用 methods 属性。
+      computed: {
+        comSubstr_m: function () {
+          return this.arr.a = "葫芦娃" + "," + this.m.substring(2, 7);
+        },
+        site: {
+          //getter
+          get: function () {
+            return this.m + "-" + this.id
+          },
+
+
+          //setter  //函数方法自定义修改
+          set: function (newValue) {
+            var names = newValue.split(" ");
+            console.log(names);
+            this.m = names[0];
+            this.url = names[names.length - 1];
+          }
+        }
+
+
+      },
+
+      //过滤器
+      filters: {
+        filt: function (value) {
+          var c = new Object;
+          c.value = "123";
+          return "原来是:" + value + "改变后:" + (c.value);
+        }
+      },
+
+      watch: {
+        id: function (i, n) {
+          console.log(i + "-" + n);
+        }
+      }
+
+
+    });
+
+    //*************事件监听
+    vm1.$watch('jiantin', function (n, o) {
+      console.log(n + "-" + o);
+    })
+
+
+    /*
+   vm1.$watch("sj",function(){
+
+   });*/
+
+
+    data.check = false; //改变数据值
+
+
+    vm1.site = "一个菜鸟网络 www.baidu.com";
+    $("#site").html(vm1.m + "--" + vm1.url);
+
+    console.log(data.m)
+
+    vm1.sj() //调用事件
+
+      //*************事件处理器
+  </script>
+
+
+
+  <style>
+    .yangs {
+      font-weight: 600;
+      font-size: 20px;
+    }
+
+    .ys2 {
+      color: red;
+    }
+
+    table {
+      border: 1px solid black;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    th {
+      height: 50px;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid #ddd;
+    }
+
+    .check {
+      color: blue;
+      font-size: 15px;
+      animation: shake 1s;
+      -moz-animation: shake 1s;
+      /* Firefox */
+      -webkit-animation: shake 1s;
+      /* Safari 和 Chrome */
+      -o-animation: shake 1s;
+      /* Opera */
+    }
+  </style>
+
+  <br />
+  <br />
+  <br />
+  <br /><br />
+
+</body>
+
+</html>

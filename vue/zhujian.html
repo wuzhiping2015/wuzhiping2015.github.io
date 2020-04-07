@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>vue</title>
+  </head>
+  <script type="text/javascript" src="vue.js"></script>
+
+  <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
+  <link rel="stylesheet" href="animate.min.css">
+</head>
+
+<body>
+
+  <div id="news">
+    <zhujian mess="hello" v-bind:mess="mess"></zhujian>
+
+    <input v-model="mess" />
+
+    <ol>
+      <todos v-for="item in sites" v-bind:todo="item"> </todos>
+    </ol>
+
+
+    <input type="number" v-model.number="age">
+    {{age}}
+    <input v-model.lazy="age">
+    <input v-model.trim="age">
+
+
+
+    <runooob ceshi="添加一个测试文件" wd="wd"></runooob>
+
+
+    <input v-model.lazy="mess">
+    <input v-model="mess">
+    <input v-model="wd">
+  </div>
+
+  <script>
+
+    let text = `<h1>一个测试文件<a href="#">{{ceshi}}</a>  {{wd}}</h1>`;
+
+    Vue.component('runooob', {
+      props: ['ceshi', 'wd'],
+      template: text
+    });
+
+
+    Vue.component("zhujian", {
+      template: "<h1>驱蚊器无群无 :{{mess}}</h1>",
+      props: ['mess'], // PROPS 事件
+    });
+
+    Vue.component("todos", {
+      props: ["todo"],
+      template: "<li>{{todo.text}}</li>"
+    })
+
+    var vm = new Vue({
+      el: "#news",
+      data: {
+        mess: "111",
+        wd: "一个大大测试文件",
+        age: '',
+        sites: [{
+          text: 'Runoob'
+        },
+        {
+          text: 'Google'
+        },
+        {
+          text: 'Taobao'
+        }
+        ]
+      }
+    })
+  </script>
+
+
+
+
+
+
+
+  <div id="zujian1">
+    {{z}}
+    <ceshijian></ceshijian>
+  </div>
+
+  <script>
+
+    Vue.component('ceshijian', {
+      template: '一个侧石问津'
+    });
+    vm = new Vue({
+      el: '#zujian1',
+      data: {
+        z: "一个大的测试文件"
+      }
+    });
+  </script>
+
+</body>
+
+</html>
