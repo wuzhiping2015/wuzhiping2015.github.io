@@ -1,0 +1,197 @@
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>dome</title>
+		<link rel="stylesheet" type="text/css" href="assets/css/zz-global.css">
+		<link rel="stylesheet" type="text/css" href="assets/css/zz-components.css">
+		<link rel="stylesheet" type="text/css" href="assets/css/skin/layer.css">
+		<script src="assets/js/jquery-1.10.1.js"></script>
+
+	</head>
+
+	<body>
+		<div class="wrapper">
+			<div class="container">
+				<div class="QY_box">
+					<div class="QY_search">
+						<div class="pop_search">
+							<i class="icon_inp"></i>
+							<input type="text" class="input-royals" placeholder="请输入编号或名称">
+						</div>
+						<a class="btn btn-search" href="javascript:;">查询</a>
+					</div>
+					<!--------------------------------------搜索-------------------------------------->
+					<div class="QY_tit">编辑项目（团队） </div>
+					<div class="clearfix">
+						<div class="tabox_jqGrid_tab"><em class="action">机构</em> <em>岗位</em></div>
+						<ul class="form-grid font8">
+							<li class="col-sm-6">
+								<label class="form-lab"><span class="required">*</span>项目(团队)编号</label>
+								<div class="form-control">
+									<input class="inp limit-number" type="text">
+								</div>
+							</li>
+
+							<li class="col-sm-6">
+								<label class="form-lab">状态</label>
+								<div class="form-control">
+									<span class="radio-inline">
+                                        <label class="radio">
+                                           <i class="QY_com_icon">&nbsp;</i>
+                                            <input type="checkbox">
+                                            <em>供应商</em>
+                                        </label>
+                                        <label class="radio action">
+                                            <i class="QY_com_icon">&nbsp;</i>
+                                            <input type="checkbox">
+                                            <em>客户(个体)</em>
+                                        </label>
+                                    </span>
+								</div>
+							</li>
+							<li class="col-sm-6">
+								<label class="form-lab">多选</label>
+								<div class="form-control">
+									<span class="radio-inline">
+                                     <span class="checkbox "> <i
+						class="QY_com_icon"></i> <input name="shencai" value="1">
+						<em>身材好</em>
+				</span> <span class="checkbox"> <i class="QY_com_icon"></i> <input
+						name="face"> <em>脸蛋好</em>
+				</span> <span class="checkbox"> <i class="QY_com_icon"></i> <input
+						name="renpin"> <em>人品好</em>
+				</span>
+									</span>
+								</div>
+							</li>
+							<li class="col-sm-6">
+								<label class="form-lab"><span class="required">*</span>项目(团队)编号</label>
+								<div class="form-control">
+									<input class="inp limit-number inp-lg" type="text">
+								</div>
+							</li>
+
+							<li class="col-sm-6  col-lg-4 col-xl-3">
+								<label class="form-lab">法人证件号码</label>
+								<div class="form-control">
+									<input class="inp limit-number inp-lg" type="text">
+								</div>
+							</li>
+
+							<li class="col-sm-6  col-lg-4 col-xl-3">
+								<label class="form-lab">纳税人性质</label>
+								<div class="form-control">
+									<span class="select select-only select-lg " funcGetData="CurPage.selectData_sex">
+								<input type="text" value="男" readonly="readonly" class="select-name" placeholder="请输入"> 
+								<em class="QY_com_icon"></em> <input class="select-data" value="1"	name="sex">
+						   </span>
+								</div>
+							</li>
+
+							<li class="col-sm-6  col-lg-4 col-xl-3">
+								<label class="form-lab">营业期限</label>
+								<div class="form-control">
+									<div class="input-group">
+										<div class="datepicker" style="width: 50%">
+												<input type="text" class="datepicker-show"> 
+												<em class="QY_date_icon">&nbsp;</em> 
+					                         	<input class="datepicker-data"	name="startDate">
+										</div>
+										
+										<span class="form-text">~</span>
+										<div class="datepicker" style="width: 50%">
+												<input type="text" class="datepicker-show"> 
+												<em class="QY_date_icon">&nbsp;</em> 
+					                         	<input class="datepicker-data"	name="startDate">
+										</div>
+									</div>
+
+								</div>
+							</li>
+							<li class="col-sm-6">
+								<label class="form-lab">状态</label>
+								<div class="form-control">
+									<input class="inp inp-royal" type="text" placeholder="有效" disabled="disabled">
+								</div>
+							</li>
+							<li class="col-sm-12">
+								<label class="form-lab">备注</label>
+								<div class="form-control">
+									<textarea class="textarea"></textarea>
+								</div>
+							</li>
+							<li class="col-sm-12">
+								<label class="form-lab">&nbsp;</label>
+								<div class="form-control">
+									<a class="btn btn-info mr10" href="javascript:;">保存</a>
+									<a class="btn btn-primary mr10" href="javascript:;">取消</a>
+									<a class="btn btn-add" href="javascript:;"><em>+</em>新增申请</a>
+									<a class="btn btn-search" href="javascript:;">查询</a>
+									<a class="btn btn-search alerttig" href="#">弹窗</a>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div style="padding: 20px;" class="links">
+			<a href="index.html">企云首页</a>
+			<a href="注册.html">注册</a>
+			<a href="人员管理/编辑项目(团队).html">编辑项目</a>
+			<a href="人员管理/编辑项目(组织).html">编辑项目组织</a>
+			<a href="人员管理/岗位编辑.html">岗位编辑</a>
+			<a href="人员管理/岗位列表.html">岗位列表</a>
+			<a href="人员管理/我的审批.html">我的审批</a>
+			<a href="人员管理/员工管理.html">员工管理</a>
+			<a href="人员管理/新增员工.html">新增员工</a>
+			<a href="人员管理/添加菜单.html">添加菜单</a>
+			<a href="人员管理/添加人员.html">添加人员</a>
+		</div>
+		<style>
+			.links {
+				border: 1px solid #dedede;
+			}
+			
+			.links a {
+				display: block
+			}
+		</style>
+
+		
+		<script>
+			$(function() {
+				$('.alerttig').click(function() {
+					$('#layui-layer-shade1,#layui-layer1').show();
+				});
+				$(".layui-layer-btn1").click(function(){
+					$('#layui-layer-shade1,#layui-layer1').hide();
+				});
+			});
+		</script>
+		<script src="assets/js/layer/layer.js"></script>
+		<script src="assets/js/jquery.nanoscroller.js"></script>
+		<script src="assets/js/zz-diyComponents.js"></script>
+		<script src="assets/js/zz-datepicker.js"></script>
+		<script src="assets/js/zz-test-components.js"></script>
+<script type="text/javascript">
+    $(function() {
+	//选择人员
+      /* layer.open({
+            type: 0,
+			title:'弹窗',
+            skin: 'layui-layer-rim', //加上边框
+            area: ['620px', 'auto'], //宽高
+		    btn: ['提交','取消'] ,
+            content: "aaaaaaaaaaaaa",
+       });*/
+        $(".modal-close").click(function () {
+            $("#modal1").hide();
+            $(".shade").hide();
+        });
+    });
+</script>
+	</body>
+
+</html>
