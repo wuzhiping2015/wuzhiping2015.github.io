@@ -139,7 +139,7 @@
 											</el-switch>
 										</el-form-item>
 									</div>
-									
+
 									<div class="col-md-6">
 										<el-form-item label="Door Open">
 											<el-switch v-model="form.name" active-color="#13ce66" inactive-color="#aeaaaa ">
@@ -152,14 +152,14 @@
 											</el-switch>
 										</el-form-item>
 									</div>
-									
+
 								</el-form>
-					
+
 							</div>
 						</div>
 					</div>
 					<!-- Alarm END -->
-					
+
 				</div>
 
 			</div>
@@ -167,9 +167,10 @@
 
 
 
-	        
-			<!-- sync1 start -->  <!-- 只有AU 才显示 -->
-			<div class="col-md-12" style="background: #fff;margin-top:10px;" v-if="equipment=='au'">
+
+			<!-- sync1 start -->
+			<!-- 只有AU 才显示 -->
+			<div class="col-md-12" style="background: #fff;margin-top:10px;" >
 				<div class="box-header with-border">
 					<h3 class="box-title">Sync</h3>
 				</div>
@@ -391,10 +392,11 @@
 
 				</div>
 			</div>
-			<!-- sync1 end -->   <!-- 只有AU 才显示 -->
+			<!-- sync1 end -->
+			<!-- 只有AU 才显示 -->
 
 
-			
+
 
 
 		</div>
@@ -417,14 +419,14 @@
 				data: data,
 
 				created() {
-					console.log(this.$data);
+					//	console.log(this.$data);
 				},
 				mounted() {
 					$("body").resize();
 				},
 				updated() {
 					console.log("==更新成功==");
-					console.log(this.$data);
+					//console.log(this.$data);
 				},
 				updated() {
 					// console.log("==更新成功==");
@@ -432,7 +434,7 @@
 				},
 				beforeUpdate() {
 					console.log("==更新成功==");
-					console.log(this.$data);
+					//console.log(this.$data);
 				},
 
 				methods: {

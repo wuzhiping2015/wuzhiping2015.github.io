@@ -433,7 +433,6 @@ Vue.component("el-main-sidebar", {
 	},
 	mounted: function() {
 		/* 	console.log(this.tagname);
-
 			this.$nextTick(function() {
 				console.log(this.tagname);
 			}); */
@@ -575,12 +574,29 @@ Vue.component("device", {
 		moreState(event) {
 			this.tagurl = event;
 			if (event == "Status") {
-				sessionStorage.setItem("url", "status_page");
-				document.getElementById("iframe1").setAttribute("src", "status_page.html");
+				if (this.equipment == "au") {
+					sessionStorage.setItem("url", "status_page");
+					document.getElementById("iframe1").setAttribute("src", "status_page.html");
+				} else if (this.equipment == "eu") {
+					sessionStorage.setItem("url", "status_pageeu");
+					document.getElementById("iframe1").setAttribute("src", "status_pageeu.html");
+				} else {
+					sessionStorage.setItem("url", "status_pageru");
+					document.getElementById("iframe1").setAttribute("src", "status_pageru.html");
+				}
 
-			} else {
+			} else if (event == "Deviceinfo") {
 				sessionStorage.setItem("url", event);
 				document.getElementById("iframe1").setAttribute("src", event + ".html");
+			} else {
+				sessionStorage.setItem("url", event);
+				if (sessionStorage.getItem("equipment") == "au") {
+					document.getElementById("iframe1").setAttribute("src", event + ".html");
+				} else if (sessionStorage.getItem("equipment") == "eu") {
+					document.getElementById("iframe1").setAttribute("src", event + "eu.html");
+				} else {
+					document.getElementById("iframe1").setAttribute("src", event + "ru.html");
+				}
 			}
 			//	$(this).addClass("active").siblings("li").removeClass("active")
 			//window.location.href = "index.html"
@@ -606,12 +622,17 @@ Vue.component("device", {
 						return false;
 					}
 				}); */
-				console.log(this.equipment);
-				console.log(this.tagurl);
+
+
+			console.log(this.equipment);
+			console.log(this.tagurl);
 		});
 	},
 	beforeCreate() {
-	
+		/* console.log("创建前：");*/
+
+	},
+	beforeMount() {
 
 	},
 
@@ -619,11 +640,13 @@ Vue.component("device", {
 	template: `  <div style="position:relative"> 
 			 
 			<div class="nav-tabs-custom">
-				<ul class="nav nav-tabs">
-					 <li v-for="item in children"   :class="{active: item.tab == tagurl}"  @click="moreState(item.tab)">
+				<ul class="nav nav-tabs"  >
+					 <li v-for="item in children"  :class="{active: item.tab == tagurl}"  @click="moreState(item.tab)">
 						<a href="javascript:void(0);" >{{item.tab}}</a>
 					 </li>
 				</ul>
+				
+				
 			</div>
 			    </div>`
 })
