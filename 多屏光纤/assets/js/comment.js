@@ -432,11 +432,11 @@ Vue.component("el-main-sidebar", {
 		}
 	},
 	mounted: function() {
-		console.log(this.tagname);
+		/* 	console.log(this.tagname);
 
-		this.$nextTick(function() {
-			console.log(this.tagname);
-		});
+			this.$nextTick(function() {
+				console.log(this.tagname);
+			}); */
 	},
 	template: ` <div class="main-sidebar">
 		 <div class="box-header with-border">
@@ -560,19 +560,12 @@ Vue.component("device", {
 			active: 0,
 			tagurl: "",
 			children: [{
-					"url": "Status.html",
 					"tab": "Status"
 				},
 				{
-					"url": "ParaSet.html",
 					"tab": "ParaSet"
 				},
-				/* {
-					"url": "Roc.html",
-					"tab": "Roc"
-				}, */
 				{
-					"url": "Deviceinfo.html",
 					"tab": "Deviceinfo"
 				},
 			]
@@ -589,7 +582,6 @@ Vue.component("device", {
 				sessionStorage.setItem("url", event);
 				document.getElementById("iframe1").setAttribute("src", event + ".html");
 			}
-
 			//	$(this).addClass("active").siblings("li").removeClass("active")
 			//window.location.href = "index.html"
 		}
@@ -614,47 +606,25 @@ Vue.component("device", {
 						return false;
 					}
 				}); */
+				console.log(this.equipment);
+				console.log(this.tagurl);
 		});
 	},
 	beforeCreate() {
+	
 
 	},
 
 
 	template: `  <div style="position:relative"> 
-			  <!--el-card class="box-card">
-				<el-tabs v-model="activeName" @tab-click="moreState">
-					<el-tab-pane :label="item.tab"  v-for="item in children" :name="item.tab"></el-tab-pane>
-				</el-tabs>
-			</el-card-->
-			
+			 
 			<div class="nav-tabs-custom">
 				<ul class="nav nav-tabs">
-				     
 					 <li v-for="item in children"   :class="{active: item.tab == tagurl}"  @click="moreState(item.tab)">
 						<a href="javascript:void(0);" >{{item.tab}}</a>
 					 </li>
-				 
 				</ul>
 			</div>
-			
-		  <!--
-		  <li class=""><a href="javascript:void(0);" data-toggle="tab" aria-expanded="false">Timeline</a></li>
-		  <li class="active"><a href="javascript:void(0);" data-toggle="tab" aria-expanded="true">Settings</a></li>el-dropdown style="    position: absolute;
-								top: -8px;
-								color: #000;
-								left:400px;
-								display: block;">
-						 <span class="el-dropdown-link">
-							AU2  <i class="el-icon-setting" style="margin-right: 15px"></i>
-						 </span>
-						<el-dropdown-menu slot="dropdown">
-						<el-dropdown-item >AU1</el-dropdown-item>
-						<el-dropdown-item >AU2</el-dropdown-item>
-						<el-dropdown-item  >AU3</el-dropdown-item>
-						<el-dropdown-item >AU4</el-dropdown-item>
-						</el-dropdown-menu>
-				 </el-dropdown-->
 			    </div>`
 })
 //DEVICE 菜单 END
