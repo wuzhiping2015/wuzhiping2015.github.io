@@ -8,8 +8,8 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js",
-    "json:server": "json-server --watch json.json",
-    "json:server:remote": "json-server http://jsonplaceholder.typicode.com/json"
+    "json:server": "json-server --watch db.json",
+    "json:server:remote": "json-server http://jsonplaceholder.typicode.com/db"
   },
   "dependencies": {
     "babel-plugin-component": "^1.1.1",
