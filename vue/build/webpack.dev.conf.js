@@ -1,12 +1,20 @@
 'use strict'
+// 工具函数集合
 const utils = require('./utils')
 const webpack = require('webpack')
+// webpack 配置合并插件
 const config = require('../config')
 const merge = require('webpack-merge')
 const path = require('path')
+
+  // webpac基本配置
 const baseWebpackConfig = require('./webpack.base.conf')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+// 自动生成 html 并且注入到 .html 文件中的插件
+  // https://github.com/ampedandwired/html-webpack-plugin
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+// webpack错误信息提示插件
+  // https://github.com/geowarin/friendly-errors-webpack-plugin
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
@@ -15,24 +23,9 @@ const PORT = process.env.PORT && Number(process.env.PORT)
 
 
 
-/* datura接口 20170302 */
-var express = require('express') 
-var app = express()
-var appData = require('../goods.json')
-var goods = appData.goods
-var apiRoutes = express.Router()
-apiRoutes.get('/goods', function(req, res){
-  res.json({
-    data: goods
-  })
-})
-app.use('/api', apiRoutes)
-
-/* datura接口 20170302 */
 
 
-
-
+// 将 Hol-reload 热重载的客户端代码添加到 webpack.base.conf 的 对应 entry 中，一起打包
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
@@ -40,6 +33,10 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   // cheap-module-eval-source-map is faster for development
 /*   devtool: config.dev.devtool, */
 /*   devtool:'#eval-source-map', */
+
+// 最新的配置为 cheap-module-eval-source-map，虽然 cheap-module-eval-source-map更快，但它的定位不准确
+  // 所以，换成 eval-source-map
+
 devtool:'#eval-source-map',
 
 
@@ -67,6 +64,9 @@ devtool:'#eval-source-map',
       poll: config.dev.poll,
     }
   },
+   // HotModule 插件在页面进行变更的时候只会重绘对应的页面模块，不会重绘整个 html 文件
+      // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
+	  
   plugins: [
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
@@ -75,7 +75,10 @@ devtool:'#eval-source-map',
     new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
     new webpack.NoEmitOnErrorsPlugin(),
     // https://github.com/ampedandwired/html-webpack-plugin
-    new HtmlWebpackPlugin({
+  
+  
+  // webpack错误信息提示插件
+	new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
       inject: true
