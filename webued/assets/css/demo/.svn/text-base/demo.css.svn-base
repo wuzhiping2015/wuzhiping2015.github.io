@@ -1,0 +1,112 @@
+.sample-catalog, .sample-tips, .sample-api, .sample-form {
+    width: 90%;
+}
+
+.sample-tips .warning {
+    font-size: 18px;
+    color: #FF0000;
+}
+
+.sample-tips .f28 {
+    font-size: 28px;
+}
+
+.sample-tips .f22 {
+    font-size: 22px;
+}
+
+.sample-tips .txt {
+    color: #7e00ff;
+    font-size: 20px;
+}
+
+.sample-tips .testBtn {
+    font-size: 18px;
+    color: #FF0000;
+}
+
+.sample-api table {
+    width: 100%;
+    padding: 0;
+    border-spacing: 0;
+    border-right: 1px solid #57c9e5;
+    border-bottom: 1px solid #57c9e5;
+}
+
+.sample-api table tbody tr td {
+    word-wrap: break-word;
+    padding: 5px;
+    border-left: 1px solid #57c9e5;
+    border-top: 1px solid #57c9e5;
+}
+
+.sample-log {
+    width: 100%;
+    height: 100px;
+    padding: 0;
+}
+
+.sample-api table .col1 {
+    /*width: 100px;*/
+}
+
+.sample-api table .col2 {
+    /*width: 100px;*/
+}
+
+.sample-api table .col3 {
+    /*width: 100px;*/
+}
+
+.sample-api table .col4 {
+    /*width: 100px;*/
+}
+
+.sample-api table .col5 {
+    /*width: 100px;*/
+}
+
+.sample-api table .col6 {
+    /*width: 100px;*/
+}
+
+.sample-api table .col7 {
+    /*width: 100px;*/
+}
+
+.sample-api table .col8 {
+    /*width: 100px;*/
+}
+
+.sample-api table .col9 {
+    /*width: 100px;*/
+}
+
+.sample-api table .col10 {
+    /*width: 100px;*/
+}
+
+.sample-api table .col-caption {
+    font-weight: bold;
+    font-size: 26px;
+}
+
+.sample-api table .col-head {
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.sample-api table .parameter {
+    font-weight: bold;
+    font-size: 18px;
+    display: block;
+}
+
+.sample-api table .usage {
+    font-weight: bold;
+    font-size: 18px;
+    display: block;
+}
+
+.
+
