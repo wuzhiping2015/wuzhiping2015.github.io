@@ -43,7 +43,7 @@
 			<ul>
 				<router-link to="/ceshi" tag="li">组件</router-link>
 				<router-link to="/ceshi1" tag="li">组件 通信 </router-link>
-				<router-link to="/suanfa" tag="li">综合练习</router-link>
+				<router-link to="/suanfa" tag="li"> mixins 综合练习</router-link>
 				<router-link to="/jd" tag="li">JD</router-link>
 				<router-link to="/bd" tag="li">表单 bd</router-link>
 				<router-link to="/loggg" tag="li">loggg</router-link>
