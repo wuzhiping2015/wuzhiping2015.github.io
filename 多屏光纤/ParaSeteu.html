@@ -71,6 +71,21 @@
 							<div class="clear" style="padding-top: 10px;">
 								<el-form ref="form" :model="form" label-width="220px" size="medium">
 									<div class="col-md-6">
+										<el-form-item label="Agent Switch">
+											<el-switch v-model="form.name" active-color="#13ce66" inactive-color="#aeaaaa ">
+											</el-switch>
+										</el-form-item>
+									</div>
+									<div class="col-md-6">
+										<el-form-item label=" Enable">
+											<el-switch v-model="form.name" active-color="#13ce66" inactive-color="#aeaaaa ">
+											</el-switch>
+										</el-form-item>
+									</div>
+
+
+
+									<div class="col-md-6">
 										<el-form-item label="Light 1 Fault Alarm Enbale">
 											<el-switch v-model="form.name" active-color="#13ce66" inactive-color="#aeaaaa ">
 											</el-switch>
@@ -94,38 +109,38 @@
 											</el-switch>
 										</el-form-item>
 									</div>
-									
-									
+
+
 									<div class="col-md-6">
 										<el-form-item label="Light 5 Fault Alarm Enbale">
 											<el-switch v-model="form.name" active-color="#13ce66" inactive-color="#aeaaaa ">
 											</el-switch>
 										</el-form-item>
 									</div>
-									
+
 									<div class="col-md-6">
 										<el-form-item label="Light 6 Fault Alarm Enbale">
 											<el-switch v-model="form.name" active-color="#13ce66" inactive-color="#aeaaaa ">
 											</el-switch>
 										</el-form-item>
 									</div>
-									
-									
+
+
 									<div class="col-md-6">
 										<el-form-item label="Light 7 Fault Alarm Enbale">
 											<el-switch v-model="form.name" active-color="#13ce66" inactive-color="#aeaaaa ">
 											</el-switch>
 										</el-form-item>
 									</div>
-									
-									
+
+
 									<div class="col-md-6">
 										<el-form-item label="Light 8 Fault Alarm Enbale">
 											<el-switch v-model="form.name" active-color="#13ce66" inactive-color="#aeaaaa ">
 											</el-switch>
 										</el-form-item>
 									</div>
-									
+
 
 									<div class="col-md-6">
 										<el-form-item label="Light UP Fault Alarm Enbale">
@@ -136,11 +151,11 @@
 
 									<div class="col-md-6">
 										<el-form-item label="Light Down Fault Alarm Enbale">
-										<el-switch v-model="form.name" active-color="#13ce66" inactive-color="#aeaaaa ">
-										</el-switch>
+											<el-switch v-model="form.name" active-color="#13ce66" inactive-color="#aeaaaa ">
+											</el-switch>
 										</el-form-item>
 									</div>
-									 
+
 								</el-form>
 
 							</div>

@@ -268,6 +268,9 @@ Vue.component('el-main-header', {
 			} else {
 				this.tagurl = sessionStorage.getItem("url");
 			}
+
+
+			this.action = sessionStorage.getItem("url");
 			/* 	$.each(this.menuList, function(i, t) {
 					if (url.indexOf(t.url) > 0) {
 						t.isActive = true;
@@ -290,7 +293,6 @@ Vue.component('el-main-header', {
 		},
 		logout(url) {
 
-
 			const children = ["Status", "ParaSet", "Roc", "Deviceinfo"];
 			if (url == children[0] || url == children[1] || url == children[2] || url == children[3]) {
 				sessionStorage.setItem("url", url);
@@ -298,9 +300,10 @@ Vue.component('el-main-header', {
 				window.location.href = "Status.html"
 			} else {
 				sessionStorage.setItem("url", url);
-
 				window.location.href = url + ".html"
 			}
+			
+			this.action = sessionStorage.getItem("url");
 
 		}
 	},
@@ -319,30 +322,17 @@ Vue.component('el-main-header', {
             </ul>
         </div>
         <div class="tagerLink">
-		
-			  <el-dropdown @command="logout" v-for="item in urls">
-				     <span class="el-dropdown-link">
+			  <el-dropdown @command="logout" v-for="item in urls" :class="action">
+				     <span class="el-dropdown-link" >
 						{{item.name}} <i class="el-icon-arrow-down el-icon--right"></i>
 				     </span>
-	         <el-dropdown-menu slot="dropdown" >
-		     <el-dropdown-item   v-for=" (itmes,i) in item.children"  :command="itmes.tab" :class="{action: itmes.tab == tagurl}" > 
-				 {{itmes.tab}}      
-			 </el-dropdown-item>
-			 
-	 	     </el-dropdown-menu>
+					 <el-dropdown-menu slot="dropdown" >
+						 <el-dropdown-item   v-for=" (itmes,i) in item.children"  :command="itmes.tab" :class="{action: itmes.tab == tagurl}" > 
+							 {{itmes.tab}}      
+						 </el-dropdown-item>
+					 </el-dropdown-menu>
 			 </el-dropdown> 
-			 
-			 <!--el-dropdown>
-			 				 <span class="el-dropdown-link">
-			 					AU2  <i class="el-icon-setting" style="margin-right: 15px"></i>
-			 				 </span>
-			    <el-dropdown-menu slot="dropdown">
-			 	<el-dropdown-item >AU1</el-dropdown-item>
-			 	<el-dropdown-item >AU2</el-dropdown-item>
-			 				<el-dropdown-item >AU3</el-dropdown-item>
-			 				<el-dropdown-item >AU4</el-dropdown-item>
-			  </el-dropdown-menu>
-			 </el-dropdown--->
+		
 			 
          </div>
     </div>

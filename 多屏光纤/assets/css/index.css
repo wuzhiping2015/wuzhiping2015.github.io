@@ -919,12 +919,20 @@
 }
 
 .el-dropdown {
-	display: inline-block;
-	position: relative;
-	color: #fff;
-	font-size: 14px;
-	margin-top: 18px;
-	margin-right: 53px;
+	padding: 0 20px;
+	margin-right: 20px;
+	color: #ececec;
+	line-height: 50px;
+	display: block;
+	font-size: 13px;
+	height: 100%;
+	float: left;
+}
+
+.el-dropdown.active,
+.el-dropdown:hover {
+	color: #ffffff;
+	background: url(../images/bg.png) repeat-x;
 }
 
 .el-dropdown .el-button-group {
@@ -4200,7 +4208,7 @@
 }
 
 .el-form-item {
-	margin-bottom:6px
+	margin-bottom: 6px
 }
 
 .el-form-item::after,
@@ -10075,7 +10083,7 @@
 }
 
 .el-card__body {
-	padding:0px 20px 20px 20px;
+	padding: 0px 20px 20px 20px;
 }
 
 .el-rate {
@@ -10996,7 +11004,7 @@
 }
 
 .el-popper[x-placement^=bottom] {
-	margin-top: 12px
+/* 	margin-top: 12px */
 }
 
 .el-popper[x-placement^=bottom] .popper__arrow {
