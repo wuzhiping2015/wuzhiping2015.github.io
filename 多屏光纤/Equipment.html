@@ -40,7 +40,9 @@
 			width: 100%;
 			top: 0px;
 			position: absolute;
-			height: 81px;
+			height: 120px;
+			left: -1px;
+			opacity: 0;
 		}
 		.fileImport{
 			width: 90%;
@@ -123,8 +125,8 @@
 
 												<a href="javascript:void(0);" class="btn btn-app col-xs-3">
 													<i class="fa icon iconfont icon-shujudaoru"></i>
-													<input type="file" value="Select the file" id="files" @onchange="fileImport(3);">
-													<el-button type="success" class="fileImport" :disabled="!Set" @click="fileImport(3);">Import</el-button>
+													<input type="file" value="Select the file" id="files" @change="fileImport(3);">
+													<!-- <el-button type="success" class="fileImport" :disabled="!Set" @click="fileImport(3);" style="display: none;">Import</el-button> -->Import
 												</a>
 												<a href="javascript:void(0);" @click="Heliosequipment(4,'Export');" :disabled="!Set" class="btn btn-app col-xs-3">
 													<i class="fa icon iconfont icon-shujudaochu"></i>Export
@@ -134,8 +136,8 @@
 
 												<a href="javascript:void(0);" class="btn btn-app col-xs-3">
 													<i class="fa icon iconfont icon-jurassic_import-data"></i>
-													<input type="file" value="Select the file" id="files5" @onchange="fileImport(5);">
-													<el-button type="success" class="fileImport" :disabled="!Set" @click="fileImport(5);">Upgrade</el-button>
+													<input type="file" value="Select the file" id="files5" @change="fileImport(5);">
+													<!-- 				<el-button type="success" class="fileImport" :disabled="!Set" @click="fileImport(5);">Upgrade</el-button> -->Upgrade
 												</a>
 
 												<a href="javascript:void(0);" @click="Heliosequipment(6,'Delete topology file');" :disabled="!Set" class="btn btn-app col-xs-3"

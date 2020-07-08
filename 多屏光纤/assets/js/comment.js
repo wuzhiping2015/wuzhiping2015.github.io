@@ -53,7 +53,7 @@ var util = {
 		toast.$message({
 			message: msg,
 			type: 'error',
-			duration: 1500
+			duration: 1800
 		});
 	},
 	copy: function() {
@@ -284,7 +284,42 @@ var util = {
 		}, 0);
 	},
 
+	//除1000
+	divide() {
+		var argu = [];
+		var utiltip = false;
+		if (0 == arguments[1]) {
+			arguments[0].forEach(function(v, i) {
+				argu.push(v / 1000);
+			});
+			return argu;
+		} else {
+			arguments[0].find(function(v) {
+				if (true != !isNaN(v)) {
+					utiltip = true;
+					return false;
+				} else {
+					argu.push(v * 1000);
+				}
+			});
+			if (true == utiltip) {
+				toast.$message({
+					message: `Please enter the valid 【UL Freq】 OR 【DL Freq】 data`,
+					type: 'error',
+					duration: 2000
+				});
+				setTimeout(function() {;
+					window.location.href = "roc.html";
+				}, 2000);
+				return false;
+			} else {
+				if (true != utiltip) {
 
+					return argu.join();
+				}
+			}
+		}
+	},
 
 	//获取
 	GetHeliosDevMsg() {
@@ -392,7 +427,7 @@ var util = {
 		return isshow;
 	},
 
- 
+
 	HeliosDataLength1() {
 		let isshow = false;
 		if (heliosUser[0] != $session) {
@@ -500,7 +535,7 @@ Vue.component('el-main-header', {
 		quit() {
 			let data = [];
 			var $Tit = "";
-			var $Tit1 = "Out of the M - dots";
+			var $Tit1 = "Out of the M - DOTS";
 			var $Txt = "Determine whether to exit or not";
 			var obj = {
 				adr: 83,
@@ -636,9 +671,7 @@ Vue.component("el-main-sidebar", {
 
 
 	beforeMount() {
-
 		this.MDOTStype();
-
 		let tempMenu = []; //主菜单
 		var param = [];
 		var sitelist;
@@ -652,10 +685,12 @@ Vue.component("el-main-sidebar", {
 		portlist.fill(0);
 		$.ajax({
 			type: "GET",
-			url: "http://192.168.93.245:80/topology.json",
+			url: 'http://192.168.93.245:80/topology.json?verisn=' + Math.ceil(Math.random() * 1010),
 			dataType: "json",
 			success: function(data1) {
-
+				/* localStorage.setItem("HeliosDev", (data1));
+				sessionStorage.setItem("HeliosDev1",(data1)); */
+				localStorage.setItem("HeliosDev", JSON.stringify(data1));
 				//设置第一条AU
 				data1.sites[0].device.splice(0, 0, {
 					"device_id": "0",
@@ -667,6 +702,8 @@ Vue.component("el-main-sidebar", {
 				let j = 0;
 				let setNodata = data1.sites[0].device;
 				let data = [];
+
+
 				//沿用旧项目处理方式
 				while (j < setNodata.length) {
 					let obj2 = {

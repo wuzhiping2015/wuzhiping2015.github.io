@@ -131,38 +131,38 @@
 									<td colspan="2"><span class="icon iconfont icon-kongzhitai"></span> <b>Band</b></td>
 								</tr>
 								<tr>
-									<td colspan="2"><strong>UL O/P (DSP)</strong></td>
+									<td colspan="2"><strong>UL I/P -DSP </strong><span class="text-green "> (dBm)</span></td>
 								</tr>
 								<tr>
-									<td colspan="2"><strong>DL I/P (DSP)</strong></td>
+									<td colspan="2"><strong>DL O/P -DSP </strong><span class="text-green "> (dBm)</span></td>
 								</tr>
 
 								<tr>
-									<td colspan="2"><b>Digital Board Feedback Power</b></td>
+									<td colspan="2"><b>Digital Board Feedback Power </b> <span class="text-green "> (dBm)</span></td>
 								</tr>
 
 								<tr>
 									<td rowspan="5"><b>RF</b></td>
-									<td>UL Freq</td>
+									<td>UL Freq <span class="text-green ">(MHz)</span></td>
 								</tr>
 								<tr>
-									<td>DL Freq</td>
+									<td>DL Freq <span class="text-green ">(MHz)</span></td>
 								</tr>
 								<tr>
-									<td>UL ATT</td>
+									<td>UL ATT <span class="text-green ">(dB)</span></td>
 								</tr>
 								<tr>
-									<td>DL ATT</td>
+									<td>DL ATT <span class="text-green ">(dB)</span></td>
 								</tr>
 								<tr>
-									<td>Bandwidth</td>
+									<td>Bandwidth <span class="text-green ">(MHz)</span></td>
 								</tr>
 								<tr>
 									<td rowspan="4"><b>DL</b></td>
-									<td>DL I/P Underpower Threshold</td>
+									<td>DL I/P Underpower Threshold <span class="text-green ">(dBm)</span></td>
 								</tr>
 								<tr>
-									<td>DL I/P Overpower Threshold</td>
+									<td>DL I/P Overpower Threshold <span class="text-green ">(dBm)</span></td>
 								</tr>
 								<tr>
 									<td>
@@ -204,8 +204,6 @@
 									<td>{{i | bandname}}</td>
 								</tr>
 
-
-
 								<tr v-for="(vv,jj) in Rocdata">
 									<td v-if="vv.adr==6">
 										{{vv.value[i]}}
@@ -214,15 +212,10 @@
 									<td v-if="vv.adr==7">
 										{{vv.value[i]}}
 									</td>
-
-
 									<td v-if="vv.adr==8">
 										{{vv.value[i]}}
 									</td>
 								</tr>
-
-
-
 
 								<tr v-for="(vv,jj) in Rocdata">
 									<td v-if="vv.adr==1">
@@ -375,15 +368,14 @@
 
 				mounted() {
 					$("body").resize();
-
-				},
-				updated() {
-					/* 	console.log(this.$data); */
 				},
 				beforeMount() {
 					this.Getroc_Data();
 				},
-
+				updated() {
+					//console.log("==更新成功==");
+					//	console.log(this.$data.Rocdata);
+				},
 				methods: {
 					/* (9,10) 使能 范围 0-3 */
 					Getroc_Data(index) {
@@ -411,7 +403,7 @@
 									for (var i = 0; i < data.length; i++) {
 										if (data[i].adr == 6) {
 											let obj = {
-												name: "UL POUT",
+												name: "UL O/P (DSP)",
 												adr: data[i].adr,
 												value: data[i].value.split(",")
 											}
@@ -420,7 +412,7 @@
 										}
 										if (data[i].adr == 7) {
 											let obj = {
-												name: "DL_PIN",
+												name: "DL I/P (DSP)",
 												adr: data[i].adr,
 												value: data[i].value.split(",")
 											}
@@ -436,28 +428,22 @@
 										}
 										if (data[i].adr == 1) {
 											let obj = {
-												name: "UL_FREQ",
+												name: "UL Freq",
 												adr: data[i].adr,
-												value: data[i].value.split(",")
+												//value: data[i].value.split(","),
+												value: util.divide(data[i].value.split(","), 0),
 											}
 											getdata.push(obj);
 										}
 										if (data[i].adr == 2) {
 											let obj = {
-												name: "DL_FREQ",
+												name: "DL Freq",
 												adr: data[i].adr,
-												value: data[i].value.split(",")
+												value: util.divide(data[i].value.split(","), 0),
 											}
 											getdata.push(obj);
 										}
-										if (data[i].adr == 3) {
-											let obj = {
-												name: "BW",
-												adr: data[i].adr,
-												value: data[i].value.split(",")
-											}
-											getdata.push(obj);
-										}
+
 										if (data[i].adr == 4) {
 											let obj = {
 												name: "UL_ATT",
@@ -469,6 +455,14 @@
 										if (data[i].adr == 5) {
 											let obj = {
 												name: "DL_ATT",
+												adr: data[i].adr,
+												value: data[i].value.split(",")
+											}
+											getdata.push(obj);
+										}
+										if (data[i].adr == 3) {
+											let obj = {
+												name: "BW",
 												adr: data[i].adr,
 												value: data[i].value.split(",")
 											}
@@ -558,15 +552,15 @@
 								obj.adr = Helios.Rocdata[j].adr;
 								/* //设置第几条 */
 								RocdataValue[index] = (Helios.Rocdata[j].value[index]);
-								obj.value = RocdataValue.join(); //
+								//obj.value = RocdataValue.join();
+								obj.value = util.divide(RocdataValue, 1),
 								data.push(obj)
-
 								/* //console.log(Helios.Rocdata[j].value[index]); */
 							}
 							if (Helios.Rocdata[j].adr == 2) {
 								obj.adr = Helios.Rocdata[j].adr;
 								RocdataValue[index] = (Helios.Rocdata[j].value[index]);
-								obj.value = RocdataValue.join();
+								obj.value = util.divide(RocdataValue, 1),
 								data.push(obj)
 							}
 
@@ -651,40 +645,49 @@
 						}
 						data.push(end);
 
-						/* 	var stringobjdata = [];
-							for (var i = 0; i < data.length; i++) {	
-								var stringObj = {
-									"adr": "",
-									"value": ""
-								}
-								stringObj.adr = data[i].adr;
-								stringObj.value = data[i].value.join();
-								stringobjdata.push(stringObj);
-							}
-						console.log(stringobjdata); */
-
 						var obj = {
 							"data": JSON.stringify(data),
 							"action": "SET"
 						}
+						//adr =1 ,adr=2
+						var obj2 = {
+							adr1val: "",
+							adr2val: "",
+						}
 
-						setTimeout(function() {
-							util.postattrajax(obj, function(data) {
-								if (1 != data) {
-									toast.$message({
-										message: ' Error' + data,
-										type: 'error',
-										showClose: true,
-										offset: 40
-									});
+						//****重点****
+						data.find(function(v, i) {
+							if (1 == v.adr || 2 == v.adr) {
+								if (1 == v.adr) {
+									obj2.adr1val = v.value
 								} else {
-									setTimeout(() => {
-										Helios.$data.canSave = true;
-										util.success('success');
-									}, 100);
+									obj2.adr2val = v.value
 								}
-							});
-						}, 100);
+							}
+
+						});
+
+						if (false == obj2.adr1val || false == obj2.adr2val) {
+							return false;
+						} else {
+							setTimeout(function() {
+								util.postattrajax(obj, function(data) {
+									if (1 != data) {
+										toast.$message({
+											message: ' Error' + data,
+											type: 'error',
+											showClose: true,
+											offset: 40
+										});
+									} else {
+										setTimeout(() => {
+											Helios.$data.canSave = true;
+											util.success('success');
+										}, 100);
+									}
+								});
+							}, 100);
+						}
 					},
 
 					/* 	//真假转换 */
@@ -739,6 +742,7 @@
 						}
 						return make.join();
 					},
+
 				},
 				filters: {
 					bandname: function(value) {

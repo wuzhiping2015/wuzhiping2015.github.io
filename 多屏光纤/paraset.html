@@ -626,13 +626,13 @@
 							if (helios.isshow.Alarmbox == false) {
 								helios.isshow.showBox = true;
 							}
-						}, 1000);
+						}, 150);
 					} else {
 						setTimeout(function() {
 							helios.isshow.Opticalbox = true;
 							helios.isshow.Alarmbox = true;
 							helios.isshow.showBox = false;
-						}, 1500);
+						}, 100);
 					}
 
 
@@ -805,7 +805,6 @@
 					},
 					setSync(c) {
 						util.SetHeliosDevMsg();
-
 						if (c == 1) {
 							let adr = [17, 18, 19, 20, 37];
 							helios.SetSyncdata_one_four(adr, helios.Syncdata1, c)
@@ -829,7 +828,6 @@
 						var data1 = [];
 						if (data.length > 0) {
 							if (tiptxt) {
-
 
 								util.success('success sync:' + c);
 
@@ -876,7 +874,6 @@
 									/* if (heliosUser[0] == $session || heliosUser[1] == $session || heliosUser[2] == $session) { */
 									data1.push(obj);
 									/* } */
-
 								}
 							}
 
@@ -948,12 +945,9 @@
 							"data": JSON.stringify(data),
 							"action": "SET"
 						}
-
-
 						setTimeout(function() {
 							util.postattrajax(obj1, function(data) {
 								if (1 != data) {
-
 									util.error('Error' + data);
 
 								} else {

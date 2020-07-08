@@ -127,15 +127,15 @@
 									<td colspan="2" style="height:45px"> </td>
 								</tr>
 								<tr>
-									<td colspan="2"> <span class="icon iconfont icon-kongzhitai"></span> <b>
-											<Type>Band</Type>
-										</b></td>
+									<td colspan="2"> 
+									<span class="icon iconfont icon-kongzhitai"></span>
+									 <b>Band</b></td>
 								</tr>
 								<tr>
-									<td colspan="2"><strong>UL I/P (DSP)</strong></td>
+									<td colspan="2"><strong>UL I/P -DSP </strong><span class="text-green "> (dBm)</span></td>
+								</tr>
 								<tr>
-								<tr>
-									<td colspan="2"><strong>DL O/P (DSP)</strong></td>
+									<td colspan="2"><strong>DL O/P -DSP </strong><span class="text-green "> (dBm)</span></td>
 								</tr>
 
 								<tr>
@@ -146,7 +146,7 @@
 								</tr>
 
 								<tr>
-									<td colspan="2"><strong>Digital Board Feedback Power</strong></td>
+									<td colspan="2"><strong>Digital Board Feedback Power</strong><span class="text-green "> (dBm)</span></td>
 
 								<tr>
 									<td colspan="2"><b>DL PA Status</b></td>
@@ -155,26 +155,26 @@
 
 								<tr>
 									<td rowspan="5"><b>RF</b></td>
-									<td>UL Freq</td>
+									<td>UL Freq <span class="text-green ">(MHz)</span></td>
 								</tr>
 								<tr>
-									<td>DL Freq</td>
+									<td>DL Freq <span class="text-green ">(MHz)</span></td>
 								</tr>
 								<tr>
-									<td>UL ATT</td>
+									<td>UL ATT <span class="text-green ">(dB)</span></td>
 								</tr>
 								<tr>
-									<td>DL ATT</td>
+									<td>DL ATT <span class="text-green ">(dB)</span></td>
 								</tr>
 								<tr>
-									<td>Bandwidth</td>
+									<td>Bandwidth <span class="text-green ">(MHz)</span></td>
 								</tr>
 								<tr>
 									<td rowspan="4"><b>DL</b></td>
-									<td>DL O/P Underpower Threshold </td>
+									<td>DL O/P Underpower Threshold <span class="text-green ">(dBm)</span></td>
 								</tr>
 								<tr>
-									<td>DL O/P Overpower Threshold</td>
+									<td>DL O/P Overpower Threshold <span class="text-green ">(dBm)</span></td>
 								</tr>
 								<tr>
 									<td>DL O/P Underpower Alarm</td>
@@ -233,10 +233,9 @@
 									</td>
 									<td v-if="vv.adr==8" v-html="vv.value[i]">
 									</td>
-
 									<td v-if="vv.adr==189" style="padding:0 10px;">
 										<!-- v-html="$options.filters.isno_of(vv.value[i])" -->
-										<i class="icon iconfont icon-on-off text-green rescss" v-if="Number(vv.value[i])==0"></i>
+										<i class="icon iconfont icon-on-off text-green rescss" v-if="Number(vv.value[i])==1"></i>
 										<i class=" icon iconfont icon-off rescss" v-else></i>
 									</td>
 
@@ -419,9 +418,7 @@
 		<script type="text/javascript" src="assets/js/index.js"></script>
 		<script type="text/javascript" src="assets/js/comment.js"></script>
 
-		<style scoped>
-
-		</style>
+		
 		<script type="text/javascript">
 			let data = {
 				value: "1",
@@ -439,7 +436,6 @@
 
 			}
 
-
 			var Helios = new Vue({
 				el: "#content",
 				data: data,
@@ -449,9 +445,7 @@
 				mounted() {
 					$("body").resize();
 				},
-				updated() {
-
-				},
+			
 				methods: {
 					Getroc_Data(index) {
 						util.SetHeliosDevMsg();
@@ -459,14 +453,11 @@
 							this.$data.Read = false;
 						}
 						/* var obj1 = [183, 184, 185, 186, 8, 189, 1, 2, 3, 4, 5, 202, 203, 198, 199, 187, 188 ,191, 193]; */
-
 						var obj1 = [183, 184, 185, 186, 8, 189, 1, 2, 4, 5, 3, 202, 203, 198, 199, 187, 188, 191, 193, 195];
-
 						/* if (this.$data.heliosUser1) {
 							obj1.splice(11, 0, 202, 203, 198, 199);
 							obj1.splice(17, 0, 191, 193, 195);
 						} */
-
 						/* obj1.push(1, 2, 3, 4, 5); */
 						/* RF */
 						/* 	obj1.push(202, 203, 198, 199); */
@@ -542,7 +533,7 @@
 											let obj = {
 												name: "UL FREQ",
 												adr: data[i].adr,
-												value: data[i].value.split(",")
+												value: util.divide(data[i].value.split(","), 0),
 											}
 											getdata.push(obj);
 										}
@@ -550,7 +541,7 @@
 											let obj = {
 												name: "DL FREQ",
 												adr: data[i].adr,
-												value: data[i].value.split(",")
+												value: util.divide(data[i].value.split(","), 0),
 											}
 											getdata.push(obj);
 										}
@@ -683,7 +674,8 @@
 								obj.adr = Helios.Rocdata[j].adr;
 								//设置第几条
 								RocdataValue[index] = (Helios.Rocdata[j].value[index]);
-								obj.value = RocdataValue.join(); //
+								//obj.value = RocdataValue.join();
+								obj.value = util.divide(RocdataValue, 1),
 								data.push(obj)
 							}
 							if (Helios.Rocdata[j].adr == 2) {
@@ -913,7 +905,7 @@
 						}
 					},
 					isno_of: function(v) {
-						if (0 == Number(v)) {
+						if (1 == Number(v)) {
 							return ` <i class="icon iconfont icon-on-off text-green rescss></i>`;
 						} else {
 							return `<i class="icon iconfont icon-off text-red rescss"></i>`;

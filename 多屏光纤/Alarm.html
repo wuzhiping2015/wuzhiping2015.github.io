@@ -298,12 +298,7 @@
 								helios.$data.Read = false;
 								helios.AlarmData.length = 0;
 								helios.AlarmData1.length = 0;
-								toast.$message({
-									message: "success",
-									type: 'success',
-									showClose: true,
-									offset: 10
-								});
+								util.success('success');
 								/* helios.AlarmData = JSON.parse(sessionStorage.getItem("AlarmData")); 
 								helios.AlarmData1 = JSON.parse(sessionStorage.getItem("AlarmData1"));*/
 
@@ -532,12 +527,7 @@
 										offset: 40
 									});
 								} else {
-									toast.$message({
-										message: "success",
-										type: 'success',
-										showClose: true,
-										offset: 40
-									});
+									util.success('success');
 									setTimeout(() => {
 										helios.$data.Set = true;
 									}, 1200);
@@ -591,20 +581,13 @@
 										offset: 40
 									});
 								} else {
-									toast.$message({
-										message: "success",
-										type: 'success',
-										showClose: true,
-										offset: 10
-									});
+								   util.success('success');
 									setTimeout(() => {
 										helios.$data.Set = true;
 									}, 900);
 								}
 							});
-
 						}
-
 					},
 					setAlarm() {
 						helios.$data.Set = false;
@@ -637,12 +620,11 @@
 							}
 						});
 						setTimeout(function() {
-							helios.$data.Set = true;
-
+							helios.$data.Set = true; 
 							helios.AlarmData1.forEach(function(v, i, attr) {
 								helios.resnumber(attr[i], 235);
 							})
-						}, 800);
+						}, 100);
 					},
 
 
@@ -817,12 +799,7 @@
 							} else {
 								setTimeout(() => {
 									helios.$data.Set = true;
-									toast.$message({
-										message: "success",
-										type: 'success',
-										showClose: true,
-										offset: 40
-									});
+									util.success('success');
 								}, 1200);
 							}
 						});

@@ -69,14 +69,14 @@
 			</transition>
 		</div>
 
-		<script type="text/javascript" src="assets/js/jquery.js"></script>
+		<script type="text/javascript" src="assets/js/jquery.js?v=12222"></script>
 		<script type="text/javascript" src="assets/js/jtopo-0.4.8-min.js?v=12222"></script>
 		<script type="text/javascript" src="assets/js/toolbar.js?v=12222"></script>
 
-		<script type="text/javascript" src="assets/js/FileSaver.min.js"></script>
-		<script type="text/javascript" src="assets/js/vue.js"></script>
-		<script type="text/javascript" src="assets/js/index.js"></script>
-		<script type="text/javascript" src="assets/js/comment.js"></script>
+		<script type="text/javascript" src="assets/js/FileSaver.min.js?v=12222"></script>
+		<script type="text/javascript" src="assets/js/vue.js?v=12222"></script>
+		<script type="text/javascript" src="assets/js/index.js?v=12222"></script>
+		<script type="text/javascript" src="assets/js/comment.js?v=12222"></script>
 
 
 		<script>
@@ -99,15 +99,12 @@
 			let data = {
 				siteInfo: [],
 				offset: 0,
-
 				station: '',
 				StationChoose: [],
 				canMove: false,
 				heliosTrue: [],
-
 				Read: true,
-
-
+				verisn: Math.ceil(Math.random() * 1010),
 			};
 
 			window.onresize = function() {
@@ -125,7 +122,7 @@
 				stage = new JTopo.Stage(canvas);
 				scene = new JTopo.Scene(stage);
 				scene.mode = "select";
-				scene.background = 'background.jpg';
+				scene.background = 'background.jpg?verisn=' + Math.ceil(Math.random() * 1010);
 				/* scene.background = 'cgi-bin/background.jpg'; */
 			}
 
@@ -216,7 +213,7 @@
 				//页面初始化
 				/* 	util.getmods(0, function(data) { */
 				var datalist = [{
-					"equipid": "12345678",
+					"equipid": "",
 					"siteno": 0,
 					"device_id": "0",
 					"type": "AU",
@@ -235,23 +232,27 @@
 
 				$.ajax({
 					type: "GET",
-					url: "topology.json",
+					url: "topology.json?verisn=" + Math.ceil(Math.random() * 1010),
 					dataType: "json",
 					success: function(data) {
-							//初始节点
-						if (0 < Helioscoordinates.SETdisp) {	
+
+						let HeliosDev = JSON.parse(localStorage.getItem("HeliosDev"));
+						console.log(HeliosDev);
+
+						datalist[0].equipid = data.sites[0].site_no;
+						/* //初始节点 */
+						if (0 < Helioscoordinates.SETdisp) {
 							datalist[0].x = data.sites[0].x;
 							datalist[0].y = data.sites[0].y;
 						} else {
 							datalist[0].x = Helioscoordinates.width;
 							datalist[0].y = Helioscoordinates.height;
 						}
-
-						//第一个节点
+						/* //第一个节点 */
 						var deviData = (data.sites[0].device);
 
 						for (var i = 0; i < deviData.length; i++) {
-							Helioscoordinates.displacement = (i <= 0) ? ii = 1 : ii = i + 1;
+							Helioscoordinates.displacement = (i <= 0) ? ii = 1 : ii = i + 1; //第几位
 
 							let SiteNobj = {
 								/* "equipid": "2",
@@ -265,7 +266,7 @@
 								"alarm": "",
 								*/
 							}
-	//初始节点
+							//初始节点
 							if (0 < Helioscoordinates.SETdisp) {
 
 								SiteNobj = {
@@ -291,19 +292,21 @@
 							}
 							datalist.push(SiteNobj);
 						}
-						
-						//告警
+
+						/* //告警 */
 						let Heliosalarm;
-						$.getJSON('topology_alarm.json', function(Data) {
-							datalist[0].alarm = Data.sites[0].alarm;
-							Heliosalarm = (Data.sites[0].device);
-							Heliosalarm.forEach(function(value, i) {
-								datalist.slice(1)[i].alarm = value.alarm;
-								/* if (value.device_id == datalist.slice(1)[i].device_id) {
-									datalist.slice(1)[i].alarm = value.alarm; //告警取第一个
-								} */
+						let Herandom = Math.ceil(Math.random() * 1010);
+						$.getJSON('topology_alarm.json?verisn=' + Herandom + ')',
+							function(Data) {
+								datalist[0].alarm = Data.sites[0].alarm;
+								Heliosalarm = (Data.sites[0].device);
+								Heliosalarm.forEach(function(value, i) {
+									datalist.slice(1)[i].alarm = value.alarm;
+									/* if (value.device_id == datalist.slice(1)[i].device_id) {
+										datalist.slice(1)[i].alarm = value.alarm; //告警取第一个
+									} */
+								});
 							});
-						});
 						Helios.heliosTrue = datalist;
 						scene.clear();
 
@@ -391,7 +394,6 @@
 			function Site_Datefit(m_sitenode, item) {
 				/* 	if (item.type == "AU") {
 						//m_sitenode.setImage('assets/images/au.jpg', true);
-					
 					} else {
 						//	m_sitenode.setImage('assets/images/ru.jpg', true);
 						m_sitenode.setSize(30, 30);
@@ -406,15 +408,9 @@
 				}, 500);
 
 
-
-
 				m_sitenode.x = parseInt(item.x / 1000 * CanvasWin_width);
 				m_sitenode.y = parseInt(item.y / 1000 * CanvasWin_height);
-
 				m_sitenode.setLocation(m_sitenode.x, m_sitenode.y);
-
-
-
 				m_sitenode.equipid = item.equipid;
 				m_sitenode.id = item.id;
 				m_sitenode.offline = item.offline;
@@ -424,9 +420,6 @@
 				m_sitenode.route = item.siteno;
 				m_sitenode.device_id = item.device_id;
 				m_sitenode.type = item.type;
-
-
-
 
 				m_sitenode.addEventListener("dbclick", function(event, i) {
 					function hex2int(hex) {
@@ -467,12 +460,7 @@
 					}
 					util.postattrajax(obj, function(data) {
 						if (1 != data) {
-							toast.$message({
-								message: ' Error:' + data.message,
-								type: 'error',
-								showClose: true,
-								offset: 80
-							});
+							util.error('Error' + data.message);
 						} else {
 							setTimeout(function() {
 								window.location.href = "Status.html";
@@ -507,13 +495,8 @@
 					Canvas_Init();
 					GetStation(this);
 				},
-				updated() {
-					/* 	console.log("==更新成功==");
-						console.log(this.$data); */
-				},
 				//事件
 				methods: {
-
 					//保存坐标
 					SetCoordinates: function() {
 						/* 	console.log(vm.siteInfo); */
@@ -526,12 +509,14 @@
 								obj = {};
 								obj.route = SiteNode[i].route;
 								obj.device_id = SiteNode[i].device_id;
+								obj.equipid = SiteNode[i].equipid;
 								obj.type = SiteNode[i].type;
 								obj.x = parseInt(SiteNode[i].x * 1000 / CanvasWin_width).toString();
 								obj.y = parseInt(SiteNode[i].y * 1000 / CanvasWin_height).toString();
 								params.push(obj);
 							}
 						}
+
 						let sites = [{
 							"site_no": "12345678",
 							"x": "0",
@@ -540,8 +525,9 @@
 						}];
 
 						for (var i = 0; i < params.length; i++) {
+
 							if (i == 0) {
-								sites[0].site_no = "12345678";
+								sites[0].site_no = params[i].equipid;
 								sites[0].x = params[i].x;
 								sites[0].y = params[i].y;
 							} else {
@@ -554,10 +540,10 @@
 								sites[0].device.push(obj);
 							}
 						}
+
 						var heliosThre = {
 							"sites": sites
 						}
-						console.log(heliosThre);
 						$.ajax({
 							url: "cgi-bin/doaction.cgi",
 							data: {
@@ -566,17 +552,10 @@
 							},
 							type: "post",
 							dataType: "json",
-							success: function(data, status) {
-
-							},
+							success: function(data, status) {},
 							error: function(req, status, err) {
 								localStorage.setItem("SETdisp", 1);
-								toast.$message({
-									message: "success",
-									type: 'success',
-									showClose: true,
-									offset: 10
-								});
+								util.success('success');
 								setTimeout(function() {
 									window.location.href = "Index.html";
 									Helios.$data.Read = true;
@@ -645,6 +624,7 @@
 										message: '',
 										type: 'success'
 									});
+
 									setTimeout(function() {
 										window.location.href = "Index.html";
 									}, 1000);

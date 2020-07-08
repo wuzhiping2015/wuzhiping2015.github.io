@@ -59,7 +59,7 @@
 </style>
 
 	<body>
-		<!-- hold-transition skin-blue-light sidebar-mini sidebar-collapse -->
+
 		<div class="wrapper" id="content" style="background:#f1f4f6; margin-top: 10px;">
 
 			<div class="col-md-12" style="padding-left: 0px;">
@@ -99,11 +99,7 @@
 										</el-form-item>
 
 									</div>
-									<!-- <div class="col-md-12" v-for="(v,i) in  Opticaldata" v-if="v.adr==78">
-										<el-form-item :label="v.name">
-											{{v.value}}
-										</el-form-item>
-									</div> -->
+
 								</el-form>
 							</div>
 						</div>
@@ -189,7 +185,7 @@
 				el: "#content",
 				data: data,
 				beforeMount() {
-					/* if (this.heliosUser1) { */
+
 					this.getAlarm();
 					this.getOptical();
 
@@ -213,13 +209,13 @@
 							if (helios.isshow.Alarmbox == false && helios.isshow.Opticalbox == false) {
 								helios.isshow.showBox = true;
 							}
-						}, 1000);
+						}, 150);
 					} else {
 						setTimeout(function() {
 							helios.isshow.Opticalbox = true;
 							helios.isshow.Alarmbox = true;
 							helios.isshow.showBox = false;
-						}, 1500);
+						}, 100);
 					}
 				},
 
@@ -260,7 +256,7 @@
 									util.error("Error");
 								}
 							})
-						}, 500);
+						}, 100);
 					},
 
 					setOptical() {
@@ -371,7 +367,7 @@
 								}
 							})
 
-						}, 500);
+						}, 100);
 
 					},
 
