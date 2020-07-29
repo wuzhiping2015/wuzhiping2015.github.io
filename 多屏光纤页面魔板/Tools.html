@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>分析 </title>
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/global.css?2019827" />
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css?2019827" />
+	<!-- Theme style -->
+	<link rel="stylesheet" href="assets/css/AdminLTE.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/skins/skin-black.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/index.css?2019827">
+</head>
+<style>
+	html,
+	body {
+		background: #000d4a url(assets/images/bg.jpg) center top;
+		background-size: cover;
+		color: #666;
+		padding-bottom: 30px;
+		font-size: .1rem;
+	}
+
+	.clear {
+		overflow: auto;
+		zoom: 1;
+		background: #fff;
+	}
+
+	.box-header.with-border {
+		padding-bottom: 14px;
+	}
+
+	.el-form-item__content {
+		margin-bottom: 8px;
+	}
+
+	#MainContext>ul>li {
+		width: 30%;
+		float: left;
+		text-align: center;
+
+	}
+
+	#MainContext>ul>li:nth-child(2) {
+		width: 40%;
+	}
+
+	.map {
+		position: relative;
+		height: 305px;
+		z-index: 9;
+		text-align: center;
+		margin: 0px auto;
+		width: 300px;
+		margin-top: 280px;
+	}
+
+	.map1,
+	.map2,
+	.map3 {
+		position: absolute;
+	}
+
+	.map1 {
+		width: 338px;
+		z-index: 2;
+		top: -30px;
+		left: -32px;
+		animation: myfirst2 15s infinite linear;
+	}
+
+	.map2 {
+		width: 298px;
+		top: -14px;
+		left: -10px;
+		z-index: 3;
+		opacity: 0.2;
+		animation: myfirst 10s infinite linear;
+	}
+
+	.map3 {
+		width: 273px;
+		top: 0px;
+		z-index: 1;
+	}
+
+	img {
+		border: none;
+		max-width: 100%;
+	}
+
+	@keyframes myfirst2 {
+		from {
+			transform: rotate(0deg);
+		}
+
+		to {
+			transform: rotate(359deg);
+		}
+	}
+
+	@keyframes myfirst {
+		from {
+			transform: rotate(0deg);
+		}
+
+		to {
+			transform: rotate(-359deg);
+		}
+	}
+
+	#MainContext {
+
+		height: 100vh;
+	}
+</style>
+
+<body class="skin-black sidebar-open sidebar-mini">
+	<div class="wrapper" style="background: none;">
+		<!-- 页头 -->
+		<div id="comp-header" class="main-header" style="position: relative; z-index: 99;">
+			<el-main-header></el-main-header>
+		</div>
+		<!-- 页头end -->
+
+
+		<!-- 内容区域 -->
+		<div id="MainContext">
+			<h5 style="    text-align: center;
+    color: rgb(255, 255, 255);
+    position: relative;
+    top: 220px;
+    font-size: 50px;
+    z-index: 99;">分析 开发中...</h5>
+	     			<ul class="clearfix">
+						<li>
+							<h1></h1>
+						</li>
+						<li>
+							<div class="map">
+								<div class="map1"><img src="assets/images/lbx.png"></div>
+								<div class="map2"><img src="assets/images/jt.png"></div>
+								<div class="map3"><img src="assets/images/map.png"></div>
+								<div class="map4" id="map_1"></div>
+							</div>
+						</li>
+						<li>3333</li>
+					</ul>
+		</div>
+	</div>
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/vue.js"></script>
+	<script type="text/javascript" src="assets/js/index.js"></script>
+	<script type="text/javascript" src="assets/js/comment.js"></script>
+	<script type="text/javascript" src="assets/js/adminlte.js"></script>
+
+
+	<script>
+		let data = {
+			equipment: sessionStorage.getItem("equipment"),
+			url: sessionStorage.getItem("url"),
+			form: {
+				name: true,
+				name1: false,
+				tag: 111,
+			}
+		};
+		var Helios = new Vue({
+			el: "#MainContext",
+			data: data,
+
+			beforeMount() {
+				/* console.log("挂载前：");
+				console.log(this.$data); */
+			},
+			mounted() {
+				this.$nextTick(function () {
+					console.log(1);
+				});
+				/* console.log("时时监控数据变化,并随之更新");*/
+				$("body").resize();
+			},
+
+			updated() {
+
+
+			},
+			//事件
+			methods: {
+				onSubmit() {
+					util.success("数据请求成功");
+				}
+			},
+			filters: {
+
+			},
+
+
+
+		});
+	</script>
+
+
+</body>
+
+
+</html>
