@@ -79,10 +79,10 @@
 		}	
 		div.col-xs-2 {
 			padding: 0px !important;
-			width:18% !important;
+			width:25% !important;
 		}
 		div.col-xs-2.hover{
-			width:13.5% !important;
+			width:12.5% !important;
 		}
 		.dataTable td{
 			height: 45px;
@@ -127,31 +127,36 @@
 									<td colspan="2" style="height:45px"> </td>
 								</tr>
 								<tr>
-									<td colspan="2"> 
-									<span class="icon iconfont icon-kongzhitai"></span>
-									 <b>Band</b></td>
+									<td colspan="2">
+										<span class="icon iconfont icon-kongzhitai"></span>
+										<b>Band</b></td>
 								</tr>
 								<tr>
-									<td colspan="2"><strong>UL I/P -DSP </strong><span class="text-green "> (dBm)</span></td>
+									<td colspan="2"><b>UL I/P -DSP </b><span class="text-green "> (dBm)</span></td>
 								</tr>
 								<tr>
-									<td colspan="2"><strong>DL O/P -DSP </strong><span class="text-green "> (dBm)</span></td>
-								</tr>
-
-								<tr>
-									<td colspan="2"><b>DL PA O/P</b></td>
-								</tr>
-								<tr>
-									<td colspan="2"> <b>DL PA Temp</b></td>
+									<td colspan="2"><b>DL O/P -DSP </b><span class="text-green "> (dBm)</span></td>
 								</tr>
 
 								<tr>
-									<td colspan="2"><strong>Digital Board Feedback Power</strong><span class="text-green "> (dBm)</span></td>
+									<td colspan="2"><b>DL PA O/P</b> <span class="text-green "> (dBm)</span></td>
+								</tr>
+								<tr>
+									<td colspan="2"> <b>DL PA Temp</b> <span class="text-green "> (°C)</span></td>
+								</tr>
 
+								<tr>
+									<td colspan="2"><b>Digital Board Feedback Power</b><span class="text-green "> (dBm)</span></td>
+
+								<tr>
+									<td colspan="2"><b>TD-LTE UL and DL Ratio</b></td>
+								</tr>
+								<tr>
+									<td colspan="2"><b>TDD Special Time Slot Ratio</b></td>
+								</tr>
 								<tr>
 									<td colspan="2"><b>DL PA Status</b></td>
 								</tr>
-
 
 								<tr>
 									<td rowspan="5"><b>RF</b></td>
@@ -220,7 +225,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td>{{i | bandname}}</td>
+									<td v-html="$options.filters.bandname(i)"></td>
 								</tr>
 								<tr v-for="(vv,jj) in Rocdata">
 									<td v-if="vv.adr==183" v-html="vv.value[i]">
@@ -233,11 +238,26 @@
 									</td>
 									<td v-if="vv.adr==8" v-html="vv.value[i]">
 									</td>
-									<td v-if="vv.adr==189" style="padding:0 10px;">
-										<!-- v-html="$options.filters.isno_of(vv.value[i])" -->
-										<i class="icon iconfont icon-on-off text-green rescss" v-if="Number(vv.value[i])==1"></i>
-										<i class=" icon iconfont icon-off rescss" v-else></i>
+									<!-- <td v-if="vv.adr==288" v-html="vv.value[i] | ">
+										 
+									</td> -->
+									<td v-if="vv.adr==288" v-html="$options.filters.lengthfour(vv.value[i],i)">
 									</td>
+
+									<td v-if="vv.adr==289" v-html="$options.filters.lengthfour(vv.value[i],i)">
+									</td>
+									<!-- 
+									<td v-if="vv.adr==289">
+										<spsn v-if="4>i">{{vv.value[i]}}</spsn>
+										<span v-else>--</span>
+									</td> -->
+
+									<td v-if="vv.adr==189" style="padding:0 10px;" v-html="$options.filters.isno_of(vv.value[i])">
+										<!-- v-html="$options.filters.isno_of(vv.value[i])" -->
+										<!-- <i class="icon iconfont icon-on-off text-green rescss" v-if="Number(vv.value[i])==1"></i>
+										<i class=" icon iconfont icon-off rescss" v-else></i> -->
+									</td>
+
 
 									<td v-if="vv.adr==1">
 										<el-input v-model="vv.value[i]" size="mini"></el-input>
@@ -392,17 +412,25 @@
 										<el-checkbox-group v-model="vv.enbale[i]" size="small" v-if="heliosUser1 && vv.Agentenable[i]">
 											<el-checkbox label="Enable" border disabled="disabled" readonly="readonly"></el-checkbox>
 										</el-checkbox-group>
-										<el-checkbox-group v-model="vv.enbale[i]" size="small" v-else-if="vv.Agentenable[i] && !heliosUser1">
+									<el-checkbox-group v-model="vv.enbale[i]" size="small" v-else-if="vv.Agentenable[i] && !heliosUser1">
 											<el-checkbox label="Enable" border></el-checkbox>
 										</el-checkbox-group>
 										<div role="group" aria-label="checkbox-group" class="el-checkbox-group" v-else>
 											<label role="checkbox" class="el-checkbox el-checkbox--small is-bordered" style="border: none; cursor: auto;">--</label>
 										</div>
 									</td>
-
-
 								</tr>
 
+								<tr>
+									<td style="height:45px" align="center">
+										<div class="viswCard">
+											<el-button type="success" :disabled="!canSave" size="mini" @click="Setroc_Data(i)">Set
+											</el-button> &nbsp;&nbsp;
+											<el-button type="primary" :disabled="!Read" size="mini" @click="Getroc_Data(i)">Read
+											</el-button>
+										</div>
+									</td>
+								</tr>
 							</tbody>
 						</table>
 					</div>
@@ -418,7 +446,7 @@
 		<script type="text/javascript" src="assets/js/index.js"></script>
 		<script type="text/javascript" src="assets/js/comment.js"></script>
 
-		
+
 		<script type="text/javascript">
 			let data = {
 				value: "1",
@@ -445,7 +473,7 @@
 				mounted() {
 					$("body").resize();
 				},
-			
+
 				methods: {
 					Getroc_Data(index) {
 						util.SetHeliosDevMsg();
@@ -453,7 +481,7 @@
 							this.$data.Read = false;
 						}
 						/* var obj1 = [183, 184, 185, 186, 8, 189, 1, 2, 3, 4, 5, 202, 203, 198, 199, 187, 188 ,191, 193]; */
-						var obj1 = [183, 184, 185, 186, 8, 189, 1, 2, 4, 5, 3, 202, 203, 198, 199, 187, 188, 191, 193, 195];
+						var obj1 = [183, 184, 185, 186, 8, 288, 289, 189, 1, 2, 4, 5, 3, 202, 203, 198, 199, 187, 188, 191, 193, 195];
 						/* if (this.$data.heliosUser1) {
 							obj1.splice(11, 0, 202, 203, 198, 199);
 							obj1.splice(17, 0, 191, 193, 195);
@@ -521,6 +549,24 @@
 											}
 											getdata.push(obj);
 										}
+
+										if (data[i].adr == 288) {
+											let obj = {
+												name: "TD-LTE UL and DL Ratio",
+												adr: data[i].adr,
+												value: data[i].value.split(",")
+											}
+											getdata.push(obj);
+										}
+
+										if (data[i].adr == 289) {
+											let obj = {
+												name: "TDD Special Time Slot Ratio",
+												adr: data[i].adr,
+												value: data[i].value.split(",")
+											}
+											getdata.push(obj);
+										}
 										if (data[i].adr == 189) {
 											let obj = {
 												name: "DL PA STATUS",
@@ -529,6 +575,7 @@
 											}
 											getdata.push(obj);
 										}
+
 										if (data[i].adr == 1) {
 											let obj = {
 												name: "UL FREQ",
@@ -586,11 +633,11 @@
 											getdata.push(obj);
 										}
 										if (data[i].adr == 198) {
-											let obj = Helios.ResTruefalse("LP ALARM", data[i].adr, data[i].value.split(","));
+											let obj = util.ResTruefalseArray("LP ALARM", data[i].adr, data[i].value.split(","));
 											getdata.push(obj);
 										}
 										if (data[i].adr == 199) {
-											let obj = Helios.ResTruefalse("OP ALARM", data[i].adr, data[i].value.split(","));
+											let obj = util.ResTruefalseArray("OP ALARM", data[i].adr, data[i].value.split(","));
 											getdata.push(obj);
 										}
 										if (data[i].adr == 187) {
@@ -602,7 +649,7 @@
 											getdata.push(obj);
 										}
 										if (data[i].adr == 188) {
-											let obj = Helios.ResTF("DL_PA_SW", data[i].adr, data[i].value.split(","));
+											let obj = util.HeliosEnable("DL PA Enable", data[i].adr, data[i].value.split(","));
 											getdata.push(obj);
 										}
 										/* if (data[i].adr == 190) {
@@ -614,15 +661,15 @@
 											getdata.push(obj);
 										} */
 										if (data[i].adr == 191) {
-											let obj = Helios.ResTruefalse("PA FAULT ALARM", data[i].adr, data[i].value.split(","));
+											let obj = util.ResTruefalseArray("PA FAULT ALARM", data[i].adr, data[i].value.split(","));
 											getdata.push(obj);
 										}
 										if (data[i].adr == 193) {
-											let obj = Helios.ResTruefalse("PA VSWR ALARM", data[i].adr, data[i].value.split(","));
+											let obj = util.ResTruefalseArray("PA VSWR ALARM", data[i].adr, data[i].value.split(","));
 											getdata.push(obj);
 										}
 										if (data[i].adr == 195) {
-											let obj = Helios.ResTruefalse("PA Over Temp Alarm", data[i].adr, data[i].value.split(","));
+											let obj = util.ResTruefalseArray("PA Over Temp Alarm", data[i].adr, data[i].value.split(","));
 											getdata.push(obj);
 										}
 									}
@@ -676,13 +723,13 @@
 								RocdataValue[index] = (Helios.Rocdata[j].value[index]);
 								//obj.value = RocdataValue.join();
 								obj.value = util.divide(RocdataValue, 1),
-								data.push(obj)
+									data.push(obj)
 							}
 							if (Helios.Rocdata[j].adr == 2) {
 								obj.adr = Helios.Rocdata[j].adr;
 								RocdataValue[index] = (Helios.Rocdata[j].value[index]);
-								obj.value = RocdataValue.join();
-								data.push(obj)
+								obj.value = util.divide(RocdataValue, 1),
+									data.push(obj)
 							}
 
 							if (Helios.Rocdata[j].adr == 3) {
@@ -721,14 +768,14 @@
 								//  一个重点****
 								agent[index] = (Helios.Rocdata[j].agent[index]);
 								enbale[index] = (Helios.Rocdata[j].enbale[index]);
-								obj.value = Helios.resnumber(agent, enbale);
+								obj.value = util.resnumberArray(agent, enbale);
 								data.push(obj);
 							}
 							if (Helios.Rocdata[j].adr == 199) {
 								obj.adr = Helios.Rocdata[j].adr;
 								agent[index] = (Helios.Rocdata[j].agent[index]);
 								enbale[index] = (Helios.Rocdata[j].enbale[index]);
-								obj.value = Helios.resnumber(agent, enbale);
+								obj.value = util.resnumberArray(agent, enbale);
 								data.push(obj);
 							}
 							if (Helios.Rocdata[j].adr == 187) {
@@ -740,7 +787,7 @@
 							if (Helios.Rocdata[j].adr == 188) {
 								obj.adr = Helios.Rocdata[j].adr;
 								RocdataValue[index] = Helios.Rocdata[j].value[index];
-								obj.value = Helios.resN(RocdataValue);
+								obj.value = util.HeliosNumberRes(RocdataValue);
 								data.push(obj);
 							}
 							/* 	if (Helios.Rocdata[j].adr == 190) {
@@ -753,21 +800,21 @@
 								obj.adr = Helios.Rocdata[j].adr;
 								agent[index] = (Helios.Rocdata[j].agent[index]);
 								enbale[index] = (Helios.Rocdata[j].enbale[index]);
-								obj.value = Helios.resnumber(agent, enbale);
+								obj.value = util.resnumberArray(agent, enbale);
 								data.push(obj);
 							}
 							if (Helios.Rocdata[j].adr == 193) {
 								obj.adr = Helios.Rocdata[j].adr;
 								agent[index] = (Helios.Rocdata[j].agent[index]);
 								enbale[index] = (Helios.Rocdata[j].enbale[index]);
-								obj.value = Helios.resnumber(agent, enbale);
+								obj.value = util.resnumberArray(agent, enbale);
 								data.push(obj);
 							}
 							if (Helios.Rocdata[j].adr == 195) {
 								obj.adr = Helios.Rocdata[j].adr;
 								agent[index] = (Helios.Rocdata[j].agent[index]);
 								enbale[index] = (Helios.Rocdata[j].enbale[index]);
-								obj.value = Helios.resnumber(agent, enbale);
+								obj.value = util.resnumberArray(agent, enbale);
 								data.push(obj);
 							}
 						}
@@ -797,94 +844,7 @@
 							});
 						}, 100);
 					},
-					//真假转换
-					ResTruefalse(name, adr, value) {
-						let obj = {
-							name: "",
-							adr: "",
-							agent: [],
-							enbale: [],
-							Agentenable: [],
-						}
-						obj.adr = adr;
-						obj.name = name;
 
-						for (var i = 0; i < value.length; i++) {
-							if ("0" == value[i]) {
-								obj.agent.push(false);
-								obj.enbale.push(false);
-								obj.Agentenable.push(false);
-							}
-							if ("1" == value[i]) {
-								obj.agent.push(false);
-								obj.enbale.push(true);
-								obj.Agentenable.push(false);
-							}
-							if ("2" == value[i]) {
-								obj.agent.push(true);
-								obj.enbale.push(false);
-								obj.Agentenable.push(true);
-							}
-							if ("3" == value[i]) {
-								obj.agent.push(true);
-								obj.enbale.push(true);
-								obj.Agentenable.push(true);
-							}
-						}
-						return obj;
-					},
-
-
-					ResTF(name, adr, value) {
-						let obj = {
-							name: "",
-							adr: "",
-							value: [],
-						}
-						obj.adr = adr;
-						obj.name = name;
-
-						for (var i = 0; i < value.length; i++) {
-							if ("0" == value[i]) {
-								obj.value.push(false);
-							}
-							if ("1" == value[i]) {
-								obj.value.push(true);
-							}
-						}
-						return obj;
-					},
-
-
-
-					//真假转换为数字
-					resnumber(agent, enbale) {
-						let make = [];
-						for (var i = 0; i < Helios.Roclength; i++) {
-							if (agent[i] == false && enbale[i] == false) {
-								make.push("0");
-							} else if (agent[i] == false && enbale[i] == true) {
-								make.push("1");
-							} else if (agent[i] == true && enbale[i] == false) {
-								make.push("2");
-							} else if (agent[i] == true && enbale[i] == true) {
-								make.push("3");
-							}
-						}
-						return make.join();
-					},
-
-					resN(value) {
-						let make = [];
-						for (var i = 0; i < Helios.Roclength; i++) {
-							if (value[i] == false) {
-								make.push("0");
-							} else if (value[i] == true) {
-								make.push("1");
-							}
-						}
-						return make.join();
-					},
 				},
 
 				filters: {
@@ -904,12 +864,21 @@
 							return "6th Band"
 						}
 					},
-					isno_of: function(v) {
-						if (1 == Number(v)) {
-							return ` <i class="icon iconfont icon-on-off text-green rescss></i>`;
+					/* isno_of: function(v) {
+						if (1 <= Number(v)) {
+							return `<i class="icon iconfont icon-on-off text-green rescss></i>`
 						} else {
-							return `<i class="icon iconfont icon-off text-red rescss"></i>`;
+							return `<i class="icon iconfont icon-off text-red rescss"></i>`
 						}
+					}, */
+					isno_of: function(v) {
+						return (0 == Number(v)) ?
+							` <i class="icon iconfont icon-off  rescss" ></i>` :
+							`<i class="icon iconfont icon-on-off text-green rescss"></i>`;
+
+					},
+					lengthfour: function(msg, i) {
+						return (4 > i) ? msg : "--";
 					}
 				},
 			});

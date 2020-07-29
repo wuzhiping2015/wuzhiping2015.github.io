@@ -66,7 +66,7 @@
 
 				<div class="row">
 					<!-- Optical START -->
-					<div class="col-md-6" v-show="isshow.Opticalbox">
+					<div class="col-md-6">
 						<div class="box">
 							<div class="box-header with-border">
 								<h3 class="box-title">Optical</h3>
@@ -108,7 +108,7 @@
 
 
 					<!-- Alarm start -->
-					<div class="col-md-6" v-show="isshow.Alarmbox">
+					<div class="col-md-6">
 						<div class="box">
 							<div class="box-header with-border">
 								<h3 class="box-title">Alarm</h3>
@@ -147,13 +147,13 @@
 					</div>
 					<!-- Alarm END -->
 
-					<div class="col-md-12" v-show="isshow.showBox">
+					<!-- 	<div class="col-md-12" >
 						<div class="box">
 							<div class="nullempty"><span class="icon iconfont icon-kongshuju"></span>
 								<h3>Permission not open</h3>
 							</div>
 						</div>
-					</div>
+					</div> -->
 				</div>
 
 			</div>
@@ -209,16 +209,17 @@
 							if (helios.isshow.Alarmbox == false && helios.isshow.Opticalbox == false) {
 								helios.isshow.showBox = true;
 							}
-						}, 150);
+
+						}, 1000);
+
 					} else {
 						setTimeout(function() {
 							helios.isshow.Opticalbox = true;
 							helios.isshow.Alarmbox = true;
 							helios.isshow.showBox = false;
-						}, 100);
+						}, 1500);
 					}
 				},
-
 				methods: {
 					getOptical(c) {
 						util.SetHeliosDevMsg();

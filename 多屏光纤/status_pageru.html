@@ -182,7 +182,7 @@
 				LightPOUT: [],
 				alarmdata: [],
 				rocData: [],
-				heliosUser: heliosUser[0] == $session || heliosUser[1] == $session || heliosUser[2] == $session,
+				
 			};
 			helios = new Vue({
 				el: "#content",
@@ -194,15 +194,12 @@
 
 				beforeMount() {
 					this.Equipment();
-
 					util.SetHeliosDevMsg();
 					setTimeout(function() {
-
 						helios.geLight();
 						helios.getAlarm();
-
 						helios.getBand();
-					}, 500);
+					}, 150);
 
 				},
 				methods: {
@@ -524,7 +521,6 @@
 											helios.Alarm_state(data[i].adr, "Optical Transceiver Failure 2", data[i].value, 225);
 											break;
 
-
 										case 198:
 											helios.Alarm_state(data[i].adr, "DL O/P Underpower Alarm", data[i].value, 200);
 											break;
@@ -542,56 +538,6 @@
 											break;
 									}
 								});
-
-
-								/* 
-									for (var i = 0; i < data.length; i++) {
-										var obj = {
-											adr: "",
-											value: ""
-										}
-										if (214 == data[i].adr) {
-											helios.Alarm_state(data[i].adr, "Power Off Alarm 1", data[i].value, 218);
-										}
-										if (215 == data[i].adr) {
-											helios.Alarm_state(data[i].adr, "Power Failure Alarm 1", data[i].value, 219);
-										}
-										if (216 == data[i].adr) {
-											helios.Alarm_state(data[i].adr, "Over Temperature", data[i].value, 220);
-										}
-										if (217 == data[i].adr) {
-											helios.Alarm_state(data[i].adr, "Door Open Alarm", data[i].value, 221);
-										}
-
-										if (155 == data[i].adr) {
-											helios.Alarm_state(data[i].adr, "Power Off Alarm 2", data[i].value, 157);
-										}
-										if (156 == data[i].adr) {
-											helios.Alarm_state(data[i].adr, "Power Failure Alarm 2", data[i].value, 158);
-										}
-
-										 
-										if (222 == data[i].adr) {
-											helios.Alarm_state(data[i].adr, "Optical Transceiver Failure 1", data[i].value, 224);
-										}
-										if (223 == data[i].adr) {
-											helios.Alarm_state(data[i].adr, "Optical Transceiver Failure 2", data[i].value, 225);
-										}
-
-										if (191 == data[i].adr) {
-											helios.Alarm_state(data[i].adr, "PA Failure Alarm", data[i].value, 192);
-										}
-										if (193 == data[i].adr) {
-											helios.Alarm_state(data[i].adr, "PA VSWR Alarm", data[i].value, 194);
-										}
-
-										if (198 == data[i].adr) {
-											helios.Alarm_state(data[i].adr, "DL O/P Underpower Alarm", data[i].value, 200);
-										}
-										if (199 == data[i].adr) {
-											helios.Alarm_state(data[i].adr, "DL O/P Overpower Alarm ", data[i].value, 201);
-										}
-									} */
 							} else {
 								toast.$message.error("Error");
 							}

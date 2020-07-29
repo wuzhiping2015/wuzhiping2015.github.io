@@ -86,7 +86,11 @@ video {
 	display: inline-block;
 }
 
-
+.heliosUrl {
+	vertical-align: -1px;
+	color: #00a65a !important;
+	cursor: pointer;
+}
 
 
 /* //动画 */

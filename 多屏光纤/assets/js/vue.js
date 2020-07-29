@@ -2896,7 +2896,8 @@
       var slot = fns[i];
       if (Array.isArray(slot)) {
         resolveScopedSlots(slot, res, hasDynamicKeys);
-      } else if (slot) {
+      } 
+      else if (slot) {
         // marker for reverse proxying v-slot without scope on this.$slots
         if (slot.proxy) {
           slot.fn.proxy = true;

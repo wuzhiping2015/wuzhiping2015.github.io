@@ -6,7 +6,7 @@
 
 var toast = new Vue({
 	el: '',
-	mounted() {},
+	mounted() { },
 });
 
 var url = window.location.pathname;
@@ -30,59 +30,77 @@ sessionStorage.getItem("url", "Status");
 /* sessionStorage.setItem("equipment", "au"); */
 
 var util = {
-	warning: function(msg) {
+	//告警
+	warning: function (msg) {
 		toast.$message({
 			message: msg,
 			showClose: true,
 			type: 'warning'
 		});
 	},
-	info: function(msg) {
+	info: function (msg) {
 		toast.$message({
 			message: msg
 		});
 	},
-	success: function(msg) {
+	//成功
+	success: function (msg) {
 		toast.$message({
 			message: msg,
 			type: 'success',
 			duration: 1500
 		});
 	},
-	error: function(msg) {
+	//错误
+	error: function (msg) {
 		toast.$message({
 			message: msg,
 			type: 'error',
 			duration: 1800
 		});
 	},
-	copy: function() {
-		var adr = [276]; /* 152 状态 */
+	//版本
+	copy: function () {
+		var adr = [276, 292]; /* 152 状态 */
 		var obj = {
 			"data": adr.join(),
 			"action": "READ"
 		};
 		var Version = "";
-		util.getattrajax(obj, function(data) {
-			data.data.forEach(function(v, i, attr) {
+		var Clusterswitch = "";
+		util.getattrajax(obj, function (data) {
+			data.data.forEach(function (v, i, attr) {
 				switch (v.adr) {
 					case 276:
-						Version = "Fujian Jingao Communication Technology Co. LTD  M-DOTS &#8482; " + v.value;
+						Version = `Fujian Jing ao Communication Technology Co. LTD  M-DOTS &#8482; ` + v.value +
+							`&nbsp;&nbsp;<a href="http://www.heliostelecom.com/" title="Helios" target="_blank" class="icon iconfont icon-wangzhi heliosUrl"></a>`;
 						document.querySelector(".login-footer").innerHTML = Version;
 						break;
+					case 292:
+						Clusterswitch = v.value == "0" ? false : true;
 				}
 			});
+			if (true == Clusterswitch) {
+				$("#loginBtn").after(`<p class="btn-bottom"  id="loginCluter"> Cluster Management<i class="el-icon-arrow-right"></i></p>`);
+				$("body").on("click", "#loginCluter", function () {
+					window.location.href = "Cluster.html";
+					sessionStorage.setItem("url", "Status");
+					sessionStorage.setItem("equipment", 'au');
+					sessionStorage.setItem('$session', 'Technician');
+				});
+			}
 		});
+
 	},
 	//登录
-	login: function(user, pwd) {
+	login: function (user, pwd) {
 		var obj = {
 			"data": [283].join(),
 			"action": "READ"
 		};
 		var HeliosDev = false;
 		var pwd1 = (heliosUser[0] == user) ? `3A7Q9644` : user;
-		util.getattrajax(obj, function(data) {
+		util.getattrajax(obj, function (data) {
 			if (283 == data.data[0].adr) {
 				if ("1" === data.data[0].value) {
 					HeliosDev = true;
@@ -90,12 +108,12 @@ var util = {
 					$.ajax({
 						url: "../cgi-bin/doaction.cgi",
 						data: {
-							"action": "PASSWORD",
+							"action": "USER_LOGIN",
 							"user": user,
 							"pwd": pwd1,
 						},
 						type: "post",
-						success: function(data, status) {
+						success: function (data, status) {
 							var data1 = JSON.parse(data);
 							if (data1.code == 1) {
 								sessionStorage.setItem('$session', user);
@@ -118,23 +136,28 @@ var util = {
 					});
 				} else {
 					localStorage.removeItem("SETdisp");
-					util.error(`[Device is restarted and restored] It is expected to take 1 minute!` + data);
-					setTimeout(function() {
+					$("#loginBtn").attr("disabled", "disabled").css({
+						"cursor": "no-drop",
+						"background": "#3c6485",
+						"color": "#c3bfbf"
+					}).html('<i class="el-icon-loading"></i> Into the system...');
+					util.error(`[Device is restarted and restored] It is expected to take 1 minute!`);
+					setTimeout(function () {
 						window.location.href = "login.html";
-					}, 2000);
+					}, 4000);
 				}
 			}
 		});
 	},
 
 	//读取
-	getattrajax: function(attr, callback) {
-		var p = new Promise(function(resolve, reject) {
+	getattrajax: function (attr, callback) {
+		var p = new Promise(function (resolve, reject) {
 			$.ajax({
 				url: "../cgi-bin/doaction.cgi",
 				data: attr,
 				type: "get",
-				success: function(data, status) {
+				success: function (data, status) {
 
 					var rsp = JSON.parse(data);
 					if (typeof rsp == "string") {
@@ -145,7 +168,7 @@ var util = {
 						//window.location.href = "../login.html";
 					}
 				},
-				error: function(req, status, err) {
+				error: function (req, status, err) {
 					console.log(req);
 					console.log(status);
 					console.log(err);
@@ -158,15 +181,15 @@ var util = {
 		return p;
 	},
 	//修改
-	postattrajax: function(attr, callback) {
+	postattrajax: function (attr, callback) {
 		/* console.log(attr); */
-		var p = new Promise(function(resolve, reject) {
+		var p = new Promise(function (resolve, reject) {
 			$.ajax({
 				url: "../cgi-bin/doaction.cgi",
 				data: attr,
 				type: "post",
 				dataType: "text",
-				success: function(data, status) {
+				success: function (data, status) {
 					var rsp = JSON.parse(data);
 					if (rsp.code == 1) {
 						callback(rsp.code);
@@ -176,7 +199,7 @@ var util = {
 						resolve(rsp);
 					}
 				},
-				error: function(req, status, err) {
+				error: function (req, status, err) {
 					/*  reject(err); */
 					console.log(status);
 					console.log(err);
@@ -189,15 +212,15 @@ var util = {
 	},
 
 	//修改
-	postattrajax1: function(attr, callback) {
+	postattrajax1: function (attr, callback) {
 		/* console.log(attr); */
-		var p = new Promise(function(resolve, reject) {
+		var p = new Promise(function (resolve, reject) {
 			$.ajax({
 				url: "../cgi-bin/doaction.cgi",
 				data: attr,
 				type: "post",
 				dataType: "text",
-				success: function(data, status) {
+				success: function (data, status) {
 					/* console.log(data);
 					console.log(status);
 					console.log(data); */
@@ -209,7 +232,7 @@ var util = {
 						resolve(status);
 					}
 				},
-				error: function(req, status, err) {
+				error: function (req, status, err) {
 					/*  reject(err); */
 					console.log(status);
 					console.log(err);
@@ -252,7 +275,76 @@ var util = {
 		}
 		return obj
 	},
-	//没有数组 真假转换为数字
+
+	ResTruefalseArray(name, adr, value) {
+		let obj = {
+			name: "",
+			adr: "",
+			agent: [],
+			enbale: [],
+			Agentenable: [],
+		}
+		obj.adr = adr;
+		obj.name = name;
+		for (var i = 0; i < value.length; i++) {
+			if ("0" == value[i]) {
+				obj.agent.push(false);
+				obj.enbale.push(false);
+				obj.Agentenable.push(false);
+			}
+			if ("1" == value[i]) {
+				obj.agent.push(false);
+				obj.enbale.push(true);
+				obj.Agentenable.push(false);
+			}
+			if ("2" == value[i]) {
+				obj.agent.push(true);
+				obj.enbale.push(false);
+				obj.Agentenable.push(true);
+			}
+			if ("3" == value[i]) {
+				obj.agent.push(true);
+				obj.enbale.push(true);
+				obj.Agentenable.push(true);
+			}
+		}
+		return obj;
+	},
+
+	//使能开关Array  读取
+	HeliosEnable(name, adr, value) {
+		let obj = {
+			name: "",
+			adr: "",
+			value: [],
+		}
+		obj.adr = adr;
+		obj.name = name;
+
+		for (var i = 0; i < value.length; i++) {
+			if ("0" == value[i]) {
+				obj.value.push(false);
+			}
+			if ("1" == value[i]) {
+				obj.value.push(true);
+			}
+		}
+		return obj;
+	},
+	//使能开关Array  设置
+	HeliosNumberRes(value) {
+		let make = [];
+		for (var i = 0; i < Helios.Roclength; i++) {
+			if (value[i] == false) {
+				make.push("0");
+			} else if (value[i] == true) {
+				make.push("1");
+			}
+		}
+		return make.join();
+	},
+
+	//真假转换为数字
 	resnumber(agent, enbale) {
 		if (agent == false && enbale == false) {
 			return "0";
@@ -263,6 +355,21 @@ var util = {
 		} else if (agent == true && enbale == true) {
 			return "3";
 		}
+	},
+	resnumberArray(agent, enbale) {
+		let make = [];
+		for (var i = 0; i < Helios.Roclength; i++) {
+			if (agent[i] == false && enbale[i] == false) {
+				make.push("0");
+			} else if (agent[i] == false && enbale[i] == true) {
+				make.push("1");
+			} else if (agent[i] == true && enbale[i] == false) {
+				make.push("2");
+			} else if (agent[i] == true && enbale[i] == true) {
+				make.push("3");
+			}
+		}
+		return make.join();
 	},
 	//进制转换
 	hex2int(hex) {
@@ -278,23 +385,24 @@ var util = {
 			}
 			a[i] = code;
 		}
-		return a.reduce(function(acc, c) {
+		return a.reduce(function (acc, c) {
 			acc = 16 * acc + c;
 			return acc + "";
 		}, 0);
 	},
 
-	//除1000
+	//除1000 UL Freq , DL Freq
+
 	divide() {
 		var argu = [];
 		var utiltip = false;
 		if (0 == arguments[1]) {
-			arguments[0].forEach(function(v, i) {
+			arguments[0].forEach(function (v, i) {
 				argu.push(v / 1000);
 			});
 			return argu;
 		} else {
-			arguments[0].find(function(v) {
+			arguments[0].find(function (v) {
 				if (true != !isNaN(v)) {
 					utiltip = true;
 					return false;
@@ -308,7 +416,8 @@ var util = {
 					type: 'error',
 					duration: 2000
 				});
-				setTimeout(function() {;
+				setTimeout(function () {
+					;
 					window.location.href = "roc.html";
 				}, 2000);
 				return false;
@@ -354,9 +463,9 @@ var util = {
 			}
 			return devType;
 		}
-		util.getattrajax(obj, function(data) {
+		util.getattrajax(obj, function (data) {
 			let Data2 = [];
-			data.data.forEach(function(v, i, attr) {
+			data.data.forEach(function (v, i, attr) {
 				switch (v.adr) {
 					case 46:
 						var HeliosDev = {
@@ -387,14 +496,14 @@ var util = {
 		});
 	},
 
-	//每个动作 都要执行 设置location
+	//多用户操作 设备执行 
 	SetHeliosDevMsg() {
 		let MDOTS = JSON.parse(localStorage.getItem("MDOTS"));
 		var obj = {
 			"data": JSON.stringify(MDOTS),
 			"action": "SET"
 		}
-		util.postattrajax(obj, function(data) {
+		util.postattrajax(obj, function (data) {
 			localStorage.setItem("MDOTS", JSON.stringify(MDOTS));
 
 			if (1 != data) {
@@ -413,7 +522,7 @@ var util = {
 	//权限数据长度
 	HeliosDataLength() {
 		let isshow = [];
-		if (heliosUser[0] != $session) {
+		if (heliosUser[3] != $session) {
 			for (var i = 0; i < arguments[0].length; i++) {
 				if (arguments[0][i].Agentenable == true) {
 					/* continue; */
@@ -426,7 +535,6 @@ var util = {
 		}
 		return isshow;
 	},
-
 
 	HeliosDataLength1() {
 		let isshow = false;
@@ -447,72 +555,80 @@ util.GetHeliosDevMsg();
 
 /****************  头部 start****************/
 Vue.component('el-main-header', {
-	data: function() {
+	data: function () {
 		return {
 			action: 0,
-			aa: "abc",
 			url: sessionStorage.getItem(url),
+			TopoNull: sessionStorage.getItem("TopoNull"),
 			tagurl: "",
 			menuList: [{
-					url: "Dashboard.html",
-					isActive: false,
-					name: "Dashboard"
-				},
-				{
-					url: "Index.html",
-					isActive: false,
-					name: "Topology"
-				},
-				{
-					url: "Status.html",
-					isActive: false,
-					name: "Device"
-				},
-				{
-					url: "javascript:void(0);",
-					isActive: false,
-					name: "Network"
-				},
-				{
-					url: "Alarm.html",
-					isActive: false,
-					name: "Alarm"
-				},
-				{
-					url: "Equipment.html",
-					isActive: false,
-					name: "Equipment"
-				},
+				url: "Dashboard.html",
+				isActive: false,
+				name: "Dashboard"
+			},
+			{
+				url: "Index.html",
+				isActive: false,
+				name: "Topology"
+			},
+			{
+				url: "Status.html",
+				isActive: false,
+				name: "Device"
+			},
+			{
+				url: "javascript:void(0);",
+				isActive: false,
+				name: "Network"
+			},
+			{
+				url: "Alarm.html",
+				isActive: false,
+				name: "Alarm"
+			},
+			{
+				url: "Equipment.html",
+				isActive: false,
+				name: "Equipment"
+			},
+			/* {
+				url: "Tools.html",
+				isActive: false,
+				name: "Tools"
+			}, */
+			{
+				url: "Report.html",
+				isActive: false,
+				name: "Report"
+			},
+			{
+				url: "Factory.html",
+				isActive: false,
+				name: "Factory"
+			},
 
-				/* {
-					url: "Tools.html",
-					isActive: false,
-					name: "Tools"
-				}, */
-				{
-					url: "Report.html",
-					isActive: false,
-					name: "Report"
-				},
-				{
-					url: "system.html",
-					isActive: false,
-					name: "System"
-				},
-
-				{
-					url: "Cluster.html",
-					isActive: false,
-					name: "Cluster",
-				},
+			{
+				url: "system.html",
+				isActive: false,
+				name: "System"
+			},
+			{
+				url: "Cluster.html",
+				isActive: false,
+				name: "Cluster",
+			},
 			],
 			SysType: sessionStorage.getItem('$SysType'),
 			logUserName: sessionStorage.getItem('$session')
 		}
 	},
-	mounted: function() {
-		this.$nextTick(function() {
-			$.each(this.menuList, function(i, t) {
+	mounted: function () {
+		this.$nextTick(function () {
+			if (1 == this.TopoNull) {
+				//this.menuList.splice(-7, 1);
+
+			}
+			$.each(this.menuList, function (i, t) {
 				if (url.indexOf(t.url) > 0) {
 					t.isActive = true;
 					return false;
@@ -527,16 +643,13 @@ Vue.component('el-main-header', {
 			util.SetHeliosDevMsg();
 		});
 	},
-	/*props: ['loguser'], */
-	updated() {
-		/*Vue.couponShow */
-	},
 	methods: {
+		//退出
 		quit() {
 			let data = [];
 			var $Tit = "";
-			var $Tit1 = "Out of the M - DOTS";
-			var $Txt = "Determine whether to exit or not";
+			var $Tit1 = `Out of the M - DOTS `;
+			var $Txt = `Determine whether to exit or not`;
 			var obj = {
 				adr: 83,
 				value: "0",
@@ -552,7 +665,6 @@ Vue.component('el-main-header', {
 						style: 'color: teal'
 					}, $Txt)
 				]),
-
 				showCancelButton: true,
 				confirmButtonText: 'Confirm',
 				cancelButtonText: 'Cancel',
@@ -561,38 +673,60 @@ Vue.component('el-main-header', {
 						instance.confirmButtonLoading = true;
 						instance.confirmButtonText = 'The execution of...';
 						setTimeout(() => {
-								done();
-								setTimeout(() => {
-									instance.confirmButtonLoading = false;
-									data.push(obj);
-									var obj1 = {
-										"data": JSON.stringify(data),
-										"action": "SET"
+							done();
+							setTimeout(() => {
+								instance.confirmButtonLoading = false;
+								data.push(obj);
+								var obj1 = {
+									"data": JSON.stringify(data),
+									"action": "SET"
+								}
+								util.postattrajax1(obj1, function (data) {
+									if ("success" != data) {
+										toast.$message({
+											message: ' Error:' + data.message,
+											type: 'error',
+											showClose: true,
+											offset: 80
+										});
+									} else {/* 
+										 */
+										$.ajax({
+											url: "../cgi-bin/doaction.cgi",
+											data: {
+												"action": "USER_LOGOUT",
+												"user": $session,
+											},
+											type: "post",
+											success: function (data, status) {
+												var data1 = JSON.parse(data);
+												if (data1.code == 1) {
+													setTimeout(() => {
+														sessionStorage.removeItem("$session");
+														sessionStorage.removeItem("url");
+														sessionStorage.removeItem("equipment");
+														sessionStorage.removeItem("AlarmData");
+														sessionStorage.removeItem("TopoNull");
+														localStorage.removeItem("MDOTS");
+														localStorage.removeItem("code");
+														localStorage.removeItem("SETdisp");
+														localStorage.removeItem("HeliosDev");
+														window.location.href = "login.html";
+													}, 0);
+												} else {
+													//$(".el-input__inner").val("");
+													util.error(data.message);
+												}
+											}
+										});
 									}
-									util.postattrajax1(obj1, function(data) {
-										if ("success" != data) {
-											toast.$message({
-												message: ' Error:' + data.message,
-												type: 'error',
-												showClose: true,
-												offset: 80
-											});
-										} else {
-											sessionStorage.removeItem("$session");
-											sessionStorage.removeItem("url");
-											sessionStorage.removeItem("equipment");
-											sessionStorage.removeItem("AlarmData");
-											localStorage.removeItem("MDOTS");
-											localStorage.removeItem("code");
-											window.location.href = "login.html";
-										}
-									});
-								}, 100);
-							},
+								});
+							}, 100);
+						},
 							1000);
 					} else {
 						done();
-						console.log(2);
+						//console.log(2);
 					}
 				}
 			}).then(action => {
@@ -603,8 +737,6 @@ Vue.component('el-main-header', {
 			}).catch(() => {
 				console.log(1);
 			});
-
-
 		},
 	},
 
@@ -618,21 +750,25 @@ Vue.component('el-main-header', {
 	                <em class="el-icon-arrow-down el-icon--right" style="color:#fff"></em>
 	            <ul class="avatar-more">
 	                <li><a  href="userupdate.html"><i class="fa fa-fw icon iconfont icon-gerenzhongxinxuanzhong"></i>User</a></li>
-					<li><a  href="equi.html"><i class="fa fa-fwicon iconfont icon-guangxianxiangduanzi"></i> Equipment</a></li>
+					<li><a  href="Equipment.html"><i class="fa fa-fwicon iconfont icon-guangxianxiangduanzi"></i> Equipment</a></li>
 	                <li @click="quit"><a href="javascript:;"><i class="fa fa-fw icon iconfont icon-tuichu"></i>Safety Exit</a></li>
 	            </ul>
 	        </div>
 	        <div class="tagerLink">
 				 <ul>
 					<li v-for="(v,i) in menuList" > 
-					 <a :href="v.url" :class="{active:v.isActive}" v-if="v.name!='Network'">{{v.name}}</a>
-					 <a :href="v.url" :class="{active:v.isActive}" v-if="v.name=='Network'">{{v.name}}<em class="el-icon-arrow-down el-icon--right" ></em> </a>
+					 <a :href="v.url" :class="{active:v.isActive}" v-if="v.name!='Network'">{{v.name}} </a>
+					
+					 <a :href="v.url" :class="{active:v.isActive}" v-if="v.name=='Network'">{{v.name}}
+						<em class="el-icon-arrow-down el-icon--right" ></em> 
+					 </a>
 					 <ol class="ol-list" v-if="v.name=='Network'">
 						 <li><a href="Ethernet.html">Ethernet</a></li>
 						 <li><a href="Modem.html">Modem</a></li>
 						 <li><a href="SNMP.html">SNMP</a></li>
 						 <li><a href="VPN.html">VPN</a></li>
-					 </ol>	
+					 </ol>
+						 
 					</li>
 				 </ul>
 	         </div>
@@ -643,7 +779,7 @@ Vue.component('el-main-header', {
 if ($("#comp-header").length > 0) {
 	new Vue({
 		el: '#comp-header',
-		data: function() {
+		data: function () {
 			return {
 				logUserName: '',
 			}
@@ -657,7 +793,7 @@ if ($("#comp-header").length > 0) {
 let sidebar;
 Vue.component("el-main-sidebar", {
 	props: ['siteno'],
-	data: function() {
+	data: function () {
 		return {
 			defaultProps: {
 				children: 'children',
@@ -669,13 +805,12 @@ Vue.component("el-main-sidebar", {
 		}
 	},
 
-
 	beforeMount() {
 		this.MDOTStype();
 		let tempMenu = []; //主菜单
 		var param = [];
 		var sitelist;
-		var currentStation = 0;
+		var currentStation = [];
 		var currentPort = 0;
 		var stationlist = [];
 		var vue = this;
@@ -685,208 +820,245 @@ Vue.component("el-main-sidebar", {
 		portlist.fill(0);
 		$.ajax({
 			type: "GET",
-			url: 'http://192.168.93.245:80/topology.json?verisn=' + Math.ceil(Math.random() * 1010),
+			url: "topology.json?verisn=" + Math.ceil(Math.random() * 1010),
 			dataType: "json",
-			success: function(data1) {
-				/* localStorage.setItem("HeliosDev", (data1));
-				sessionStorage.setItem("HeliosDev1",(data1)); */
-				localStorage.setItem("HeliosDev", JSON.stringify(data1));
-				//设置第一条AU
-				data1.sites[0].device.splice(0, 0, {
-					"device_id": "0",
-					"route": 0,
-					"type": "au",
-					"site_no": data1.sites[0].site_no
-				});
+			success: function (data1) {
+				if (undefined == data1.sites.length) {
+					//sessionStorage.setItem('TopoNull', 1);
+					return false;
+				} else {
+					let j = 0;
+					let setNodata = [];
+					let data = [];
 
-				let j = 0;
-				let setNodata = data1.sites[0].device;
-				let data = [];
+					/* 	console.log(data1); */
+					//	console.log(data1.sites.device.splice(0, 0));
 
+					for (var i = 0; i < data1.sites.length; i++) {
 
-				//沿用旧项目处理方式
-				while (j < setNodata.length) {
-					let obj2 = {
-						equipid: setNodata[j].device_id,
-						offline: 0,
-						route: setNodata[j].route,
-						station: "0",
-						status: 0,
-						type: 0,
-						site_no: data1.sites[0].site_no
+						/* 	data1.sites[i].device[0].type = "au";
+							data1.sites[i].device[0].site_no = data1.sites[i].device[0].site_no; */
+						data1.sites[i].device.splice(0, 0, {
+							"device_id": "0",
+							"route": 0,
+							"type": "au",
+							"site_no": data1.sites[i].site_no,
+							"offline": 0,
+							"station": "0",
+							"status": 0,
+							"type": 0,
+						});
+						setNodata.push(data1.sites[i].device);
 					}
-					data.push(obj2);
-					j++;
-				}
-				currentStation = data[0].station;
-				var offset = 0;
-				obj = {};
-				obj.label = currentStation;
-				obj.children = [];
 
-				obj.offline = 0;
-				obj.station = 0;
-				obj.equipid = 0;
-				obj.type = 0;
-				obj.DEVtype = "au";
-				obj.site_no = data1.sites[0].site_no;
-				tempMenu1.push(obj);
+					while (j < setNodata.length) {
+						for (var k = 0; k < setNodata[j].length; k++) {
+							setNodata[j][k].equipid = setNodata[j][k].device_id;
+							setNodata[j][k].offline = 0;
+							setNodata[j][k].station = "0",
+								setNodata[j][k].status = 0;
+							setNodata[j][k].type = 0;
+						}
+						currentStation.push(setNodata[j][0].station);
+						j++;
+					}
 
-				$.each(data, function(idx, item) {
-					if (currentStation == item.station) {
+					var offset = 0;
+					var obj = {};
 
-					} else {
 
+
+					$.each(setNodata, function (idx, item) {
 						obj = {};
-						obj.label = item.station;
+						obj.label = util.hex2int(setNodata[idx][0].site_no);
+						obj.children = [];
 						obj.offline = 0;
 						obj.station = 0;
 						obj.equipid = 0;
-						obj.children = [];
-						obj.type = 1;
-						obj.site_no = data1.sites[0].site_no;
+						obj.type = 0;
+						obj.DEVtype = "au";
+						obj.site_no = setNodata[idx][0].site_no;
 						tempMenu1.push(obj);
-						currentStation = item.station;
-					}
-					if (item.route == "0") {
-						obj = {};
-						obj.offline = item.offline;
-						obj.route = item.route;
-						obj.equipid = item.equipid;
-						obj.type = item.type;
-						obj.station = item.station;
-						obj.site_no = data1.sites[0].site_no;
-						obj.stationlist = [];
-						tempMenu.push(obj);
-						stationlist.push(currentStation);
-						tempMenu1[tempMenu1.length - 1].equipid = item.equipid;
-						tempMenu1[tempMenu1.length - 1].station = item.station;
-						tempMenu1[tempMenu1.length - 1].offline = item.offline;
-					}
-				});
-
-				currentStation = stationlist[1];
-				currentpoint = 0;
-				$.each(data, function(idx, item) {
-
-					if (item.route != "0") {
-						if (currentStation == item.station) {
-							obj1 = {};
-							obj1.offline = item.offline;
-							obj1.station = item.station;
-							obj1.route = item.route;
-							obj1.equipid = item.equipid;
-							obj.site_no = data1.sites[0].site_no;
-							obj1.type = item.type;
-							tempMenu[currentpoint].stationlist.push(obj1);
-
-						} else {
-							currentpoint = stationlist.findIndex(function(value) {
-								return value == item.station
-							});
-							currentStation = item.station;
-							obj1 = {};
-							obj1.offline = item.offline;
-							obj1.station = item.station;
-							obj1.route = item.route;
-							obj1.equipid = item.equipid;
-							obj.site_no = data1.sites[0].site_no;
-							obj1.type = item.type;
-							tempMenu[currentpoint].stationlist.push(obj1);
-						}
-					} else {
-						//console.log(item);
-					}
-
-				});
-
-				for (var i = 0; i < tempMenu.length; i++) {
-					portlist.fill(0);
-					currentPort = 0;
-					$.each(tempMenu[currentpoint].stationlist, function(idx, item) {
-
-						//赋值
-						var str = item.route.toString();
-						str = str.substr(0, 1);
-						//console.log(parseInt(str) + "-" + portlist[parseInt(str)]);
-
-						if (portlist[parseInt(str)] == 0) {
-							obj = {};
-							//obj.label = str;
-							obj.label = item.route;
-							obj.type = 1;
-							obj.offline = 0;
-							obj.station = 0;
-							obj.equipid = item.equipid;
-							obj.site_no = data1.sites[0].site_no;
-							obj.children = [];
-							obj.DEVtype = "eu";
-
-							tempMenu1[currentpoint].children.push(obj);
-
-							//站点赋值进去
-							currentPort = tempMenu1[currentpoint].children.length;
-							portlist[parseInt(str)] = currentPort;
-							obj = {};
-							obj.label = item.route;
-
-							if (item.offline == 1) {
-								obj.type = 2;
+						for (var j = 0; j < item.length; j++) {
+							if (0 == item[j].station) {
 							} else {
-								obj.type = 3;
-								obj.offline = 1;
-								obj.station = item.station;
-								obj.equipid = item.equipid;
-								obj.site_no = data1.sites[0].site_no;
+								obj = {};
+								obj.label = util.hex2int(item[j].site_no);
+								obj.offline = 0;
+								obj.station = 0;
+								obj.equipid = 0;
 								obj.children = [];
+								obj.type = 1;
+								obj.site_no = item[0].site_no;
+								tempMenu1.push(obj);
+								currentStation = item[j].station;
 							}
-							//tempMenu1[currentpoint].children[currentPort - 1].children.push(obj);
-						} else {
-							currentPort = portlist[parseInt(str)];
-							obj = {};
-							obj.label = item.route;
-							if (item.offline == 1) {
-								obj.type = 2;
+							if (item[j].route == "0") {
+								obj = {};
+								obj.offline = item[j].offline;
+								obj.route = item[j].route;
+								obj.equipid = item[j].equipid;
+								obj.type = item[j].type;
+								obj.station = item[j].station;
+								obj.site_no = item[0].site_no;
+								obj.stationlist = [];
+								tempMenu.push(obj);
+								stationlist.push(currentStation);
+								/* tempMenu1[j].equipid = item[j].equipid;
+								tempMenu1[j].station = item[j].station;
+								tempMenu1[j].offline = item[j].offline; */
+							}
+						}
+						//	console.log(item);
+						//console.log(tempMenu);
+
+					});
+
+					currentStation = stationlist;
+					currentpoint = [];
+					$.each(setNodata, function (idx, item) {
+						for (var j = 0; j < item.length; j++) {
+							if (item[j].route != "0") {
+								if (currentStation == item[j].station) {
+									obj1 = {};
+									obj1.offline = item[j].offline;
+									obj1.station = item[j].station;
+									obj1.route = item[j].route;
+									obj1.equipid = item[j].equipid;
+									/* 	obj.site_no = item[idx].site_no; */
+									obj1.type = item[j].type;
+									tempMenu[idx].stationlist.push(obj1);
+
+								} else {
+									currentpoint[idx] = stationlist.findIndex(function (value) {
+										return value == item[j].station
+									});
+									currentStation = item[j].station;
+									obj1 = {};
+									obj1.offline = item[j].offline;
+									obj1.station = item[j].station;
+									obj1.route = item[j].route;
+									obj1.equipid = item[j].equipid;
+									obj.site_no = item[idx].site_no;
+									obj1.type = item[j].type;
+									tempMenu[idx].stationlist.push(obj1);
+								}
 							} else {
-								obj.DEVtype = "ru";
-								obj.type = 3;
-								obj.offline = item.offline;
-								obj.station = item.station;
-								obj.equipid = item.equipid;
-								obj.site_no = data1.sites[0].site_no;
-								obj.children = [];
-								tempMenu1[currentpoint].children[currentPort - 1].children.push(obj);
+								//console.log(item);
 							}
 						}
 					});
+
+
+					for (var ii = 0; ii < tempMenu.length; ii++) {
+						portlist.fill(0);
+						currentPort = 0;
+
+						tempMenu[ii].stationlist.forEach(function (item, idx) {
+							var str = item.route.toString();
+							str = str.substr(0, 1);
+							if (portlist[parseInt(str)] == 0) {
+								obj = {};
+								//obj.label = str;
+								obj.label = util.hex2int(item.equipid);
+								obj.type = 1;
+								obj.offline = 0;
+								obj.station = 0;
+								obj.equipid = item.equipid;
+								obj.site_no = (tempMenu[ii].site_no);
+								obj.children = [];
+								obj.DEVtype = "eu";
+								tempMenu1[ii].children.push(obj);
+
+
+								//站点赋值进去
+								currentPort = tempMenu1[ii].children.length;
+								portlist[parseInt(str)] = currentPort;
+								obj = {};
+								obj.label = util.hex2int(item.equipid);
+								if (item.offline == 1) {
+									obj.type = 2;
+								} else {
+									obj.type = 3;
+									obj.offline = 1;
+									obj.station = item.station;
+									obj.equipid = item.equipid;
+									obj.site_no = (tempMenu[ii].site_no);
+									//obj.site_no = tempMenu[0].site_no;
+									obj.children = [];
+								}
+							}
+
+							else {
+								currentPort = portlist[parseInt(str)];
+								obj = {};
+								obj.label = item.route;
+								if (item.offline == 1) {
+									obj.type = 2;
+								} else {
+									obj.DEVtype = "ru";
+									obj.type = 3;
+									obj.offline = item.offline;
+									obj.station = item.station;
+									obj.equipid = item.equipid;
+									obj.label = util.hex2int(item.equipid);
+									obj.site_no = (tempMenu[ii].site_no);
+
+									obj.children = [];
+									//	console.log(obj);
+									tempMenu1[ii].children[currentPort - 1].children.push(obj);
+
+								}
+							}
+
+						});
+					};
+
+					//	console.log(tempMenu2);
+					/* 	let tempMenu2 = [];
+						tempMenu1.forEach(function (v, i) {
+							if (v.children.length > 0) {
+								tempMenu2.push(v);
+							}
+						}); */
+
+					vue.menu = tempMenu1;
+
 				}
 
-				vue.menu = tempMenu1;
-				//vue.menuList1 = tempMenu;
+
 			},
 		});
 	},
 
 	methods: {
 		handleNodeClick(data) {
+
+			console.log(data.site_no);
+
+			console.log(data.equipid);
+
+
 			var tagurl = (data.DEVtype).toLowerCase();
 			sessionStorage.setItem("url", "Status");
 			sessionStorage.setItem("equipment", tagurl);
 			let obj = [{
-					adr: 82,
-					value: util.hex2int(data.site_no)
-				},
-				{
-					adr: 83,
-					value: util.hex2int(data.equipid)
-				},
-			];
+				adr: 82,
+				value: util.hex2int((data.site_no + ""))
+			},
+			{
+				adr: 83,
+				value: util.hex2int((data.equipid + ""))
+			}];
+
+			console.log(obj);
+
 			var MDOTS = {
 				"data": JSON.stringify(obj),
 				"action": "SET"
 			}
 			localStorage.setItem("MDOTS", JSON.stringify(obj));
-			util.postattrajax(MDOTS, function(data1) {
+			util.postattrajax(MDOTS, function (data1) {
 				if (1 != data1) {
 					toast.$message({
 						message: ' Error:' + data1.message,
@@ -896,25 +1068,18 @@ Vue.component("el-main-sidebar", {
 					});
 					return false;
 				} else {
-					setTimeout(function() {
+					setTimeout(function () {
 						window.location.href = "Status.html";
 					}, 100);
-					/* toast.$message({
-						message: "success",
-						type: 'success',
-						showClose: true,
-						offset: 80
-					}); */
 				}
 			});
 			//	util.EquipmentID();
-			//window.location.reload();
 		},
 
 		MDOTStype() {
 			let MDOTDATA;
 			let MDOTS = JSON.parse(localStorage.getItem("MDOTS"));
-			MDOTS.forEach(function(v, i, attr) {
+			MDOTS.forEach(function (v, i, attr) {
 				switch (v.adr) {
 					case 83:
 						MDOTDATA = (v.value);
@@ -922,7 +1087,7 @@ Vue.component("el-main-sidebar", {
 				}
 			});
 			return MDOTDATA;
-		}
+		},
 
 	},
 	/* sidebar   menu*/
@@ -983,7 +1148,7 @@ if ($("#comp-sidebar").length > 0) {
 
 //首页左边AU LIST  START
 Vue.component("el-index-slidebar", {
-	data: function() {
+	data: function () {
 		return {
 
 		}
@@ -1055,7 +1220,7 @@ Vue.component("el-index-slidebar", {
 if ($("#index-sidebar").length > 0) {
 	new Vue({
 		el: "#index-sidebar",
-		data: function() {
+		data: function () {
 			return {}
 		}
 	});
@@ -1066,7 +1231,7 @@ if ($("#index-sidebar").length > 0) {
 
 //DEVICE 菜单
 Vue.component("device", {
-	data: function() {
+	data: function () {
 		return {
 			activeName: "Status",
 			equipment: sessionStorage.getItem("equipment"),
@@ -1145,7 +1310,7 @@ Vue.component("device", {
 		}
 	},
 	mounted() {
-		this.$nextTick(function() {
+		this.$nextTick(function () {
 			if (url.indexOf(sessionStorage.getItem("url"))) {
 				this.tagurl = sessionStorage.getItem("url");
 			} else {
@@ -1194,6 +1359,7 @@ function ShowInvalidLoginMessage() {
 	sessionStorage.removeItem("url");
 	sessionStorage.removeItem("equipment");
 	sessionStorage.removeItem("AlarmData");
+	sessionStorage.removeItem("TopoNull");
 	localStorage.removeItem("MDOTS");
 	localStorage.removeItem("code");
 	window.location.href = "login.html";
@@ -1211,24 +1377,24 @@ function check_ev() {
 		return;
 	}
 }
-window.onload = function() {
+window.onload = function () {
 	var url = window.location.href;
 	if (url.indexOf('login.html') == -1) {
-		setTimeout(function() {
+		setTimeout(function () {
 			check_ev();
 		}, 100)
-		var maxTime = 300; // seconds
+		var maxTime = 500; // seconds
 		var time = maxTime;
-		document.body.addEventListener("mousemove", function() {
+		document.body.addEventListener("mousemove", function () {
 			time = maxTime; // reset
 		}, false);
-		var intervalId = setInterval(function() {
+		var intervalId = setInterval(function () {
 			time--;
 			if (time <= 0) {
 				ShowInvalidLoginMessage();
 				clearInterval(intervalId);
 			}
-		}, 5000);
+		}, 1000);
 
 	};
 };

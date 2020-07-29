@@ -114,8 +114,9 @@
 												<div class="col-md-12" v-for="(v,i) in  data2" v-if="v.adr!=152">
 													<el-form-item :label="v.name">
 														{{v.value}}
-													</el-form-item>
+													</el-form-item> 
 												</div>
+											
 											</el-form>
 										</div>
 									</div>
@@ -286,7 +287,7 @@
 					},
 
 					gprsdata2(c) {
-						var adr = [153, 154];
+						var adr = [153, 154,301,302];
 						var obj = {
 							"data": adr.join(),
 							"action": "READ"
@@ -315,6 +316,22 @@
 										let obj = {
 											adr: data[i].adr,
 											name: "Modem Gateway",
+											value: data[i].value
+										}
+										data1.push(obj);
+									}
+									if (301 == data[i].adr) {
+										let obj = {
+											adr: data[i].adr,
+											name: "Modem CSQ",
+											value: data[i].value
+										}
+										data1.push(obj);
+									}
+									if (302 == data[i].adr) {
+										let obj = {
+											adr: data[i].adr,
+											name: "Modem RSSI",
 											value: data[i].value
 										}
 										data1.push(obj);
