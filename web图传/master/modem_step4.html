@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" href="assets/css/index.css?2019827">
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css?2019827" />
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css?2019827" />
+
+	<!-- Theme style -->
+	<link rel="stylesheet" href="assets/css/AdminLTE.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/skins/skin-black.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/layer.css" />
+	<link rel="stylesheet" href="assets/css/index.css?2019827">
+
+</head>
+<style>
+	.col-md-12 {
+		padding: 0px !important;
+	}
+
+	.clear {
+		overflow: auto;
+		zoom: 1;
+		padding: 20px 0;
+		background: #fff;
+	}
+</style>
+
+<body>
+	<div id="content" class="wrapper" style="padding-bottom:50px;">
+
+		<div class="col-md-12">
+			<!-- 模块信息 -->
+			<div class="col-md-11">
+				<div class="box">
+					<div class="box-header with-border">
+						<h3 class="box-title">网络配置</h3>
+						<div class="box-tools pull-right" style="top: 9px;">
+							<el-button type="primary" size="small">SET</el-button>
+							<el-button size="small">Read</el-button>
+						</div>
+					</div>
+
+					<div class="clear">
+						<el-form ref="form" :model="form" label-width="150px">
+							<div class="col-md-10">
+								<el-form-item label="工作模式">
+									<el-radio-group v-model="form.resource">
+										<el-radio label="1">IPV4</el-radio>
+										<el-radio label="2">IPV6</el-radio>
+										<el-radio label="3">IPV4&IPV6</el-radio>
+									</el-radio-group>
+								</el-form-item>
+								<el-form-item label="DHCP Client">
+									<el-switch v-model="form.name1"> </el-switch>
+								</el-form-item>
+							</div>
+							<!-- :class="{active:item.url==tagurl}" -->
+
+							<div :class="[Number(form.resource)<3 ? 'col-md-10':'col-md-5']" v-if="form.resource=='1'|| form.resource=='3'  ">
+								<el-form-item label="IPv4地址">
+									<el-input v-model="form.name"></el-input>
+								</el-form-item>
+								<el-form-item label="子网掩码">
+									<el-input v-model="form.name"></el-input>
+								</el-form-item>
+
+								<el-form-item label="默认网关">
+									<el-input v-model="form.name"></el-input>
+								</el-form-item>
+							</div>
+							<div :class="[Number(form.resource)<3 ? 'col-md-10':'col-md-5']" v-if="form.resource=='2' || form.resource=='3' ">
+								<el-form-item label="IPv6地址">
+									<el-input v-model="form.name"></el-input>
+								</el-form-item>
+								<el-form-item label="子网掩码">
+									<el-input v-model="form.name"></el-input>
+								</el-form-item>
+
+								<el-form-item label="默认网关">
+									<el-input v-model="form.name"></el-input>
+								</el-form-item>
+							</div>
+						</el-form>
+					</div>
+				</div>
+			</div>
+			<!-- 天线参数 -->
+
+
+		</div>
+
+
+	</div>
+
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/vue.js"></script>
+	<script type="text/javascript" src="assets/js/index.js"></script>
+	<script type="text/javascript" src="assets/js/comment.js"></script>
+	<script>
+		let helios;
+		let data = {
+			form: {
+				name: '1',
+				name1: true,
+				resource: '1',
+			},
+			openBand_box: true,
+			openBand_boxlength: 8,
+			value1: 1,
+		}
+		helios = new Vue({
+			el: "#content",
+			data: data,
+			//事件
+			methods: {
+				openBand() {
+					var $t = arguments[0];
+					this.openBand_box = true;
+					/* var iframe = parent.document.getElementById('iframe1');
+					var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+					iframeWin.document.documentElement.scrollHeight + 200 || iframeWin.document.body.scrollHeight +
+						200; */
+
+				},
+				closeBand_box() {
+					this.openBand_box = false;
+					/*var iframe = parent.document.getElementById('iframe1');
+					 var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+					iframeWin.document.documentElement.scrollHeight + 200 || iframeWin.document.body.scrollHeight -
+						200; */
+				},
+				openBand_boxlength_jian() {
+					this.openBand_boxlength -= 1;
+				},
+				openBand_boxlength_add() {
+					if (this.openBand_boxlength <= 9) {
+						this.openBand_boxlength += 1;
+					} else {
+						return;
+					}
+				}
+
+			},
+		});
+	</script>
+</body>
+
+</html>

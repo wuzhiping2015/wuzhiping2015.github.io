@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Helios </title>
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css?2019827" />
+	<!-- <link rel="stylesheet" href="assets/css/global.css?2019827" /> -->
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css?2019827" />
+	<!-- Theme style -->
+	<link rel="stylesheet" href="assets/css/AdminLTE.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/skins/skin-black.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/index.css?2019827">
+</head>
+<style>
+	.box-widget [class*="col-grid-m"]>li {
+		width: 100%;
+	}
+
+	.widget-user .progress.sm {
+		margin-top: 7px;
+	}
+
+	.widget-user .iconfont {
+		position: absolute;
+		top: -24px;
+		left: 10px;
+		font-size: 34px;
+	}
+
+	.maplist .iconfont {
+		display: block;
+	}
+
+	.box-footer {
+		position: relative;
+	}
+
+	.bg-aqua-active-rest_1+.box-footer .option,
+	.bg-aqua-active-rest_2+.box-footer .option,
+	.bg-aqua-active-rest_3+.box-footer .option {
+		background: rgb(0, 0, 0);
+		width: 100%;
+		height: 257px;
+		position: absolute;
+		z-index: 99;
+		left: 0px;
+		top: 0px;
+		opacity: .2;
+	}
+
+	#box-body {
+
+		overflow-y: auto;
+		overflow-x: hidden;
+		padding: 0px
+	}
+
+	.box-body.active {
+		padding: 0px 15px;
+	}
+
+	.widget-user .widget-user-header {
+		border-top-right-radius: 14px;
+		border-top-left-radius: 14px;
+	}
+
+	.widget-user .widget-user-header+.box-footer {
+		padding-top: 5px;
+		border-bottom-right-radius: 14px;
+		border-bottom-left-radius: 14px;
+		border: 0px solid #00a3ce;
+		border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+		border-top: 0px;
+	}
+
+	.box.box-widget.widget-user .row {
+		margin: 0px;
+		margin-bottom: 5px;
+		padding-bottom: 5px;
+		border-bottom: 1px ridge rgba(0, 0, 0, 0.125);
+		border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+	}
+
+	.box-body .col-xs-4 {
+		padding-right: 7px;
+		padding-left: 7px;
+	}
+
+	.box.box-widget.widget-user {
+		background: none;
+	}
+
+	.col-grid-m-6font h5 {
+		margin: 7px;
+		color: #3b3b3b;
+		text-align: center;
+	}
+
+	.widget-user .widget-user-header font {
+		color: #fff;
+		font-size: 13px;
+	}
+
+	.col-search-s .col-md-6 {
+		padding: 0px;
+		padding-right: 5px
+	}
+
+	.col-search-s .col-md-6.re {
+		padding: 0px;
+		padding-left: 5px
+	}
+
+	.border p {
+		text-align: center;
+		margin: 2px;
+		color: #3b3b3b
+	}
+
+	.box-widget [class*="col-grid-m"]>li.res {
+		min-height: 18px;
+		margin: 0px;
+		padding: 0px;
+	}
+
+	.box-widget [class*="col-grid-m"]>li.border {
+		padding-bottom: 18px;
+		margin-bottom: 12px;
+		width: 100% !important;
+		border-bottom: 1px ridge rgba(0, 0, 0, 0.125);
+		border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+	}
+
+	.bg-aqua-active.bg-aqua-active-rest_1,
+	.bg-aqua-active-rest_1 {
+		background-color: #dd4b39 !important;
+	}
+
+	.bg-aqua-active.bg-aqua-active-rest_2,
+	.bg-aqua-active-rest_2 {
+		background-color: #b94646 !important;
+	}
+
+	.bg-aqua-active.bg-aqua-active-rest_3,
+	.bg-aqua-active-rest_3 {
+		background-color: #cc9910 !important;
+	}
+
+	.widget-user .bg-aqua-active-rest_1.widget-user-header+.box-footer {
+		border-color: #adadad !important;
+		opacity: .5;
+	}
+
+	.widget-user .bg-aqua-active-rest_2.widget-user-header+.box-footer {
+		border-color: #b94646 !important;
+	}
+
+	.widget-user .bg-aqua-active-rest_3.widget-user-header+.box-footer {
+		border-color: #cc9910 !important;
+	}
+
+	.label-text-vm {
+		text-align: left;
+	}
+
+	.modal.active {
+		display: block;
+	}
+
+	.slave button {
+		float: left;
+		margin-left: 2%;
+		width: 48%;
+	}
+
+	.col-xs-3 {
+		padding-right: 0px;
+	}
+
+	@media(max-width: 1580px) {
+		.row .col-xs-3 {
+			width: 33%;
+		}
+	}
+</style>
+
+<body class="skin-black sidebar-open sidebar-mini">
+
+
+	<section class="content container-fluid" id="content" style=" padding-top: 0px;">
+
+
+		<div class="row">
+
+			<!-- 模块信息 -->
+			<div class="col-md-6">
+				<div class="box">
+					<div class="box-header with-border">
+						<h3 class="box-title">工作状态</h3>
+						<div class="box-tools pull-right" style="top: 9px;">
+
+							<el-button size="small">Read</el-button>
+						</div>
+					</div>
+
+					<div class="clear">
+						<el-form ref="form" :model="form" label-width="150px">
+							<div class="col-md-6">
+								<el-form-item label="Tx_power">
+									<span>数据...</span>
+								</el-form-item>
+							</div>
+							<div class="col-md-6">
+								<el-form-item label="Modem_temp">
+									<span>数据...</span>
+								</el-form-item>
+							</div>
+							<div class="col-md-6">
+								<el-form-item label="Ap_routing_agingtime">
+									<span>数据...</span>
+								</el-form-item>
+							</div>
+							<div class="col-md-6">
+								<el-form-item label="Eth_Rx">
+									<span>数据...</span>
+								</el-form-item>
+							</div>
+
+							<div class="col-md-6">
+								<el-form-item label="Eth_Tx">
+									<span>数据...</span>
+								</el-form-item>
+							</div>
+							<div class="col-md-6">
+								<el-form-item label="Traffic_th_ul">
+									<span>数据...</span>
+								</el-form-item>
+							</div>
+							<div class="col-md-6">
+								<el-form-item label="Traffic_th_dl">
+									<span>数据...</span>
+								</el-form-item>
+							</div>
+							<div class="col-md-6">
+								<el-form-item label="Cur_freq">
+									<span>数据...</span>
+								</el-form-item>
+							</div>
+							<div class="col-md-6">
+								<el-form-item label="Cur_band">
+									<span>数据...</span>
+								</el-form-item>
+							</div>
+						</el-form>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- events log -->
+			<div class="col-xs-6">
+				<div class="box box-info" style="background: none; box-shadow: none; margin-bottom:0px;">
+					<div class="box-header with-border" style="background: #fff;">
+						<h3 class="box-title">已连接Slave Modem
+							<font style="color: #fd397a !important;font-size:14px;">
+								( {{hsulength}})
+							</font>
+						</h3>
+						<!-- 	<div class="viswCard">
+							<span class="icon iconfont iconshebei" @click="cartab=1" :class="{active:cartab==1}" title="Card View"></span>
+							<span class="icon iconfont iconshebei" @click="cartab=2" :class="{active:cartab==2}" title="List View"></span>
+						</div> -->
+
+					</div>
+					<div class="box-body" :class="{active:cartab==1}" id="box-body">
+
+						<!-- 列表 -->
+						<div v-show="cartab==2" style="display: none;">
+
+							<div class="box">
+								<div class="box-body table-responsive no-padding">
+									<table class="table table-hover">
+										<tbody>
+											<tr>
+												<th style="width:100px">S/N</th>
+												<th>SlaveName</th>
+												<th>Modem_Type</th>
+												<th>Modem_IP</th>
+												<th>Master_rf</th>
+											</tr>
+											<tr v-for="(item,index) in HSU">
+												<td>{{index}}</td>
+												<td>{{item.IP}}</td>
+
+												<td>{{item.IP}}</td>
+												<td>{{item.IP}}</td>
+												<td>
+													<a href="javascript:void(0);" @click="openmodem('Master.html')">查看</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+						</div>
+						<!-- 列表 -->
+					</div>
+				</div>
+
+			</div>
+			<!-- events log  end-->
+
+			<el-dialog title="SlaveName HNU01.01" :visible.sync="openslave" width="96%">
+				<iframe id="iframe2" scrolling="no" :src="helioIndexData.url" frameborder="0" border="none"></iframe>
+			</el-dialog>
+
+	</section>
+
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/vue.js"></script>
+	<script type="text/javascript" src="assets/js/index.js"></script>
+	<script type="text/javascript" src="assets/js/comment.js"></script>
+	<script type="text/javascript" src="assets/js/adminlte.js"></script>
+
+
+	<script>
+		var showload = sessionStorage.getItem("$showload");
+
+		var oIframe = document.getElementById('iframe2');
+		var deviceWidth = document.documentElement.clientWidth;
+		var deviceHeight = document.documentElement.clientHeight;
+
+		oIframe.style.width = (Number(deviceWidth) - 140) + 'px'; //数字是页面布局宽度差值
+		oIframe.style.height = (Number(deviceHeight) - 150) + 'px'; //数字是页面布局高度差
+
+
+
+		let data = {
+
+			form: {
+				name: '1',
+				name1: true,
+				resource: 'Master模式',
+			},
+			openBand_box: true,
+			openBand_boxlength: 8,
+			value1: 1,
+
+			acti: "1",
+
+			active: "active",
+			cartab: 2,
+
+			radio: '1',
+			value1: 1,
+			Switch: false,
+			starts: 1,
+			value2: true,
+
+			value3: '',
+			configure: false,
+			hsulength: 0,
+
+
+			openslave: false,
+
+			HSU: [{
+					"IP": "10.104.50.3",
+					"MAC": "DDD-123",
+					"Loc": "HNU01.01",
+					"Level": "6",
+					"HBS": 30,
+					"HSU": 10,
+					"Downlink": 60,
+					"Uplink": 20,
+					"start": 0
+				},
+				{
+					"IP": "88.104.50.3",
+					"MAC": "DDD-123",
+					"Loc": "baidu.01",
+					"Level": "C",
+					"HBS": 10,
+					"HSU": 90,
+					"Downlink": 20,
+					"Uplink": 90,
+					"start": 0
+				}, {
+					"IP": "10.104.50.3",
+					"MAC": "DDD-123",
+					"Loc": "HNU01.01",
+					"Level": "6",
+					"HBS": 30,
+					"HSU": 10,
+					"Downlink": 60,
+					"Uplink": 20,
+					"start": 1
+				}, {
+					"IP": "10.104.50.3",
+					"MAC": "DDD-123",
+					"Loc": "HNU01.01",
+					"Level": "6",
+					"HBS": 30,
+					"HSU": 10,
+					"Downlink": 60,
+					"Uplink": 20,
+					"start": 1
+				}, {
+					"IP": "10.104.50.3",
+					"MAC": "DDD-123",
+					"Loc": "HNU01.01",
+					"Level": "6",
+					"HBS": 30,
+					"HSU": 10,
+					"Downlink": 60,
+					"Uplink": 20,
+					"start": 1
+				}
+			],
+			helioIndexData: {
+				url: "",
+			},
+		};
+		var Helios = new Vue({
+			el: "#content",
+			data: data,
+
+			beforeMount() {
+				this.$data.hsulength = this.$data.HSU.length;
+
+			},
+			mounted() {
+				/* console.log("时时监控数据变化,并随之更新");*/
+				$("body").resize();
+				/*  if (this.$data.starts == 1) {
+					 this.$data.starts += 1;
+					 this.$refs.setInterColor.style.color = "#00c0ef ";
+					
+					 setInterval(() => {
+						 this.$refs.setInterColor.style.color = "#ff0000";
+						 this.$data.starts -= 1;
+					 }, 1000);
+				 } else {
+				 } */
+
+
+
+			},
+			//事件
+			methods: {
+				b1() {
+					toast.$notify({
+						title: '成功',
+						message: '数据请求成功',
+						type: 'success',
+						duration: 1000
+					});
+				},
+				close() {
+					this.$data.s = false;
+					console.log(this.$data.s);
+				},
+
+				//激活HBS
+				locationActivation() {
+					window.location.href = "Activation.html";
+				},
+				location1() {
+					window.location.href = "hsulist.html";
+				},
+
+				close() {
+					this.$data.s = false;
+				},
+				openmodem(url) {
+					//Helios.helioIndexData.url = url;
+					Helios.openslave = true;
+				},
+
+
+			},
+			filters: {
+				hsustart(e) {
+					if (1 == e) {
+						return "(离线)"
+					} else if (2 == e) {
+						return "(非建链)"
+					} else if (3 == e) {
+						return "(The business is limited)"
+					} else {
+						return "工作中"
+					}
+				},
+				databig(e) {
+					if (e < 10) {
+						return "0" + e;
+					} else {
+						return e;
+					}
+				}
+			},
+
+
+
+		});
+	</script>
+
+
+</body>
+
+
+</html>

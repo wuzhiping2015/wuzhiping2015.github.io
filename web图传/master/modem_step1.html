@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" href="assets/css/index.css?2019827">
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css?2019827" />
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css?2019827" />
+
+	<!-- Theme style -->
+	<link rel="stylesheet" href="assets/css/AdminLTE.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/skins/skin-black.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/layer.css" />
+	<link rel="stylesheet" href="assets/css/index.css?2019827">
+
+</head>
+<style>
+	.col-md-12 {
+		padding: 0px !important;
+	}
+
+
+	.clear {
+		overflow: auto;
+		zoom: 1;
+		background: #fff;
+	}
+</style>
+
+<body>
+	<div id="content" class="wrapper" style="padding-bottom:50px;">
+
+
+		<div class="col-md-12">
+			<!-- 模块信息 -->
+			<div class="col-md-6">
+				<div class="box">
+					<div class="box-header with-border">
+						<h3 class="box-title">模块信息</h3>
+						<div class="box-tools pull-right" style="top: 9px;">
+							<el-button type="primary" size="small">SET</el-button>
+							<el-button size="small">Read</el-button>
+						</div>
+					</div>
+
+					<div class="clear">
+						<el-form ref="form" :model="form" label-width="150px">
+							<div class="col-md-10">
+								<el-form-item label="工作模式">
+									<el-radio-group v-model="form.resource">
+										<el-radio label="Master模式"></el-radio>
+										<el-radio label="Slave模式"></el-radio>
+									</el-radio-group>
+								</el-form-item>
+								<el-form-item label="扇区ID">
+									<el-select v-model="form.name">
+										<el-option label="0" value="0"></el-option>
+										<el-option label="1" value="1"></el-option>
+										<el-option label="2" value="2"></el-option>
+										<el-option label="3" value="3"></el-option>
+										<el-option label="4" value="4"></el-option>
+										<el-option label="5" value="5"></el-option>
+									</el-select>
+								</el-form-item>
+								<el-form-item label="Modem型号">
+									<el-select v-model="form.name">
+										<el-option label="ModemA" value="0"></el-option>
+										<el-option label="ModemB" value="1"></el-option>
+										<el-option label="ModemC" value="2"></el-option>
+										<el-option label="ModemD" value="3"></el-option>
+									</el-select>
+								</el-form-item>
+
+								<el-form-item label="数据传输加密">
+									<el-select v-model="form.name">
+										<el-option label="不加密" value="0"></el-option>
+										<el-option label="snow3g" value="1"></el-option>
+										<el-option label="aes256" value="2"></el-option>
+										<el-option label="zuc" value="3"></el-option>
+									</el-select>
+								</el-form-item>
+
+
+								<el-form-item label="产品名称">
+									<el-input v-model="form.name"></el-input>
+								</el-form-item>
+								<el-form-item label="站点ID">
+									<el-input v-model="form.name"></el-input>
+								</el-form-item>
+
+
+								<el-form-item label="Linkpassword">
+									<el-input v-model="form.name"></el-input>
+								</el-form-item>
+
+							</div>
+						</el-form>
+					</div>
+				</div>
+			</div>
+			<!-- 天线参数 -->
+			<div class="col-md-6">
+				<div class="box">
+					<div class="box-header with-border">
+						<h3 class="box-title">天线参数</h3>
+						<div class="box-tools pull-right" style="top: 9px;">
+							<el-button type="primary" size="small">Set</el-button>
+							<el-button size="small">Read</el-button>
+						</div>
+					</div>
+
+					<div class="clear">
+						<el-form ref="form" :model="form" label-width="150px">
+							<div class="col-md-10">
+								<el-form-item label="TX_eirp">
+									<span>只读参数</span>
+								</el-form-item>
+								<el-form-item label="天线连接类型">
+									<el-select v-model="form.name">
+										<el-option label="内置" value="0"></el-option>
+										<el-option label="外置" value="1"></el-option>
+									</el-select>
+								</el-form-item>
+								<el-form-item label="天线类型">
+									<el-select v-model="form.name">
+										<el-option label="SISO" value="0"></el-option>
+										<el-option label="MIMO" value="1"></el-option>
+									</el-select>
+								</el-form-item>
+								<el-form-item label="选频模式">
+									<el-select v-model="form.name">
+										<el-option label="自动" value="0"></el-option>
+										<el-option label="手动" value="1"></el-option>
+									</el-select>
+								</el-form-item>
+								<el-form-item label="同步信号源">
+									<el-select v-model="form.name">
+										<el-option label="gps" value="0"></el-option>
+										<el-option label="master输出同步信号" value="1"></el-option>
+										<el-option label="空口同步" value="1"></el-option>
+									</el-select>
+								</el-form-item>
+								<el-form-item label="天线增益">
+									<el-input v-model="form.name"></el-input>
+								</el-form-item>
+
+								<el-form-item label="线损">
+									<el-input v-model="form.name"></el-input>
+								</el-form-item>
+								<el-form-item label="最大固定发射功率">
+									<el-input v-model="form.name"></el-input>
+								</el-form-item>
+								<el-form-item label="最大传输带宽">
+									<el-input v-model="form.name"></el-input>
+								</el-form-item>
+								<el-form-item label="Uart口绑定设备IP">
+									<el-input v-model="form.name"></el-input>
+								</el-form-item>
+							</div>
+							<div class="col-md-12 clear" style="padding:20px 0 !important">
+								<div class="col-md-3" style="margin-left:130px">同步开关
+									<el-switch v-model="form.name1"> </el-switch>
+								</div>
+								<div class="col-md-3">buffer开关
+									<el-switch v-model="form.name1"> </el-switch>
+								</div>
+								<div class="col-md-3">DRX 开关
+									<el-switch v-model="form.name1"> </el-switch>
+								</div>
+							</div>
+						</el-form>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/vue.js"></script>
+	<script type="text/javascript" src="assets/js/index.js"></script>
+	<script type="text/javascript" src="assets/js/comment.js"></script>
+	<script>
+		let helios;
+		let data = {
+			form: {
+				name: '1',
+				name1: true,
+				resource: 'Master模式',
+			},
+			openBand_box: true,
+			openBand_boxlength: 8,
+			value1: 1,
+		}
+		helios = new Vue({
+			el: "#content",
+			data: data,
+			//事件
+			methods: {
+				openBand() {
+					var $t = arguments[0];
+					this.openBand_box = true;
+					/* var iframe = parent.document.getElementById('iframe1');
+					var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+					iframeWin.document.documentElement.scrollHeight + 200 || iframeWin.document.body.scrollHeight +
+						200; */
+
+				},
+				closeBand_box() {
+					this.openBand_box = false;
+					/*var iframe = parent.document.getElementById('iframe1');
+					 var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+					iframeWin.document.documentElement.scrollHeight + 200 || iframeWin.document.body.scrollHeight -
+						200; */
+				},
+				openBand_boxlength_jian() {
+					this.openBand_boxlength -= 1;
+				},
+				openBand_boxlength_add() {
+					if (this.openBand_boxlength <= 9) {
+						this.openBand_boxlength += 1;
+					} else {
+						return;
+					}
+				}
+
+			},
+		});
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>network</title>
+
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css?2019827" />
+	<!-- <link rel="stylesheet" href="assets/css/global.css?2019827" /> -->
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css?2019827" />
+
+	<!-- Theme style -->
+	<link rel="stylesheet" href="assets/css/AdminLTE.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/skins/skin-black.min.css?2019827" />
+
+	<link rel="stylesheet" href="assets/css/index.css?2019827">
+</head>
+<style>
+	.clear {
+		overflow: auto;
+		zoom: 1;
+		background: #fff;
+	}
+
+	.box-header.with-border {
+		padding-bottom: 14px;
+	}
+
+
+	.timeline>li {
+		margin-bottom: 49px;
+	}
+</style>
+
+<body class="skin-black sidebar-open sidebar-mini">
+
+	<div class="wrapper">
+		<!-- 页头 -->
+		<div id="comp-header" class="main-header" style="position: relative; z-index: 99;">
+			<el-main-header :loguser="logUserName"></el-main-header>
+
+		</div>
+		<!-- 页头end -->
+
+		<!-- 侧边栏导航 -->
+		<div id="comp-sidebar">
+			<el-main-sidebar></el-main-sidebar>
+		</div>
+		<!-- 侧边栏导航 end -->
+
+		<!-- 内容区域 -->
+		<div class="content-wrapper" id="content-wrapper">
+			<!-- 内容头部面包屑 -->
+			<section style="display: none">
+				<ol class="breadcrumb">
+					<li>
+						<a id="head1" href="#"></a>
+					</li>
+					<li id="head2" class="active"></li>
+				</ol>
+			</section>
+			<!-- 主要内容显示 -->
+			<section class="content container-fluid" id="MainContext">
+
+
+				<!-- system -->
+				<div class="row">
+					<div class="col-xs-12">
+						<!-- The time line -->
+						<ul class="timeline">
+							<li>
+								<i class="fa fa-user bg-aqua" @click="checkVERSION(1)" title="桥模式">桥模式</i>
+								<div class="timeline-item" v-if="VERSION=='1'">
+									<div class="col-md-12">
+										<div class="box">
+											<div class="box-header with-border">
+												<h3 class="box-title">桥模式</h3>
+												<!-- GRPS -->
+												<div class="box-tools pull-right" style="top: 9px;">
+													<el-button type="primary" :disabled="!Set" size="small">Set</el-button>
+													<el-button size="small" :disabled="!Read">Read
+													</el-button>
+												</div>
+											</div>
+											<div class="col-xs-12 box" style="padding-top: 10px;">
+
+												<div class="col-md-5">
+													<el-form ref="form" label-width="150px">
+														<el-form-item label="网络模式">
+															<el-select v-model="VERSION">
+																<el-option label="桥模式" value="1"></el-option>
+																<el-option label="路由模式" value="2"></el-option>
+															</el-select>
+														</el-form-item>
+														<el-form-item>
+															<p class="lead text-green">IP配置</p>
+														</el-form-item>
+														<el-form-item label="IP地址">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+														<el-form-item label="子网掩码">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+
+														<el-form-item label="默认网关">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+														<el-form-item label="主DNS">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+														<el-form-item label="从DNS">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+													</el-form>
+												</div>
+												<div class="col-md-5">
+													<el-form ref="form" :model="form" label-width="150px">
+														<el-form-item>
+															<p class="lead text-green">&nbsp;&nbsp;</p>
+														</el-form-item>
+														<el-form-item>
+															<p class="lead text-green">DHCP配置</p>
+														</el-form-item>
+														<el-form-item label="DHCP Enable">
+															<el-switch v-model="form.name1"> </el-switch>
+														</el-form-item>
+														<el-form-item label="启始IP">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+														<el-form-item label="终止IP">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+
+														<el-form-item label="主DNS">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+														<el-form-item label="从DNS">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+
+														<el-form-item label="子网掩码">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+													</el-form>
+
+												</div>
+
+
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</li>
+
+							<li>
+
+
+								<i class="fa fa-comments bg-yellow" @click="checkVERSION(2)" title="路由模式">路由模式</i>
+								<div class="timeline-item" v-if="VERSION=='2'">
+
+
+									<!-- Port1 START -->
+									<div class="col-md-12">
+										<div class="box">
+											<div class="box-header with-border">
+												<h3 class="box-title">路由模式</h3>
+												<div class="box-tools pull-right" style="top: 9px;">
+													<el-button type="primary" :disabled="!Set" size="small">Set</el-button>
+													<el-button size="small" :disabled="!Read">Read
+													</el-button>
+
+												</div>
+											</div>
+
+											<div class="col-xs-12 box" style="padding-top: 10px;">
+												<div class="col-md-4">
+													<el-form ref="form" :model="form" label-width="150px">
+														<el-form-item>
+															<p class="lead text-green">DHCP配置</p>
+														</el-form-item>
+														<el-form-item label="DHCP Enable">
+															<el-switch v-model="form.name1"> </el-switch>
+														</el-form-item>
+														<el-form-item label="启始IP">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+														<el-form-item label="终止IP">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+
+														<el-form-item label="主DNS">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+														<el-form-item label="从DNS">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+
+														<el-form-item label="子网掩码">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+													</el-form>
+												</div>
+												<div class="col-md-4">
+
+													<el-form ref="form" :model="form" label-width="150px">
+														<el-form-item>
+															<p class="lead text-green">WAN配置</p>
+														</el-form-item>
+														<el-form-item label="IP地址">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+														<el-form-item label="默认网关">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+
+														<el-form-item label="主DNS">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+														<el-form-item label="从DNS">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+
+														<el-form-item label="子网掩码">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+													</el-form>
+
+												</div>
+												<div class="col-md-4">
+													<el-form ref="form" :model="form" label-width="150px">
+														<el-form-item>
+															<p class="lead text-green">LAN配置</p>
+														</el-form-item>
+														<el-form-item label="IP地址">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+														<el-form-item label="默认网关">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+
+														<el-form-item label="主DNS">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+														<el-form-item label="从DNS">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+
+														<el-form-item label="子网掩码">
+															<el-input v-model="form.name"></el-input>
+														</el-form-item>
+													</el-form>
+												</div>
+											</div>
+
+										</div>
+									</div>
+
+								</div>
+							</li>
+							<li>
+								<i class="fa fa-clock-o bg-gray" style="border-radius: 50%;width: 30px;	left: 10px;"></i>
+							</li>
+						</ul>
+						<div class="col-md-6">
+							<div class="box">
+								<div class="box-header with-border">
+									<h3 class="box-title">VPN设置 </h3>
+									<div class="box-tools pull-right" style="top: 9px;">
+										<el-button type="primary" size="small">Set</el-button>
+										<el-button size="small">Read</el-button>
+									</div>
+								</div>
+
+								<div class="clear">
+									<el-form ref="form" :model="form" label-width="150px">
+										<div class="col-md-10">
+											<el-form-item label="VPN开关">
+												<el-switch v-model="form.name1"> </el-switch>
+											</el-form-item>
+
+										</div>
+									</el-form>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="box">
+								<div class="box-header with-border">
+									<h3 class="box-title">聚合配置 </h3>
+									<div class="box-tools pull-right" style="top: 9px;">
+										<el-button type="primary" size="small">Set</el-button>
+										<el-button size="small">Read</el-button>
+									</div>
+								</div>
+
+								<div class="clear">
+									<el-form ref="form" :model="form" label-width="150px">
+										<div class="col-md-10">
+											<el-form-item label="聚合开关">
+												<el-switch v-model="form.name1"> </el-switch>
+											</el-form-item>
+											<el-form-item label="聚合模式">
+												<el-select v-model="form.name">
+													<el-option label="1" value="1"></el-option>
+													<el-option label="2" value="2"></el-option>
+													<el-option label="3" value="3"></el-option>
+													<el-option label="4" value="4"></el-option>
+												</el-select>
+											</el-form-item>
+											<el-form-item label="Qos配置">
+												<span>Qos配置Qos配置</span>
+											</el-form-item>
+
+										</div>
+									</el-form>
+								</div>
+							</div>
+						</div>
+
+
+
+
+					</div>
+				</div>
+			</section>
+		</div>
+		<!-- 内容区域 -->
+
+
+
+	</div>
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/vue.js"></script>
+	<script type="text/javascript" src="assets/js/index.js"></script>
+	<script type="text/javascript" src="assets/js/comment.js"></script>
+	<script type="text/javascript" src="assets/js/adminlte.js"></script>
+
+	<script>
+		let helios;
+		let data = {
+			VERSION: "1",
+			Set: true,
+			Read: true,
+			form: {
+				name: '1',
+				name1: '',
+			},
+		}
+		helios = new Vue({
+			el: "#MainContext",
+			data: data,
+
+			mounted: function () {
+
+			},
+			methods: {
+				checkVERSION(x) {
+					(x == 1) ? helios.VERSION = "1": helios.VERSION = "2"
+				},
+			}
+		});
+	</script>
+
+
+</body>
+
+
+</html>
