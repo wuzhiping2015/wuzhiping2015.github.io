@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Report </title>
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/global.css?2019827" />
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css?2019827" />
+	<!-- Theme style -->
+	<link rel="stylesheet" href="assets/css/AdminLTE.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/skins/skin-black.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/index.css?2019827">
+</head>
+<style>
+	.clear {
+		overflow: auto;
+		zoom: 1;
+		background: #fff;
+	}
+
+	.box-header.with-border {
+		padding-bottom: 20px;
+	}
+
+	.el-form-item__content {
+		margin-bottom: 8px;
+	}
+
+	.nullempty .icon {
+		display: block;
+		margin-bottom: 10px;
+		font-size: 60px;
+	}
+
+	.nullempty h3 {
+		padding-top: 10px;
+	}
+
+	.nullempty {
+		text-align: center;
+		padding: 60px 20px;
+		border-top: 1px solid #e6e6e6;
+	}
+
+	.el-input-group__prepend,
+	.el-input-group__prepend .el-select {
+		width: 180px;
+	}
+
+	.el-input-group {
+		width: 85%;
+	}
+
+	.box-title {
+		width: 100%;
+	}
+
+	.searchbom {
+		font-size: 14px;
+		margin-bottom: 14px;
+	}
+
+	.el-input.el-input--suffix .el-input__inner,
+	.el-input-group__append .el-icon-search {
+		color: #0c9868 !important;
+	}
+
+	.el-input.el-input--suffix .el-input__inner {
+		background: white !important;
+		border: 1px #dcdfe6 solid !important;
+	}
+
+	.nav-tabs-custom>.nav-tabs {
+		width: 300px;
+		float: left;
+		height: 45px;
+	}
+
+	.nav-tabs-custom {
+		height: 50px;
+	}
+</style>
+
+<body class="skin-black sidebar-open sidebar-mini">
+	<div class="wrapper">
+		<!-- 页头 -->
+		<div id="comp-header" class="main-header" style="position: relative; z-index: 99;">
+			<el-main-header></el-main-header>
+		</div>
+		<!-- 页头end -->
+		<!-- 内容区域 -->
+		<div id="content-wrapper">
+
+			<!-- 主要内容显示 -->
+			<section class="content container-fluid" id="MainContext" style="padding:15px; min-width: 1200px;">
+
+				<div class="wrapper" id="content" style="background:#f1f4f6; margin-top: 12px;">
+					<div class="box-header" style="background: #f5f5f5;">
+						<div class="box-title">
+							<el-form label-width="150px">
+								<div class="col-xs-9">
+									<div class="col-xs-5">
+										<el-form-item label="Site Name">
+											<el-input v-model="sear.number" placeholder="Please enter"></el-input>
+										</el-form-item>
+									</div>
+									<div class="col-xs-5">
+										<el-form-item label="Device ID">
+											<el-input v-model="sear.id" placeholder="Please enter"></el-input>
+										</el-form-item>
+									</div>
+
+									<div class="col-xs-5">
+										<el-form-item label="Alarm Information">
+											<el-input v-model="sear.info" placeholder="Please enter"></el-input>
+										</el-form-item>
+									</div>
+
+									<div class="col-xs-5" v-if="cur==0">
+										<el-form-item label="Alarm level">
+											<el-select v-model="level" @change="onChangeValue" placeholder="Please select">
+												<el-option label="Warn" value="0"></el-option>
+												<el-option label="Minor" value="1"></el-option>
+												<el-option label="Major" value="2"></el-option>
+												<el-option label="Critical" value="3"></el-option>
+											</el-select>
+										</el-form-item>
+									</div>
+
+									<div class="col-xs-5">
+										<el-form-item label="Starting Date / End Date">
+											<el-col :span="11">
+												<el-date-picker type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="Select starting Date" v-model="sear.Statime"
+												    style="width: 100%;"></el-date-picker>
+
+											</el-col>
+											<el-col class="line" :span="2" style="  text-align: center;
+											vertical-align: 6px;
+											height: 36px;
+											line-height: 40px;">-</el-col>
+											<el-col :span="11">
+												<!-- <el-date-picker type="datetime" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="Select end Date"
+													 v-model="sear.Endime" style="width: 100%;"></el-date-picker> -->
+
+
+												<el-date-picker type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="Select End Date" v-model="sear.Endime"
+												    style="width: 100%;"></el-date-picker>
+											</el-col>
+										</el-form-item>
+									</div>
+
+									<div class="col-xs-7">
+										<el-form-item label="">
+											<el-button type="primary" @click="Search">Search</el-button>
+											<el-button @click="getReport(1)" :disabled="!Read">Read</el-button>
+										</el-form-item>
+									</div>
+								</div>
+
+							</el-form>
+
+							<div class="col-xs-2">
+								<p>Log usage ratio</p>
+								<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" style="display: none;">
+									<symbol id="wave">
+										<path d="M420,20c21.5-0.4,38.8-2.5,51.1-4.5c13.4-2.2,26.5-5.2,27.3-5.4C514,6.5,518,4.7,528.5,2.7c7.1-1.3,17.9-2.8,31.5-2.7c0,0,0,0,0,0v20H420z"></path>
+										<path d="M420,20c-21.5-0.4-38.8-2.5-51.1-4.5c-13.4-2.2-26.5-5.2-27.3-5.4C326,6.5,322,4.7,311.5,2.7C304.3,1.4,293.6-0.1,280,0c0,0,0,0,0,0v20H420z"></path>
+										<path d="M140,20c21.5-0.4,38.8-2.5,51.1-4.5c13.4-2.2,26.5-5.2,27.3-5.4C234,6.5,238,4.7,248.5,2.7c7.1-1.3,17.9-2.8,31.5-2.7c0,0,0,0,0,0v20H140z"></path>
+										<path d="M140,20c-21.5-0.4-38.8-2.5-51.1-4.5c-13.4-2.2-26.5-5.2-27.3-5.4C46,6.5,42,4.7,31.5,2.7C24.3,1.4,13.6-0.1,0,0c0,0,0,0,0,0l0,20H140z"></path>
+									</symbol>
+								</svg>
+								<div class="logbox">
+									<div class="percent">
+										<div class="percentNum" id="count">0</div>
+										<div class="percentB">%</div>
+									</div>
+									<div id="water" class="water">
+										<svg viewBox="0 0 560 20" class="water_wave water_wave_back">
+											<use xlink:href="#wave"></use>
+										</svg>
+										<svg viewBox="0 0 560 20" class="water_wave water_wave_front">
+											<use xlink:href="#wave"></use>
+										</svg>
+									</div>
+								</div>
+
+							</div>
+
+
+						</div>
+					</div>
+
+
+					<p class="searchbom" v-if="keylength>0">
+						Search for
+						<span class="text-green">{{keylength}}</span> items of
+						<span class="text-green">{{keyValue}} </span>
+						related content
+
+					</p>
+
+
+
+
+					<div class="col-md-12" style="padding-left: 0px;">
+						<div class="nav-tabs-custom">
+							<ul class="nav nav-tabs">
+								<li :class="{active:cur==0}" @click="cur=0">
+									<a href="javascript:void(0);">
+										Alarm Log</a>
+								</li>
+								<li :class="{active:cur==1}" @click="cur=1">
+									<a href="javascript:void(0);">
+										System Log
+									</a>
+								</li>
+							</ul>
+							<div style="position: absolute; left: 440px;top: 6px;">
+								<el-select v-show="cur==0" v-model="almData.pageSize" placeholder="请选择" @change="ChangedpageSize" style="position: absolute;width:200px;">
+									<el-option label="15" value="15"></el-option>
+									<el-option label="25" value="25"></el-option>
+									<el-option label="50" value="50"></el-option>
+									<el-option label="100" value="100"></el-option>
+								</el-select>
+								<el-select v-show="cur==1" v-model="sysData.pageSize" placeholder="请选择" @change="ChangedpageSize" style="position: absolute;width:200px;">
+									<el-option label="15" value="15"></el-option>
+									<el-option label="25" value="25"></el-option>
+									<el-option label="50" value="50"></el-option>
+									<el-option label="100" value="100"></el-option>
+								</el-select>
+							</div>
+
+							<el-button type="warning" @click="Clearlog" style="position: absolute;left: 270px;top: 6px;">Clear Log</el-button>
+						</div>
+
+						<div class="row">
+							<!-- External START -->
+							<div class="col-md-12">
+								<div class="box" v-show="cur==0">
+									<div class="clear">
+										<table class="table table-hover" v-if="almData.GetData.length>0">
+											<tbody>
+												<tr>
+													<th width="180">Site Name</th>
+													<th width="180">Device ID</th>
+													<th>Alarm Information</th>
+													<th>Alarm level </th>
+													<th>Date/time </th>
+												</tr>
+												<tr v-for="(v,i ) in almData.dataShow">
+													<td>{{v.s}}</td>
+													<td>{{v.e}}</td>
+													<td>{{v.i}}</td>
+													<td>{{v.l}}</td>
+													<td>{{v.d}}</td>
+												</tr>
+											</tbody>
+										</table>
+
+										<div class="nullempty" v-else>
+											<span class="icon iconfont icon-kongshuju"></span>
+											LOG
+											<span class="text-green">{{keyValue}}</span>
+											Information
+											<h3>EMPTY</h3>
+										</div>
+
+										<div class="box-footer clearfix" style="text-align: center;">
+											<span>Total {{almData.GetData.length}} Article</span>&nbsp;
+											<ul class="pagination pagination-sm no-margin" style="vertical-align: middle;">
+												<li :class="almData.currentPage==0?'disabled':''" @click="prePage('almData')">
+													<a href="javascript:void(0);">«</a>
+												</li>
+												<li v-for="(v,i) in almData.pageNum" :class="almData.currentPage==i?'active':''" @click="pagingpage('almData',i)">
+													<a href="javascript:void(0);" v-if="showText(i)" v-text="showText(i)">{{i}}</a>
+												</li>
+
+												<li :class="almData.currentPage==almData.pageNum-1?'disabled':''" @click="nextPage('almData')">
+													<a href="javascript:void(0);">»</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+
+								<div class="box" v-show="cur==1">
+									<div class="clear">
+										<table class="table table-hover" v-if="sysData.GetData.length>0">
+											<tbody>
+												<tr>
+													<th width="180">Site Name</th>
+													<th width="180">Device ID</th>
+													<th>Alarm Information</th>
+													<!-- <th>Alarm level </th> -->
+													<th>Date/time </th>
+												</tr>
+												<tr v-for="(v,i ) in sysData.dataShow">
+													<td>{{v.s}}</td>
+													<td>{{v.e}}</td>
+													<td>{{v.i}}</td>
+													<!-- <td>{{v.l}}</td> -->
+													<td>{{v.d}}</td>
+												</tr>
+											</tbody>
+										</table>
+										<div class="nullempty" v-else>
+											<span class="icon iconfont icon-kongshuju"></span>
+											LOG
+											<span class="text-green">{{keyValue}}</span>
+											Information
+											<h3>EMPTY</h3>
+										</div>
+										<div class="box-footer clearfix" style="text-align: center;">
+											<span>Total {{sysData.GetData.length}} Article</span>&nbsp;
+
+											<ul class="pagination pagination-sm no-margin" style="vertical-align: middle;" v-if="sysData.GetData.length>sysData.pageSize">
+
+												<li :class="sysData.currentPage==0?'disabled':''" @click="prePage('sysData')">
+													<a href="javascript:void(0);">«</a>
+												</li>
+
+
+												<li :class="sysData.currentPage==i?'active':''" v-for="(v,i) in sysData.pageNum" @click="pagingpage('sysData',i)">
+													<a href="javascript:void(0);" v-if="showText(i)" v-text="showText(i)">{{i}}</a>
+												</li>
+
+
+												<li :class="sysData.currentPage==sysData.pageNum-1?'disabled':''" @click="nextPage('sysData')">
+													<a href="javascript:void(0);">»</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<!-- External END -->
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- 内容区域 -->
+		</div>
+	</div>
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
+
+
+
+
+	<script type="text/javascript" src="assets/js/vue.js"></script>
+	<script type="text/javascript" src="assets/js/index.js"></script>
+	<script type="text/javascript" src="assets/js/comment.js"></script>
+	<script type="text/javascript" src="assets/js/adminlte.js"></script>
+
+	<script>
+		let helios;
+		let data = {
+			value: '1',
+			cur: 0,
+			Read: true,
+			searchType: "",
+			keyValue: "",
+			keys: "Please enter  Device ID ",
+			keylength: 0,
+			level: "",
+			sear: {
+				number: "",
+				id: "",
+				info: "",
+				level: "",
+				Statime: "",
+				Endime: "",
+			},
+			almData: {
+				GetData: [],
+				// 假设这是后台传来的数据来源
+				// 所有页面的数据
+				totalPage: [],
+				// 每页显示数量
+				pageSize: 15,
+				// 共几页
+				pageNum: 1,
+				// 当前显示的数据
+				dataShow: "",
+				// 默认当前显示第一页
+				currentPage: 0
+			},
+			sysData: {
+				GetData: [],
+				// 假设这是后台传来的数据来源
+				// 所有页面的数据
+				totalPage: [],
+				// 每页显示数量
+				pageSize: 15,
+				// 共几页
+				pageNum: 1,
+				// 当前显示的数据
+				dataShow: "",
+				// 默认当前显示第一页
+				currentPage: 0
+			},
+
+		};
+		helios = new Vue({
+			el: "#MainContext",
+			data: data,
+			beforeMount() {
+				this.getReport();
+
+			},
+			mounted() {
+				this.ThenData();
+				$("body").resize();
+			},
+			/* //事件 */
+			methods: {
+
+				ThenData() {
+					var cnt = document.getElementById("count");
+					var water = document.getElementById("water");
+					var percent = cnt.innerText;
+					var percent1 = "";
+					var interval;
+					interval = setInterval(function () {
+						percent++;
+						cnt.innerHTML = percent;
+
+						water.style.transform = 'translate(0' + ',' + (100 - percent) + '%)';
+						var obj = {
+							"data": [331].join(),
+							"action": "READ"
+						};
+						util.getattrajax(obj, function (data) {
+							var data = data.data;
+							percent = (Number(data[0].value) - 10) / 10
+							percent1 = (Number(data[0].value) - 10) / 10
+						});
+						if (percent == percent1) {
+							clearInterval(interval);
+						}
+					}, 600);
+				},
+
+				getReport(c) {
+					var xmlhttp;
+					if (window.XMLHttpRequest) {
+						xmlhttp = new XMLHttpRequest();
+					} else {
+						xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+					}
+
+					if (c > 0) {
+						helios.$data.Read = false;
+						helios.$data.keyValue = "";
+						helios.$data.keylength = 0;
+						setTimeout(() => {
+							helios.almData.pageSize = 15;
+							helios.sysData.pageSize = 15;
+							this.Search();
+
+							helios.$data.Read = true;
+							helios.almData.currentPage = 0;
+							helios.sysData.currentPage = 0;
+
+
+
+							helios.sysData.dataShow = helios.sysData.totalPage[0];
+							helios.almData.dataShow = helios.almData.totalPage[0];
+							helios.$data.sear.number = "";
+							helios.$data.sear.id = "";
+							helios.$data.sear.info = "";
+							helios.$data.sear.level = "";
+							helios.$data.sear.Statime = "";
+							helios.$data.sear.Endime = "";
+							helios.$data.level = "";
+							util.success('success');
+						}, 150);
+					}
+
+					xmlhttp.onreadystatechange = function () {
+						if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+							var obj = helios.log2json(xmlhttp.responseText.toString());
+							var obj1 = JSON.parse(obj);
+							let almData = [],
+								sysData = [];
+							let jige = obj1.log.map((value, key, arr) => {
+								if ("alm" == value.t) {
+									almData.push(value);
+								} else {
+									sysData.push(value);
+								}
+							});
+							/* 
+							data: [],
+							// 所有页面的数据
+							totalPage: [],
+							// 每页显示数量
+							pageSize: 5,
+							// 共几页
+							pageNum: 1,
+							// 当前显示的数据
+							dataShow: "", */
+							almData = almData.reverse();
+							helios.almData.GetData = almData;
+
+							helios.almData.pageNum = Math.ceil(almData.length / helios.almData.pageSize) || 1;
+
+							for (let i = 0; i < helios.almData.pageNum; i++) {
+								// 每一页都是一个数组 形如 [['第一页的数据'],['第二页的数据'],['第三页数据']]
+								// 根据每页显示数量 将后台的数据分割到 每一页,假设pageSize为5， 则第一页是1-5条，即slice(0,5)，第二页是6-10，条即slice(0,5)...
+								helios.almData.totalPage[i] = almData.slice(helios.almData.pageSize * i, helios.almData.pageSize * (i + 1))
+							}
+							// 当前显示的内容
+							helios.almData.dataShow = helios.almData.totalPage[helios.almData.currentPage];
+
+
+							//sysData
+							sysData = sysData.reverse();
+							helios.sysData.GetData = sysData;
+							helios.sysData.pageNum = Math.ceil(sysData.length / helios.sysData.pageSize) || 1;
+
+							for (let i = 0; i < helios.sysData.pageNum; i++) {
+								// 每一页都是一个数组 形如 [['第一页的数据'],['第二页的数据'],['第三页数据']]
+								// 根据每页显示数量 将后台的数据分割到 每一页,假设pageSize为5， 则第一页是1-5条，即slice(0,5)，第二页是6-10，条即slice(0,5)...
+								helios.sysData.totalPage[i] = sysData.slice(helios.sysData.pageSize * i, helios.sysData.pageSize * (i + 1))
+							}
+							// 当前显示的内容
+							helios.sysData.dataShow = helios.sysData.totalPage[helios.sysData.currentPage];
+
+						}
+					}
+					xmlhttp.open("GET", "elog_file.log?t=" + Math.random(), true);
+					xmlhttp.send();
+				},
+				log2json(src) {
+					src = src.slice(1, -1);
+					return "{\"log\":[" + src + "],\"currentPage\":1, \"pagesize\":10}";
+				},
+				pagingpage(value, page) {
+					if ("almData" == value) {
+						helios.almData.currentPage = page;
+						helios.almData.dataShow = helios.almData.totalPage[page];
+
+					} else {
+						console.log(6666);
+						helios.sysData.currentPage = page;
+						helios.sysData.dataShow = helios.sysData.totalPage[page];
+					}
+				},
+				// 下一页
+				nextPage(value) {
+					if ("almData" == value) {
+						//如果==0不处理否则 分页累加
+						if (helios.almData.currentPage === helios.almData.pageNum - 1) {
+							return;
+						} else {
+							helios.almData.dataShow = helios.almData.totalPage[++helios.almData.currentPage];
+						}
+					} else {
+						if (helios.sysData.currentPage === helios.sysData.pageNum - 1) {
+							return;
+						} else {
+							helios.sysData.dataShow = helios.sysData.totalPage[++helios.sysData.currentPage];
+						}
+					}
+				},
+				// 上一页
+				prePage(value) {
+					if ("almData" == value) {
+						//如果==0不处理否则 分页累加
+						if (helios.almData.currentPage === 0) {
+							return;
+						} else {
+							helios.almData.dataShow = helios.almData.totalPage[--helios.almData.currentPage];
+						}
+					} else {
+						if (helios.sysData.currentPage === 0) {
+							return;
+						} else {
+							helios.sysData.dataShow = helios.sysData.totalPage[--helios.sysData.currentPage];
+						}
+					}
+				},
+				/* 	l表示告警等级
+					d表示告警日期时间
+					i表示告警信息
+					e 表示设备ID
+					s表示站点编号 */
+				Search() {
+					let keyValue = helios.keyValue.replace(/(^\s*)|(\s*$)/g, "");
+					helios.$data.Read = true;
+					helios.almData.currentPage = 0;
+					helios.sysData.currentPage = 0;
+					helios.sysData.dataShow = helios.sysData.totalPage[0];
+					helios.almData.dataShow = helios.almData.totalPage[0];
+					if (0 == this.cur) {
+						/* let almData = []; */
+						let almData = helios.almData.GetData;
+						almData = helios.search_site(almData, helios.sear.number);
+						almData = helios.search_device_id(almData, helios.sear.id);
+						almData = helios.search_level(almData, helios.sear.level);
+						almData = helios.search_info(almData, helios.sear.info);
+						almData = helios.search_date(almData, helios.sear.Statime, helios.sear.Endime);
+
+
+						helios.almData.GetData = almData;
+						helios.keylength = helios.almData.GetData.length;
+						helios.almData.pageNum = Math.ceil(almData.length / helios.almData.pageSize) || 1;
+
+						for (let i = 0; i < helios.almData.pageNum; i++) {
+							helios.almData.totalPage[i] = almData.slice(helios.almData.pageSize * i, helios.almData.pageSize * (i + 1))
+						}
+						// 当前显示的内容
+						helios.almData.dataShow = helios.almData.totalPage[helios.almData.currentPage];
+
+					} else {
+
+						let sysData = helios.sysData.GetData;
+						sysData = helios.search_site(sysData, helios.sear.number);
+						sysData = helios.search_device_id(sysData, helios.sear.id);
+						sysData = helios.search_level(sysData, helios.sear.level);
+						sysData = helios.search_info(sysData, helios.sear.info);
+						sysData = helios.search_date(sysData, helios.sear.Statime, helios.sear.Endime);
+
+
+						helios.sysData.GetData = sysData;
+						helios.keylength = helios.sysData.GetData.length;
+						helios.sysData.pageNum = Math.ceil(sysData.length / helios.sysData.pageSize) || 1;
+
+						for (let i = 0; i < helios.sysData.pageNum; i++) {
+							/* 每一页都是一个数组 形如 [['第一页的数据'],['第二页的数据'],['第三页数据']]
+							 根据每页显示数量 将后台的数据分割到 每一页,假设pageSize为5，
+							  则第一页是1-5条，即slice(0,5)，第二页是6-10，条即slice(0,5)... */
+							helios.sysData.totalPage[i] = sysData.slice(helios.sysData.pageSize * i, helios.sysData.pageSize * (i + 1))
+						}
+						// 当前显示的内容
+						helios.sysData.dataShow = helios.sysData.totalPage[helios.sysData.currentPage];
+
+						/* 	} */
+					}
+				},
+
+				onChangeValue() {
+					/* <el-option label="Warn" value="0"></el-option>
+					<el-option label="Minor" value="1"></el-option>
+					<el-option label="Major" value="2"></el-option>
+					<el-option label="Critical" value="3"></el-option> */
+					switch (this.$data.level) {
+						case "0":
+							this.$data.sear.level = "Warn";
+							break;
+						case "1":
+							this.$data.sear.level = "Minor";
+							break;
+						case "2":
+							this.$data.sear.level = "Major";
+							break;
+						case "3":
+							this.$data.sear.level = "Critical";
+							break;
+					}
+				},
+
+				search_site(arr, searchvalue) {
+					let log = [];
+					if (searchvalue.length == 0) return arr;
+					for (let i = 0; i < arr.length; i++) {
+						if ((arr[i].s.indexOf(searchvalue) > -1)) {
+							log.push(arr[i]);
+						}
+					}
+					return log;
+				},
+				search_device_id(arr, searchvalue) {
+					let log = [];
+					if (searchvalue.length == 0) return arr;
+					for (let i = 0; i < arr.length; i++) {
+						if ((arr[i].e.indexOf(searchvalue) > -1)) {
+							log.push(arr[i]);
+						}
+					}
+					return log;
+				},
+				search_level(arr, searchvalue) {
+
+					let log = [];
+					if (searchvalue.length == 0) return arr;
+					for (let i = 0; i < arr.length; i++) {
+						if ((arr[i].l.indexOf(searchvalue) > -1)) {
+							log.push(arr[i]);
+						}
+					}
+					return log;
+				},
+				search_info(arr, searchvalue) {
+					let log = [];
+					if (searchvalue.length == 0) return arr;
+					for (let i = 0; i < arr.length; i++) {
+						if ((arr[i].i.indexOf(searchvalue) > -1)) {
+							log.push(arr[i]);
+						}
+					}
+					return log;
+				},
+				search_date(arr, s_date_str, e_date_str) {
+					let log = [];
+					let s_date = new Date(s_date_str);
+					let e_date = new Date(e_date_str);
+					let date;
+					let select = 0;
+
+					if (s_date_str.length > 0 && e_date_str.length == 0) {
+						select = 1;
+					} else if (s_date_str.length == 0 && e_date_str.length > 0) {
+						select = 2;
+					} else if (s_date_str.length == 0 && e_date_str.length == 0) {
+						return arr;
+					}
+
+					for (let i = 0; i < arr.length; i++) {
+						date = new Date(arr[i].d.slice(0, 10));
+						switch (select) {
+							case 0:
+								if ((date >= s_date) && (date <= e_date)) {
+									log.push(arr[i]);
+								}
+								break;
+							case 1:
+								if ((date >= s_date)) {
+									log.push(arr[i]);
+								}
+								break;
+							case 2:
+								if ((date <= e_date)) {
+									log.push(arr[i]);
+								}
+								break;
+						}
+					}
+					return log;
+				},
+				Clearlog() {
+					const h = toast.$createElement;
+					toast.$msgbox({
+						title: `M - DOTS Report`,
+						message: h('p', null, [
+							h('p', {
+								style: 'color: teal'
+							}, `Whether to remove :M - DOTS Report `)
+						]),
+
+						showCancelButton: true,
+						confirmButtonText: 'Confirm',
+						cancelButtonText: 'Cancel',
+						beforeClose: (action, instance, done) => {
+							if (action === 'confirm') {
+								instance.confirmButtonLoading = true;
+								instance.confirmButtonText = 'The execution of...';
+								setTimeout(() => {
+									done();
+									instance.confirmButtonLoading = false;
+									window.location.href = "Report.html";
+								}, 1000);
+
+								let data = [];
+								let obj1 = {
+									adr: 303,
+									value: "1"
+								};
+								data.push(obj1);
+
+								var obj = {
+									"data": JSON.stringify(data),
+									"action": "SET"
+								}
+								util.postattrajax(obj, function (data) {
+									if (1 != data) {
+										util.error('Error' + data.message);
+									} else {
+										setTimeout(function () {
+											window.location.href = "Report.html";
+										}, 500);
+									}
+								});
+
+							} else {
+								done();
+								//取消
+								console.log(1);
+							}
+						}
+					}).then(action => {
+						//确定
+						console.log(2);
+					}).catch(() => {
+						//取消
+						console.log(1);
+					});
+				},
+				ChangedpageSize() {
+					this.Search();
+				},
+				showText(page) {
+					if (this.cur == 0) {
+						if (page < 10 || page > (helios.almData.pageNum - 8)) {
+							return page
+						} else if (page <= helios.almData.currentPage + 8 && page >= helios.almData.currentPage) { // 当前页的前一页和后一页始终显示
+							return page
+						} else if (page === helios.almData.currentPage + 10 || page === helios.almData.currentPage - 1) { // 当前页的前前页和后后页显示 ...
+							return '...'
+						}
+					} else {
+						if (page < 10 || page > (helios.sysData.pageNum - 8)) {
+							return page
+						} else if (page <= helios.sysData.currentPage + 8 && page >= helios.sysData.currentPage) { // 当前页的前一页和后一页始终显示
+							return page
+						} else if (page === helios.sysData.currentPage + 10 || page === helios.sysData.currentPage - 1) { // 当前页的前前页和后后页显示 ...
+							return '...'
+						}
+					}
+
+				}
+
+			},
+
+		});
+	</script>
+
+
+	<style>
+		.col-xs-2 p {
+			position: absolute;
+			left: -61px;
+			font-size: 24px;
+			top: -9px;
+		}
+
+		.logbox {
+			height: 140px;
+			width: 140px;
+			position: absolute;
+			top: 92px;
+			-webkit-transform: translate(-50%, -50%);
+			transform: translate(-50%, -50%);
+			background: #020438;
+			border-radius: 100%;
+			overflow: hidden;
+		}
+
+		.logbox .percent {
+			position: absolute;
+			left: 0;
+			top: 0;
+			z-index: 3;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			display: -webkit-flex;
+			align-items: center;
+			justify-content: center;
+			color: #fff;
+			font-size: 43px;
+		}
+
+		.logbox .water {
+			position: absolute;
+			left: 0;
+			top: 0;
+			z-index: 2;
+			width: 100%;
+			height: 100%;
+			-webkit-transform: translate(0, 100%);
+			transform: translate(0, 100%);
+			background: #4D6DE3;
+			transition: all .3s;
+		}
+
+		.logbox .water_wave {
+			width: 200%;
+			position: absolute;
+			bottom: 100%;
+		}
+
+		.logbox .water_wave_back {
+			right: 0;
+			fill: #C7EEFF;
+			-webkit-animation: wave-back 1.4s infinite linear;
+			animation: wave-back 1.4s infinite linear;
+		}
+
+		.logbox .water_wave_front {
+			left: 0;
+			fill: #4D6DE3;
+			margin-bottom: -1px;
+			-webkit-animation: wave-front .7s infinite linear;
+			animation: wave-front .7s infinite linear;
+		}
+
+		@-webkit-keyframes wave-front {
+			100% {
+				-webkit-transform: translate(-50%, 0);
+				transform: translate(-50%, 0);
+			}
+		}
+
+		@keyframes wave-front {
+			100% {
+				-webkit-transform: translate(-50%, 0);
+				transform: translate(-50%, 0);
+			}
+		}
+
+		@-webkit-keyframes wave-back {
+			100% {
+				-webkit-transform: translate(50%, 0);
+				transform: translate(50%, 0);
+			}
+		}
+
+		@keyframes wave-back {
+			100% {
+				-webkit-transform: translate(50%, 0);
+				transform: translate(50%, 0);
+			}
+		}
+	</style>
+
+
+
+</body>
+
+
+</html>

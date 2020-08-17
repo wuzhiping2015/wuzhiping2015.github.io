@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>user</title>
+
+		<link rel="stylesheet" href="assets/css/bootstrap.min.css?2019827" />
+		<link rel="stylesheet" href="assets/css/global.css?2019827" />
+
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="assets/css/font-awesome.min.css?2019827" />
+
+		<!-- Theme style -->
+		<link rel="stylesheet" href="assets/css/AdminLTE.min.css?2019827" />
+		<link rel="stylesheet" href="assets/css/skins/skin-black.min.css?2019827" />
+
+		<link rel="stylesheet" href="assets/css/index.css?2019827">
+	</head>
+	<style>
+		.btn-app{
+			height: auto;
+			font-size: 16px;
+		}
+		.iconfont{
+			color: #00c0ef !important;
+		}
+		.btn-app>.fa
+		{
+			margin-bottom: 7px;
+			font-size: 43px;
+		}
+		.col-xs-3{
+			width: 23%;
+		}
+	</style>
+	<body class="skin-black sidebar-open sidebar-mini">
+		<div class="wrapper">
+			<!-- 页头 -->
+			<div id="comp-header" class="main-header" style="position: relative; z-index: 99;">
+				<el-main-header :loguser="logUserName"></el-main-header>
+			</div>
+			<!-- 页头end -->
+			<!-- 内容区域 -->
+			<div id="content-wrapper">
+				<!-- 内容头部面包屑 -->
+
+				<!-- 主要内容显示 -->
+				<section class="content container-fluid" id="MainContext" style="padding:15px; min-width: 1200px;">
+
+					<!-- system -->
+					<div class="row">
+						<div class="col-xs-12" style="padding-top: 15px;">
+
+							<div class="col-xs-6">
+								<div class="box-header with-border">
+									<h3 class="box-title">设备信息</h3> <!-- GRPS -->
+									<div class="box-tools pull-right" style="top: 9px;">
+										<el-button type="primary" @click="setequipment()" :disabled="!Set">Set</el-button>
+										<el-button @click="getequipment(1)" :disabled="!Read">Read</el-button>
+									</div>
+								</div>
+								<div class="clear">
+									<div class="box">
+										<div class="box-body">
+											<div class="col-xs-11">
+												<el-form ref="equipment" label-width="180px">
+													<div class="col-md-11" v-for="(v,i) in  equipment" v-if="v.adr==275 ||  v.adr==276">
+														<el-form-item :label="v.name">
+															{{v.value}}
+															<!-- <el-input v-model="v.value"></el-input> -->
+														</el-form-item>
+													</div>
+													<div class="col-md-11" v-for="(v,i) in  equipment" v-if="v.adr!=275 && v.adr!=276">
+														<el-form-item :label="v.name">
+															<el-input v-model="v.value"></el-input>
+														</el-form-item>
+													</div>
+												</el-form>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+							<div class="col-xs-6">
+								<div class="box-header with-border">
+									<h3 class="box-title">设备信息</h3>
+								</div>
+								<div class="clear">
+									<div class="box">
+										<div class="box-body" style="padding-top: 20px;">
+											<div class="col-xs-12">
+												<a href="javascript:void(0);" @click="Backup(1,'Backup');" :disabled="!Set" class="btn btn-app col-xs-3">
+													<i class="fa icon iconfont icon-beifen1"></i> Backup
+												</a>
+												<a href="javascript:void(0);" @click="Backup(2,'Reduction');" :disabled="!Set" class="btn btn-app col-xs-3">
+													<i class="fa icon iconfont icon-huifu"></i> Reduction
+												</a>
+												<a href="javascript:void(0);" @click="Backup(3,'Import');" :disabled="!Set" class="btn btn-app col-xs-3">
+													<i class="fa icon iconfont icon-shujudaoru"></i>Import
+												</a>
+
+												<a href="javascript:void(0);" @click="Backup(4,'Export');" :disabled="!Set" class="btn btn-app col-xs-3">
+													<i class="fa icon iconfont icon-shujudaochu"></i>Export
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- system end -->
+
+				</section>
+			</div>
+			<!-- 内容区域 -->
+
+		</div>
+		<script type="text/javascript" src="assets/js/jquery.js"></script>
+		<script type="text/javascript" src="assets/js/vue.js"></script>
+		<script type="text/javascript" src="assets/js/index.js"></script>
+		<script type="text/javascript" src="assets/js/comment.js"></script>
+		<script type="text/javascript" src="assets/js/adminlte.js"></script>
+
+		<script>
+			let helios;
+			let data = {
+				Set: true,
+				Read: true,
+				equipment: [],
+
+			};
+			helios = new Vue({
+				el: "#MainContext",
+				data: data,
+				beforeMount() {
+					this.getequipment();
+				},
+
+				mounted() {
+					$("body").resize();
+				},
+				methods: {
+					getequipment(c) {
+						var obj = [275, 276, 271, 272, 273, 274, 277];
+						var obj1 = {
+							"data": obj.join(),
+							"action": "READ"
+						}
+						util.getattrajax(obj1, function(data) {
+							var data = data.data;
+							var data1 = [];
+							if (data.length > 0) {
+								if (c > 0) {
+									helios.$data.Read = false;
+									toast.$message({
+										message: "success",
+										type: 'success',
+										showClose: true,
+										offset: 10
+									});
+									setTimeout(function() {
+										helios.$data.Read = true;
+									}, 1200);
+								}
+
+								data.forEach(function(v, i, attr) {
+									switch (v.adr) {
+										case 275:
+											var obj = {
+												adr: v.adr,
+												name: "Hardware Version",
+												value: v.value,
+											}
+											data1.push(obj);
+											break;
+										case 276:
+											var obj = {
+												adr: v.adr,
+												name: "Software Version",
+												value: v.value,
+											}
+											data1.push(obj);
+											break;
+										case 271:
+											var obj = {
+												adr: v.adr,
+												name: "Serial Number",
+												value: v.value,
+											}
+											data1.push(obj);
+											break;
+										case 272:
+											var obj = {
+												adr: v.adr,
+												name: "Part Number",
+												value: v.value,
+											}
+											data1.push(obj);
+											break;
+
+										case 273:
+											var obj = {
+												adr: v.adr,
+												name: "Model Number",
+												value: v.value,
+											}
+											data1.push(obj);
+											break;
+										case 274:
+											var obj = {
+												adr: v.adr,
+												name: "Manufacturer",
+												value: v.value,
+											}
+											data1.push(obj);
+											break;
+										case 277:
+											var obj = {
+												adr: v.adr,
+												name: "Site Name",
+												value: v.value,
+											}
+											data1.push(obj);
+											break;
+											/* 	var obj = [275, 276, 271, 272, 273, 274, 277]; */
+									}
+								});
+								/* console.log(data1); */
+								helios.equipment = data1;
+
+							} else {
+								toast.$message({
+									message: ' Error',
+									type: 'error',
+									showClose: true,
+									offset: 80
+								});
+							}
+						});
+					},
+					setequipment() {
+						let data = [];
+						helios.$data.Set = false;
+						helios.equipment.forEach(function(v, i, attr) {
+							if (v.adr == 275 || v.adr == 276) {} else {
+								let obj = {
+									adr: v.adr,
+									value: v.value,
+								}
+								data.push(obj);
+							}
+						});
+						var obj1 = {
+							"data": JSON.stringify(data),
+							"action": "SET"
+						}
+						util.postattrajax(obj1, function(data) {
+							if (1 != data) {
+								toast.$message({
+									message: ' Error:' + data.message,
+									type: 'error',
+									showClose: true,
+									offset: 80
+								});
+								return false;
+							} else {
+								setTimeout(() => {
+									helios.$data.Set = true;
+									toast.$message({
+										message: "success",
+										type: 'success',
+										showClose: true,
+										offset: 40
+									});
+								}, 1200);
+							}
+						});
+					},
+					Backup() {
+						/* toast.$message({
+							message: arguments[1],
+							type: 'success',
+							showClose: true,
+							offset: 40
+						}); */
+
+						helios.$data.Set = false;
+						let $Tit = "";
+						let $Tit1 = "";
+						let $Txt = "";
+						let data = [];
+						var obj = {
+							adr: '',
+							value: '',
+						};
+
+						if (1 == arguments[0]) {
+							$Tit = arguments[1];
+							$Tit1 = arguments[1];
+							$Txt = "You determine if a backup operation is performed?";
+							obj = {
+								adr: 278,
+								value: "1",
+							};
+
+						} else if (2 == arguments[0]) {
+							$Tit = "Perform restore factory Settings？";
+							$Tit1 = arguments[1];
+							$Txt = "The device will restart after successful execution?";
+							obj = {
+								adr: 279,
+								value: "1",
+							};
+						} else if (3 == arguments[0]) {
+							$Tit = "数据导出开发中...";
+							$Tit1 = "数据导出开发中...";
+							$Txt = "数据导出开发中...";
+						} else if (4 == arguments[0]) {
+							$Tit = "数据导出开发中...";
+							$Tit1 = "数据导出开发中...";
+							$Txt = "数据导出开发中...";
+						}
+
+
+						const h = this.$createElement;
+						this.$msgbox({
+							title: $Tit1,
+							message: h('p', null, [
+								h('span', null,
+									$Tit
+								),
+								h('p', {
+									style: 'color: teal'
+								}, $Txt)
+							]),
+
+							showCancelButton: true,
+							confirmButtonText: 'Confirm',
+							cancelButtonText: 'Reset',
+							beforeClose: (action, instance, done) => {
+								if (action === 'confirm') {
+									instance.confirmButtonLoading = true;
+									instance.confirmButtonText = 'The execution of...';
+									setTimeout(() => {
+										done();
+										setTimeout(() => {
+											instance.confirmButtonLoading = false;
+											if (1 == arguments[0]) {
+												data.push(obj);
+												var obj1 = {
+													"data": JSON.stringify(data),
+													"action": "SET"
+												}
+												util.postattrajax1(obj1, function(data) {
+													if ("success" != data) {
+														toast.$message({
+															message: ' Error:' + data.message,
+															type: 'error',
+															showClose: true,
+															offset: 80
+														});
+													} else {
+														toast.$message({
+															message: "Backup Succeed",
+															type: 'success',
+															showClose: true,
+															offset: 40
+														});
+														setTimeout(() => {
+															helios.$data.Set = true;
+														}, 1200);
+													}
+												});
+
+											} else if (2 == arguments[0]) {
+												data.push(obj);
+												var obj1 = {
+													"data": JSON.stringify(data),
+													"action": "SET"
+												}
+												util.postattrajax1(obj1, function(data) {
+													if ("success" != data) {
+														toast.$message({
+															message: ' Error:' + data.message,
+															type: 'error',
+															showClose: true,
+															offset: 80
+														});
+													} else {
+														toast.$message({
+															message: "Reduction success",
+															type: 'success',
+															showClose: true,
+															offset: 40
+														});
+														sessionStorage.removeItem("$session");
+														sessionStorage.removeItem("url");
+														sessionStorage.removeItem("equipment");
+														sessionStorage.removeItem("AlarmData");
+														setTimeout(function() {
+															//helios.$data.Set = true;
+															window.location.href = "login.html";
+														}, 2000)
+													}
+												});
+											} else {
+												helios.$data.Set = true;
+											}
+										}, 100);
+									}, 1000);
+								} else {
+									done();
+									helios.$data.Set = true;
+								}
+							}
+						}).then(action => {
+							/* this.$message({
+								type: 'success',
+								message: "The update is successful"
+							}); */
+						}).catch(() => {
+							helios.$data.Set = true;
+						});
+
+
+
+					}
+				},
+			});
+		</script>
+	</body>
+</html>

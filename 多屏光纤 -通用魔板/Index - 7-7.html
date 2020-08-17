@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<METAHTTP-EQUIV="Pragma" content="no-cache">
+			<METAHTTP-EQUIV="Cache-Control" content="no-cache">
+				<METAHTTP-EQUIV="Expires" content="0">
+					<title>Index</title>
+					<link rel="stylesheet" href="assets/css/bootstrap.min.css?2019827" />
+					<link rel="stylesheet" href="assets/css/global.css?2019827" />
+					<link rel="stylesheet" href="assets/css/font-awesome.min.css?2019827" />
+					<link rel="stylesheet" href="assets/css/AdminLTE.min.css?2019827" />
+					<link rel="stylesheet" href="assets/css/skins/skin-black.min.css?2019827" />
+					<link rel="stylesheet" href="assets/css/index.css?2019827">
+					<link rel="stylesheet" href="assets/css/topology.css?2019827">
+	</head>
+	<body class="skin-black sidebar-open sidebar-mini">
+		<div class="wrapper">
+			<!-- 页头 -->
+			<div id="comp-header" class="main-header" style="position: relative; z-index: 99;">
+				<el-main-header></el-main-header>
+			</div>
+			<!-- 页头end -->
+
+			<!-- 侧边栏导航 -->
+			<div id="comp-sidebar">
+				<el-main-sidebar v-bind:siteno="sitenodata"></el-main-sidebar>
+			</div>
+			<!-- 侧边栏导航 end -->
+
+			<!-- 内容区域 -->
+			<transition name="slide-fade">
+				<div class="content-wrapper" id="content">
+					<!-- 内容头部面包屑 -->
+
+					<!-- 主要内容显示 -->
+					<section class="content container-fluid" id="MainContext">
+
+						<div class="col-md-12 canbox">
+							<div class="col-md-4 cantips">
+								<div style="float: right;">
+
+									<form @submit.prevent="onSubmit" id="fileForm">
+										<div style="float: left; margin-right: 5px; cursor: pointer;">
+											<a href="javascript:void(0);" class="a-upload">
+												<input type="file" value="Select the file" id="files" @change="fileImport">Update background
+											</a>
+										</div>
+									</form>
+									<el-button :disabled="!Read" type="button" @click="SetCoordinates">Save the coordinates</el-button>
+
+								</div>
+								<!-- <div style="float: right;" title="开启定时">
+								<el-switch v-model="canMove">
+								</el-switch>
+							</div> -->
+							</div>
+							<canvas id="canvas" width="1100" height="1000">
+
+							</canvas>
+
+						</div>
+
+					</section>
+				</div>
+				<!-- 内容区域 -->
+			</transition>
+		</div>
+
+		<script type="text/javascript" src="assets/js/jquery.js?v=12222"></script>
+		<script type="text/javascript" src="assets/js/jtopo-0.4.8-min.js?v=12222"></script>
+		<script type="text/javascript" src="assets/js/toolbar.js?v=12222"></script>
+
+		<script type="text/javascript" src="assets/js/FileSaver.min.js?v=12222"></script>
+		<script type="text/javascript" src="assets/js/vue.js?v=12222"></script>
+		<script type="text/javascript" src="assets/js/index.js?v=12222"></script>
+		<script type="text/javascript" src="assets/js/comment.js?v=12222"></script>
+
+
+		<script>
+			var vm = this;
+			var addrStation;
+			var Helios;
+			var num = 0;
+			var Fill_end = new Array();
+			Fill_end[0] = "0000000";
+			Fill_end[1] = "000000";
+			Fill_end[2] = "00000";
+			Fill_end[3] = "0000";
+			Fill_end[4] = "000";
+			Fill_end[5] = "00";
+			Fill_end[6] = "00";
+			Fill_end[7] = "0";
+			var canvas, stage, scene;
+			var CanvasWin_width, CanvasWin_height;
+			var SiteNode = new Array(256); //存储数据中心
+			let data = {
+				siteInfo: [],
+				offset: 0,
+				station: '',
+				StationChoose: [],
+				canMove: false,
+				heliosTrue: [],
+				Read: true,
+				verisn: Math.ceil(Math.random() * 1010),
+			};
+
+			window.onresize = function() {
+				CanvasWin_width = $("#content").width();
+				CanvasWin_height = $("#content").height() - 50;
+
+				canvas = document.getElementById("canvas");
+				canvas.width = CanvasWin_width;
+				canvas.height = CanvasWin_height;
+			}
+
+			function Canvas_Init() {
+				//初始化画布的值
+				canvas = document.getElementById("canvas");
+				stage = new JTopo.Stage(canvas);
+				scene = new JTopo.Scene(stage);
+				scene.mode = "select";
+				scene.background = 'background.jpg?verisn=' + Math.ceil(Math.random() * 1010);
+				/* scene.background = 'cgi-bin/background.jpg'; */
+			}
+
+			function GetStation(vue1) {
+				var temp = [];
+				var obj = {};
+				var param = [];
+				var data_site;
+				var vue = vue1;
+				/* 	sessionStorage.getItem('sitelist'); */
+				addrStation = {
+					"datalist": [{
+						"equipid": 0,
+						"siteno": 0,
+						"type": "AU",
+						"device_id": "0",
+						"x": 440,
+						"y": 231,
+
+					}, {
+						"equipid": 2,
+						"siteno": 10000000,
+						"device_id": "0100",
+						"type": "EU",
+						"x": 323,
+						"y": 223,
+
+					}, {
+						"equipid": 2,
+						"siteno": 13000000,
+						"device_id": "0103",
+						"type": "RU",
+						"x": 363,
+						"y": 150,
+
+					}]
+				}
+
+				FindSiteTask(vue);
+				//设置站点  
+				setInterval(function() {
+					if (vue.canMove)
+						FindSiteTask(vue);
+				}, 10000);
+
+				/* for (var i = 1; i < addrStation.length; i++) {
+					console.log(addrStation[i]);
+					if (addrStation[i] == 0) {
+						break;
+					}
+					Site_processing(addrStation[i], vue);
+				} */
+			}
+			//定时器
+			function FindSiteTask(vue1) {
+				num = 0;
+				var vue = vue1;
+				/* 	var timer = setInterval(() => {
+						console.log(33);
+						num++;
+						console.log(addrStation[num]);
+						if (addrStation[num] == "0") {
+							window.clearInterval(timer);
+						}
+					}, 1000); */
+				//设置坐标
+				Site_processing(addrStation[num], vue);
+
+			}
+
+			//设置坐标
+			function Site_processing(stationInfo, vue1) {
+
+				var link;
+				var SiteNode_exist = []; //已经存在站点存储
+				var obj = {};
+				var temp_arr;
+				var temp = [];
+				var ar;
+				var str1;
+				var str2;
+				var len = 0;
+				vue = vue1;
+				//清空数组
+				SiteNode.splice(0, SiteNode.length);
+				//获取站点信息
+				//处理上传帧格式信息
+				//页面初始化
+				/* 	util.getmods(0, function(data) { */
+				var datalist = [{
+					"equipid": "",
+					"siteno": 0,
+					"device_id": "0",
+					"type": "AU",
+					"x": "",
+					"y": "",
+					"alarm": "",
+				}];
+				var Helioscoordinates = {
+					x: 10,
+					y: 10,
+					width: CanvasWin_width / 4,
+					height: CanvasWin_height / 4,
+					displacement: "",
+					SETdisp: Number(localStorage.getItem("SETdisp")),
+				};
+
+				$.ajax({
+					type: "GET",
+					url: "topology.json?verisn=" + Math.ceil(Math.random() * 1010),
+					dataType: "json",
+					success: function(data) {
+
+						datalist[0].equipid = data.sites[0].site_no;
+
+						/* //初始节点 */
+						if (0 < Helioscoordinates.SETdisp) {
+							datalist[0].x = data.sites[0].x;
+							datalist[0].y = data.sites[0].y;
+						} else {
+							datalist[0].x = Helioscoordinates.width;
+							datalist[0].y = Helioscoordinates.height;
+						}
+						/* //第一个节点 */
+						var deviData = (data.sites[0].device);
+
+						for (var i = 0; i < deviData.length; i++) {
+							Helioscoordinates.displacement = (i <= 0) ? ii = 1 : ii = i + 1; //第几位
+
+							let SiteNobj = {
+								/* "equipid": "2",
+								"siteno": deviData[i].route,
+								"device_id": deviData[i].device_id,
+								"type": deviData[i].type,
+								 "x": deviData[i].x ,
+								"y": deviData[i].y,
+								"x": Helioscoordinates.width + (50 * Helioscoordinates.displacement),
+								"y": Helioscoordinates.height + (50 * Helioscoordinates.displacement),
+								"alarm": "",
+								*/
+							}
+							//初始节点
+							if (0 < Helioscoordinates.SETdisp) {
+
+								SiteNobj = {
+									"equipid": "2",
+									"siteno": deviData[i].route,
+									"device_id": deviData[i].device_id,
+									"type": deviData[i].type,
+									"x": deviData[i].x,
+									"y": deviData[i].y,
+									"alarm": "",
+								}
+
+							} else {
+								SiteNobj = {
+									"equipid": "2",
+									"siteno": deviData[i].route,
+									"device_id": deviData[i].device_id,
+									"type": deviData[i].type,
+									"x": Helioscoordinates.width + (50 * Helioscoordinates.displacement),
+									"y": Helioscoordinates.height + (50 * Helioscoordinates.displacement),
+									"alarm": "",
+								}
+							}
+							datalist.push(SiteNobj);
+						}
+
+						/* //告警 */
+						let Heliosalarm;
+						let Herandom = Math.ceil(Math.random() * 1010);
+						$.getJSON('topology_alarm.json?verisn=' + Herandom + ')',
+							function(Data) {
+								datalist[0].alarm = Data.sites[0].alarm;
+								Heliosalarm = (Data.sites[0].device);
+								Heliosalarm.forEach(function(value, i) {
+									datalist.slice(1)[i].alarm = value.alarm;
+									/* if (value.device_id == datalist.slice(1)[i].device_id) {
+										datalist.slice(1)[i].alarm = value.alarm; //告警取第一个
+									} */
+								});
+							});
+						Helios.heliosTrue = datalist;
+						scene.clear();
+
+						$.each(datalist, function(idx, item) {
+							//处理点初始化
+							if (item.siteno == 0) {
+								SiteNode[idx + 1] = new JTopo.Node(item.type);
+								Site_Datefit(SiteNode[idx + 1], item); //赋值，双击
+								scene.add(SiteNode[idx + 1]); //添加一个扩普节点
+								temp.push(item);
+								SiteNode_exist_add(SiteNode_exist, item.siteno, item);
+								currutNode = 1;
+
+							} else {
+								//处理非监控板子
+								temp.push(item);
+								ar = SiteNode_exist.find(function(elem) {
+									return elem.siteno == item.siteno;
+								});
+								if (ar == undefined) {
+									str1 = item.siteno.toString();
+									temp_arr = str1.split('');
+
+									for (i = 0; i < 8; i++) {
+										if (temp_arr[i] != "0") {
+											//添加site站点信息
+											str2 = str1.substring(0, i + 1) + Fill_end[i];
+											ar = SiteNode_exist.find(function(elem) {
+												return elem.siteno == str2;
+											});
+
+											if (ar == undefined) {
+												//初始化点
+												SiteNode_exist_add(SiteNode_exist, item.siteno, item);
+
+												len = SiteNode_exist.length;
+												//初始化站点信息
+												SiteNode[len] = new JTopo.Node(str2);
+
+												/* SiteNode[len].radius = 15;
+												SiteNode[len].setLocation(100, 200); */
+
+												scene.add(SiteNode[len]); // 添加到扩普
+
+												// link = new JTopo.Link(SiteNode[currutNode], SiteNode[len]);
+												// link.strokeColor = '0,0,0'; //设置线条
+
+												link = new JTopo.Link(SiteNode[currutNode], SiteNode[len], "");
+												link.direction = 'vertical' || 'horizontal';
+												link.lineWidth = 3; // 线宽
+												link.bundleOffset = 60; // 折线拐角处的长度
+												link.bundleGap = 20; // 线条之间的间隔
+												link.textOffsetY = 3; // 文本偏移量（向下3个像素）
+												scene.add(link);
+												currutNode = len;
+											} else {
+												currutNode = ar.no;
+											}
+										} else {
+
+											len = SiteNode_exist.length;
+											Site_Datefit(SiteNode[len], item); //赋值，双击
+											currutNode = 1;
+											break;
+										}
+									}
+								} else {
+									/* console.log(ar); */
+									len = ar.no;
+									Site_Datefit(SiteNode[len], item); //赋值，双击
+								}
+							}
+							//处理线初始化
+						});
+
+
+						vm.siteInfo = SiteNode_exist;
+						stage.paint();
+
+					},
+				});
+			}
+
+			//赋值，双击
+			function Site_Datefit(m_sitenode, item) {
+				/* 	if (item.type == "AU") {
+						//m_sitenode.setImage('assets/images/au.jpg', true);
+					} else {
+						//	m_sitenode.setImage('assets/images/ru.jpg', true);
+						m_sitenode.setSize(30, 30);
+					} */
+				m_sitenode.setSize(25, 25);
+				setTimeout(function() {
+					if (item.alarm == 0) {
+						m_sitenode.fillColor = '0, 166, 90';; //默认颜色 
+					} else {
+						m_sitenode.fillColor = '221,75,57';; //告警
+					}
+				}, 500);
+
+
+				m_sitenode.x = parseInt(item.x / 1000 * CanvasWin_width);
+				m_sitenode.y = parseInt(item.y / 1000 * CanvasWin_height);
+
+				m_sitenode.setLocation(m_sitenode.x, m_sitenode.y);
+
+
+				m_sitenode.equipid = item.equipid;
+				m_sitenode.id = item.id;
+				m_sitenode.offline = item.offline;
+				m_sitenode.station = item.station;
+				m_sitenode.siteno = item.siteno;
+
+				m_sitenode.route = item.siteno;
+				m_sitenode.device_id = item.device_id;
+				m_sitenode.type = item.type;
+
+				m_sitenode.addEventListener("dbclick", function(event, i) {
+					function hex2int(hex) {
+						var len = hex.length,
+							a = new Array(len),
+							code;
+						for (var i = 0; i < len; i++) {
+							code = hex.charCodeAt(i);
+							if (48 <= code && code < 58) {
+								code -= 48;
+							} else {
+								code = (code & 0xdf) - 65 + 10;
+							}
+							a[i] = code;
+						}
+						return a.reduce(function(acc, c) {
+							acc = 16 * acc + c;
+							return acc + "";
+						}, 0);
+					}
+					var tagurl = (item.type).toLowerCase();
+					sessionStorage.setItem("url", "Status");
+					sessionStorage.setItem("equipment", tagurl);
+
+					let data = [];
+					let obj1 = {
+						adr: 83,
+						value: hex2int(item.device_id)
+					};
+					data.push(obj1);
+					/* 	console.log(item);
+						console.log(data);
+						console.log(item.device_id); */
+					localStorage.setItem("MDOTS", JSON.stringify(data));
+					var obj = {
+						"data": JSON.stringify(data),
+						"action": "SET"
+					}
+					util.postattrajax(obj, function(data) {
+						if (1 != data) {
+							util.error('Error' + data.message);
+						} else {
+							setTimeout(function() {
+								window.location.href = "Status.html";
+							}, 500);
+						}
+					});
+				});
+			}
+			//增加已经存在的站点
+			function SiteNode_exist_add(SiteNode_exist, siteno) {
+
+				var obj = {};
+				obj.no = SiteNode_exist.length + 1;
+				obj.band = 0;
+				obj.equipid = 0;
+				obj.ip = "";
+				obj.link = 0;
+				obj.status = 0;
+				obj.siteno = siteno;
+				obj.type = arguments[2].type;
+				obj.device_id = arguments[2].device_id;
+				obj.x = arguments[2].x;
+				obj.y = arguments[2].y;
+				SiteNode_exist.push(obj);
+			}
+
+			Helios = new Vue({
+				el: "#content",
+				data: data,
+				mounted() {
+					$("body").resize();
+					Canvas_Init();
+					GetStation(this);
+				},
+				//事件
+				methods: {
+					//保存坐标
+					SetCoordinates: function() {
+						/* 	console.log(vm.siteInfo); */
+						Helios.$data.Read = false;
+						var obj = {};
+						var params = [];
+
+						for (i = 1; i < SiteNode.length; i++) {
+							if (undefined == SiteNode[i].type || undefined == SiteNode[i].device_id) {} else {
+								obj = {};
+								obj.route = SiteNode[i].route;
+								obj.device_id = SiteNode[i].device_id;
+								obj.equipid = SiteNode[i].equipid;
+								obj.type = SiteNode[i].type;
+								obj.x = parseInt(SiteNode[i].x * 1000 / CanvasWin_width).toString();
+								obj.y = parseInt(SiteNode[i].y * 1000 / CanvasWin_height).toString();
+								params.push(obj);
+							}
+						}
+
+
+						let sites = [{
+							"site_no": "12345678",
+							"x": "0",
+							"y": "0",
+							"device": []
+						}];
+
+						for (var i = 0; i < params.length; i++) {
+
+							if (i == 0) {
+								sites[0].site_no = params[i].equipid;
+								sites[0].x = params[i].x;
+								sites[0].y = params[i].y;
+							} else {
+								var obj = {};
+								obj.route = params[i].route;
+								obj.device_id = params[i].device_id;
+								obj.type = params[i].type;
+								obj.x = params[i].x;
+								obj.y = params[i].y;
+								sites[0].device.push(obj);
+							}
+						}
+
+						var heliosThre = {
+							"sites": sites
+						}
+						$.ajax({
+							url: "cgi-bin/doaction.cgi",
+							data: {
+								"action": "STATION_SAVE",
+								"stationInfo": JSON.stringify(heliosThre),
+							},
+							type: "post",
+							dataType: "json",
+							success: function(data, status) {},
+							error: function(req, status, err) {
+								localStorage.setItem("SETdisp", 1);
+								util.success('success');
+								setTimeout(function() {
+									window.location.href = "Index.html";
+									Helios.$data.Read = true;
+								}, 1200);
+							}
+						});
+					},
+
+					fileImport() {
+						var selectedFile = "";
+						var temp = [];
+						var obj = {};
+						selectedFile = document.getElementById('files').files[0];
+						if (undefined == selectedFile) {
+							toast.$notify({
+								title: 'warning',
+								message: 'Please select file',
+								type: 'warning'
+							});
+							return false;
+						} else {
+							let suffix = selectedFile.name;
+							if ("background.jpg" != suffix) {
+								toast.$notify({
+									title: 'warning',
+									message: 'Please set the filename to【background.jpg】',
+									type: 'warning'
+								});
+								return false;
+							} else {
+
+							}
+						}
+
+						Helios.$data.Read = false;
+
+
+						let fileForm = document.getElementById("fileForm"); // 获取整个form表单数据,记住input都需要name属性
+						let url = "../cgi-bin/doaction.cgi" // 上传服务器接口
+
+						let formData = new FormData(fileForm);
+
+
+						formData.append("action", "ImageSet");
+						formData.append("filename", selectedFile);
+						formData.append("data", JSON.stringify(temp));
+
+
+						$.ajax({
+							url: url,
+							data: formData,
+							/* data: formData.get('filename'), */
+							/* data: JSON.stringify(temp), */
+							type: "post",
+							processData: false,
+							contentType: false,
+
+							success: function(data, status) {
+								/* console.log(data);
+								console.log(status); */
+								var data = JSON.parse(data);
+								if (data.code == 1) {
+									Helios.$data.Read = true;
+									toast.$notify({
+										title: 'success',
+										message: '',
+										type: 'success'
+									});
+
+									setTimeout(function() {
+										window.location.href = "Index.html";
+									}, 1000);
+								} else {
+									Helios.$data.Read = true;
+									toast.$notify({
+										title: 'warning',
+										message: 'Update failed',
+										type: 'warning'
+									});
+								}
+							},
+							error: function(req, status, err) {
+
+							}
+						});
+					},
+					onSubmit() {
+						// 取消form表单的自动提交功能
+						return false;
+					}
+				},
+			});
+		</script>
+		<style>
+			.a-upload {
+				position: relative;
+				cursor: pointer;
+				color: #606266;
+				background: #fafafa;
+				border: 1px solid #ddd;
+				border-radius: 4px;
+				overflow: hidden;
+				display: inline-block;
+				transition: .1s;
+				font-weight: 500;
+				padding: 10.5px 20px;
+				font-size: 14px;
+				border-radius: 4px;
+			}
+
+			.a-upload input {
+				position: absolute;
+				font-size: 9px;
+				right: 0;
+				top: 0;
+				opacity: 0;
+				filter: alpha(opacity=0);
+				cursor: pointer;
+				z-index: 555;
+				width: 100%;
+				height: 37px;
+				z-index: 66;
+			}
+
+			.a-upload:hover {
+				color: #409EFF;
+				border-color: #c6e2ff;
+				background-color: #ecf5ff;
+			}
+		</style>
+
+	</body>
+
+
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Factory </title>
+		<link rel="stylesheet" href="assets/css/bootstrap.min.css?2019827" />
+		<link rel="stylesheet" href="assets/css/global.css?2019827" />
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="assets/css/font-awesome.min.css?2019827" />
+		<!-- Theme style -->
+		<link rel="stylesheet" href="assets/css/AdminLTE.min.css?2019827" />
+		<link rel="stylesheet" href="assets/css/skins/skin-black.min.css?2019827" />
+		<link rel="stylesheet" href="assets/css/index.css?2019827">
+	</head>
+	<style>
+		.clear{
+	 	 overflow: auto;
+	 	  zoom: 1;
+	 	  background: #fff;
+	 }
+	 .box-header.with-border {
+	     padding-bottom: 20px;
+	 }
+	 .el-form-item__content{
+		 margin-bottom: 8px;
+	 }
+	 .nullempty .icon {
+	     display: block;
+	     margin-bottom:10px;
+	     font-size: 60px;
+	 }
+	  .nullempty h3{
+		  padding-top: 10px;
+	  }
+	 .nullempty{
+		 text-align: center;
+		 padding: 60px 20px;
+		 border-top: 1px solid #e6e6e6;
+	 }
+	 .el-input-group__prepend ,.el-input-group__prepend .el-select{
+	     width: 180px;
+	 }
+	 .el-input-group{
+		width: 85%;
+	 }
+	.box-title{
+		 width:100%;
+	 }
+	 .searchbom{
+		 font-size: 14px;
+		 margin-bottom: 14px;
+	 }
+	 .el-input.el-input--suffix .el-input__inner,.el-input-group__append .el-icon-search{
+		  color: #0c9868 !important;
+	 }
+	.el-input.el-input--suffix .el-input__inner{
+		background: white  !important;
+		border: 1px #dcdfe6 solid  !important;
+	}
+</style>
+	<body class="skin-black sidebar-open sidebar-mini">
+		<div class="wrapper">
+			<!-- 页头 -->
+			<div id="comp-header" class="main-header" style="position: relative; z-index: 99;">
+				<el-main-header></el-main-header>
+			</div>
+			<!-- 页头end -->
+			<!-- 内容区域 -->
+			<div id="content-wrapper">
+
+				<!-- 主要内容显示 -->
+				<section class="content container-fluid" id="MainContext" style="padding:15px; min-width: 1200px;">
+
+					<div class="wrapper" id="content" style="background:#f1f4f6; margin-top: 12px;">
+						<div class="col-md-12" style="padding-left: 0px;">
+
+							<div class="row">
+								<!-- External START -->
+								<div class="col-md-12">
+									<div class="box-header with-border">
+										<h3 class="box-title">M - DOTS Factory Parameter</h3>
+										<div class="box-tools pull-right" style="top: 9px;">
+											<el-button @click="getFactory(1)" :disabled="!Read">Read</el-button>
+										</div>
+									</div>
+									<div class="box" v-show="cur==0">
+										<div class="clear">
+											<table class="table table-hover">
+												<tbody>
+													<tr>
+														<th width="190">Site number</th>
+														<th>Site IP</th>
+														<th>Site No</th>
+														<th>Site Port </th>
+														<th>Site Name</th>
+														<th>Operation </th>
+													</tr>
+													<tr v-for="(v,i ) in FactoryData.length">
+														<td>{{i+1+almData.pageSize*almData.currentPage}}</td>
+														<td>
+															<el-input v-model="FactoryData.Site_IP[i]"></el-input>
+														</td>
+														<td>
+															<el-input v-model="FactoryData.Site_No[i]"></el-input>
+														</td>
+														<td>
+															<el-input v-model="FactoryData.Site_Port[i]"></el-input>
+														</td>
+														<td>
+															<el-input v-model="FactoryData.Site_name[i]"></el-input>
+														</td>
+														<td>
+															<el-button size="medium" class="Enter " :disabled="!Set" type="primary" @click="Factfun('save',i)">
+																SET</el-button>
+															<!-- 
+															<el-button size="medium" class="Enter " :disabled="!Set" type="danger" @click="Factfun('Delete',i)"> 
+																Delete</el-button>-->
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								<!-- External END -->
+							</div>
+						</div>
+					</div>
+				</section>
+				<!-- 内容区域 -->
+			</div>
+		</div>
+		<script type="text/javascript" src="assets/js/jquery.js"></script>
+		<script type="text/javascript" src="assets/js/vue.js"></script>
+		<script type="text/javascript" src="assets/js/index.js"></script>
+		<script type="text/javascript" src="assets/js/comment.js"></script>
+		<script type="text/javascript" src="assets/js/adminlte.js"></script>
+
+		<script>
+			let helios;
+			let data = {
+				FactoryData: 0,
+				Set: true,
+
+
+				cur: 0,
+
+				Read: true,
+				searchType: "",
+				keyValue: "",
+				keys: "Please enter  Device ID ",
+				keylength: 0,
+				level: "",
+				sear: {
+					number: "",
+					id: "",
+					info: "",
+					level: "",
+					Statime: "",
+					Endime: "",
+				},
+				almData: {
+					GetData: [],
+					// 假设这是后台传来的数据来源
+					// 所有页面的数据
+					totalPage: [],
+					// 每页显示数量
+					pageSize: 10,
+					// 共几页
+					pageNum: 1,
+					// 当前显示的数据
+					dataShow: "",
+					// 默认当前显示第一页
+					currentPage: 0
+				},
+				sysData: {
+					GetData: [],
+					// 假设这是后台传来的数据来源
+					// 所有页面的数据
+					totalPage: [],
+					// 每页显示数量
+					pageSize: 10,
+					// 共几页
+					pageNum: 1,
+					// 当前显示的数据
+					dataShow: "",
+					// 默认当前显示第一页
+					currentPage: 0
+				},
+
+			};
+			helios = new Vue({
+				el: "#MainContext",
+				data: data,
+				beforeMount() {
+
+				},
+				mounted() {
+					$("body").resize();
+					this.getFactory();
+				},
+				created() {
+					//this.getFactory();
+				},
+				/* updated() {
+					this.getFactory();
+				}, */
+				/* //事件 */
+				methods: {
+					getFactory(c) {
+						var obj = {
+							"data": [86, 87, 88, 300].join(),
+							"action": "READ"
+						};
+						var data1 = [];
+						util.getattrajax(obj, function(data) {
+							var obj1 = {
+								"Site_No": 0,
+								"Site_IP": 0,
+								"Site_Port": 0,
+								"Site_name": 0,
+								"length": 0,
+							};
+							if (data.data.length > 0) {
+								if (c > 0) {
+									helios.$data.Read = false;
+									setTimeout(() => {
+										helios.$data.Read = true;
+										util.success('success');
+									}, 150);
+								}
+								data.data.forEach(function(v, i) {
+									if (86 == v.adr) {
+										obj1.Site_No = (v.value).split(",")
+									}
+									if (87 == v.adr) {
+										obj1.Site_IP = (v.value).split(",")
+									}
+									if (88 == v.adr) {
+										obj1.Site_Port = (v.value).split(",")
+									}
+									if (300 == v.adr) {
+										obj1.Site_name = (v.value).split(",")
+									}
+								});
+								obj1.length = obj1.Site_No.length;
+								helios.FactoryData = obj1;
+							}
+						});
+
+					},
+
+					//保存, 删除,
+					Factfun(name, index) {
+						var obj1 = {
+							"Site_No": 0,
+							"Site_IP": 0,
+							"Site_Port": 0,
+							"Site_name": 0,
+							"length": 0,
+						};
+						if ("save" == name) {
+							helios.$data.Set = false;
+							if (helios.FactoryData.Site_No[index] == "") helios.FactoryData.Site_No[index] = "0";
+							if (helios.FactoryData.Site_IP[index] == "") helios.FactoryData.Site_IP[index] = "0.0.0.0";
+							if (helios.FactoryData.Site_Port[index] == "") helios.FactoryData.Site_Port[index] = "0";
+							if (helios.FactoryData.Site_name[index] == "") helios.FactoryData.Site_name[index] = "0";
+							var data = [{
+									adr: 86,
+									value: helios.FactoryData.Site_No.join().replace(/\s+/g, "")
+								},
+								{
+									adr: 87,
+									value: helios.FactoryData.Site_IP.join().replace(/\s+/g, "")
+								},
+								{
+									adr: 88,
+									value: helios.FactoryData.Site_Port.join().replace(/\s+/g, "")
+								},
+								{
+									adr: 300,
+									value: helios.FactoryData.Site_name.join().replace(/\s+/g, "")
+								}
+							];
+							data.forEach(function(v, i) {
+								if (86 == v.adr) {
+									obj1.Site_No = (v.value).split(",")
+								}
+								if (87 == v.adr) {
+									obj1.Site_IP = (v.value).split(",")
+								}
+								if (88 == v.adr) {
+									obj1.Site_Port = (v.value).split(",")
+								}
+								if (300 == v.adr) {
+									obj1.Site_name = (v.value).split(",")
+								}
+							});
+							obj1.length = obj1.Site_No.length;
+							helios.FactoryData = obj1;
+							var obj = {
+								"data": JSON.stringify(data),
+								"action": "SET"
+							}
+							util.postattrajax(obj, function(data) {
+								if (1 != data) {
+									util.error('Error');
+								} else {
+									setTimeout(() => {
+										helios.$data.Set = true;
+										util.success('success');
+									}, 150);
+								}
+							});
+
+
+						} else {
+							helios.FactoryData.Site_No[index] = "0";
+							helios.FactoryData.Site_IP[index] = "0.0.0.0";
+							helios.FactoryData.Site_Port[index] = "0";
+							helios.FactoryData.Site_name[index] = "0";
+							var data = [{
+									adr: 86,
+									value: helios.FactoryData.Site_No.join().replace(/\s+/g, "")
+								},
+								{
+									adr: 87,
+									value: helios.FactoryData.Site_IP.join().replace(/\s+/g, "")
+								},
+								{
+									adr: 88,
+									value: helios.FactoryData.Site_Port.join().replace(/\s+/g, "")
+								},
+								{
+									adr: 300,
+									value: helios.FactoryData.Site_name.join().replace(/\s+/g, "")
+								}
+							];
+
+							const h = toast.$createElement;
+							toast.$msgbox({
+								title: `M - DOTS Factory Parameter`,
+								message: h('p', null, [
+									h('p', {
+										style: 'color: teal'
+									}, `Whether or not to delete : ` + 22222)
+								]),
+								showCancelButton: true,
+								confirmButtonText: 'Confirm',
+								cancelButtonText: 'Cancel',
+								beforeClose: (action, instance, done) => {
+									if (action === 'confirm') {
+										instance.confirmButtonLoading = true;
+										instance.confirmButtonText = 'The execution of...';
+										setTimeout(() => {
+											done();
+											instance.confirmButtonLoading = false;
+
+										}, 1000);
+
+										var obj = {
+											"data": JSON.stringify(data),
+											"action": "SET"
+										}
+										util.postattrajax(obj, function(data) {
+											if (1 != data) {
+												util.error('Error');
+											} else {
+												setTimeout(() => {
+													data.forEach(function(v, i) {
+														if (86 == v.adr) {
+															obj1.Site_No = (v.value).split(",")
+														}
+														if (87 == v.adr) {
+															obj1.Site_IP = (v.value).split(",")
+														}
+														if (88 == v.adr) {
+															obj1.Site_Port = (v.value).split(",")
+														}
+														if (300 == v.adr) {
+															obj1.Site_name = (v.value).split(",")
+														}
+													});
+													obj1.length = obj1.Site_No.length;
+													helios.FactoryData = obj1;
+													helios.$data.Set = true;
+													util.success('success');
+												}, 150);
+											}
+										});
+
+
+									} else {
+										done();
+										//取消
+										console.log(1);
+									}
+								}
+							}).then(action => {
+								//确定
+								console.log(2);
+							}).catch(() => {
+								//取消
+								console.log(1);
+							});
+						}
+
+					},
+
+
+
+				},
+
+			});
+		</script>
+
+
+	</body>
+
+
+</html>

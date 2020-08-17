@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Helios </title>
+		<link rel="stylesheet" href="assets/css/bootstrap.min.css?2019827" />
+		<link rel="stylesheet" href="assets/css/global.css?2019827" />
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="assets/css/font-awesome.min.css?2019827" />
+		<!-- Theme style -->
+		<link rel="stylesheet" href="assets/css/AdminLTE.min.css?2019827" />
+		<link rel="stylesheet" href="assets/css/skins/skin-black.min.css?2019827" />
+		<link rel="stylesheet" href="assets/css/index.css?2019827">
+	</head>
+	<style>
+		.viswCard span {
+		color: #fff;
+		margin-right: 0px;
+	}
+	.box-header .el-button--mini, .el-button--mini.is-round {
+		padding: 1px 3px;
+		color: #fff;
+	   vertical-align: middle;
+	}
+	.el-input{
+		vertical-align: middle;
+	}
+	.label-text-vm {
+		text-align: left;
+	}
+	.col-sm-4 {
+		margin: 10px 0;
+	}
+	.row .label {
+		  display: inline-block;
+		  width: 18px;
+		  height: 18px;
+		  vertical-align: middle;
+	}
+	.nullempty{
+	
+		text-align: center;
+		padding: 20px 0;
+		font-family: 'Roboto Condensed';
+	}
+	.nullempty .icon{
+		display: inline-block;
+		margin-bottom:5px;
+		font-size: 60px;
+	}
+	.list-group{
+		margin-bottom: 0px;
+	}
+</style>
+
+	<body>
+		<!-- hold-transition skin-blue-light sidebar-mini sidebar-collapse -->
+		<div class="wrapper" id="content" style="background:#f1f4f6; margin-top: 10px;">
+
+			<div class="col-md-12" style="padding-left: 0px;">
+				<div class="row">
+					<!-- 设备信息 -->
+					<div class="col-md-6">
+						<div class="box box-primary">
+							<div class="box-body box-profile" style="padding-top:22px ;">
+								<div class="profile-user-img img-responsive img-circle">
+									<span class="icon iconfont icon-caijishebeixinxichaxun"></span>
+								</div>
+								<p>&nbsp;</p>
+								<ul class="list-group list-group-unbordered">
+									<li class="list-group-item" v-for="(v,i) in DEVICE" v-if="v.adr==82">
+										<span class="icon iconfont icon-shebei"></span> {{v.name}} <a class="pull-right">{{v.value}}</a>
+									</li>
+									<li class="list-group-item" v-for="(v,i) in DEVICE" v-if="v.adr==83">
+										<span class="icon iconfont icon-shebei1"></span> {{v.name}} <a class="pull-right">{{v.value}}</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<!--  v-if="equipment=='au'" -->
+						<div class="box">
+							<div class="box-header with-border">
+								<h3 class="box-title"><span class=" icon iconfont icon-shebeigaojing"></span> Alarm</h3>
+							</div>
+							<div class="row" v-if="alarmdata.length>0">
+								<div class="col-sm-4" v-for="(v,i) in alarmdata">
+									<div class="description-block border-right">
+										<h5 class="description-header">
+											{{v.name}}  {{v.value}}
+											<span class="icon iconfont icon-gaojing3 text-green" v-if="v.value=='0'"></span>
+											<span class="icon iconfont icon-gaojing3 text-red" v-if="v.value>'0'"></span>
+										</h5>
+									</div>
+								</div>
+							</div>
+							<div v-else class="nullempty">
+								<span class="icon iconfont icon-kongshuju"></span>
+								<h3>{{empty}}</h3>
+							</div>
+						</div>
+
+					</div>
+					<!-- 设备信息 -->
+
+					<!--  Light start-->
+					<div class="col-md-6">
+						<div class="box">
+							<table class="table table-hover">
+								<tbody>
+									<tr>
+										<th>Optical</th>
+										<th>Optical Receive Power</th>
+										<th>Optical Transceiver Failure </th>
+									</tr>
+									<tr v-for="(v,i) in LightPIN">
+										<td>{{LightPIN[i].name}}</td>
+										<td>{{LightPIN[i].value}}</td>
+										<td>{{LightPOUT[i].value}}</td>
+									</tr>
+									<tr v-for="(v,i) in LightPOUT" v-if="i==8">
+										<td>{{LightPOUT[i].name}} </td>
+										<td>{{LightPOUT[i].value}}</td>
+										<td>{{LightPOUT[i].value}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!--  Light end-->
+
+
+
+
+				</div>
+				<div class="row">
+
+
+
+				</div>
+
+				<!-- Alarm end -->
+
+
+				<!-- /.nav-tabs-custom -->
+			</div>
+
+		</div>
+		<script type="text/javascript" src="assets/js/jquery.js"></script>
+		<script type="text/javascript" src="assets/js/vue.js"></script>
+		<script type="text/javascript" src="assets/js/index.js"></script>
+		<script type="text/javascript" src="assets/js/comment.js"></script>
+
+		<style scoped>
+
+		</style>
+		<script type="text/javascript">
+			var helios;
+			let data = {
+				LightPIN: [],
+				LightPOUT: [],
+
+				DEVICE: [], //设备信息
+				empty: "EMPTY",
+				alarmdata: [],
+			};
+			helios = new Vue({
+				el: "#content",
+				data: data,
+				mounted() {
+					$("body").resize();
+					console.log(this.$data);
+				},
+				beforeMount() {
+					this.geLight();
+					this.Equipment();
+					this.getAlarm();
+				},
+
+				methods: {
+
+					geLight() {
+						var obj1 = [70, 71, 72, 73, 167, 168, 169, 170, 179]; // helight pin
+						obj1.push(74, 75, 76, 77, 171, 172, 173, 174, 180); // helight POUT
+						//obj1.push(179, 180); // helight （UP DOWN）
+						var obj = {
+							"data": obj1.join(),
+							"action": "READ"
+						}
+						util.getattrajax(obj, function(data) {
+							var data = data.data;
+							let data1 = [];
+							let data2 = [];
+							for (var i = 0; i < data.length; i++) {
+								if (70 == data[i].adr) {
+									let obj2 = {};
+									obj2.adr = data[i].adr;
+									obj2.name = "Optical  1";
+									obj2.value = data[i].value;
+									data1.push(obj2);
+								}
+								if (71 == data[i].adr) {
+									let obj2 = {};
+									obj2.adr = data[i].adr;
+									obj2.name = "Optical 2";
+									obj2.value = data[i].value;
+									data1.push(obj2);
+								}
+								if (72 == data[i].adr) {
+									let obj2 = {};
+									obj2.adr = data[i].adr;
+									obj2.name = "Optical 3";
+									obj2.value = data[i].value;
+									data1.push(obj2);
+								}
+								if (73 == data[i].adr) {
+									let obj2 = {};
+									obj2.adr = data[i].adr;
+									obj2.name = "Optical 4";
+									obj2.value = data[i].value;
+									data1.push(obj2);
+								}
+								if (167 == data[i].adr) {
+									let obj2 = {};
+									obj2.adr = data[i].adr;
+									obj2.name = "Optical 5";
+									obj2.value = data[i].value;
+									data1.push(obj2);
+								}
+								if (168 == data[i].adr) {
+									let obj2 = {};
+									obj2.adr = data[i].adr;
+									obj2.name = "Optical 6";
+									obj2.value = data[i].value;
+									data1.push(obj2);
+								}
+								if (169 == data[i].adr) {
+									let obj2 = {};
+									obj2.adr = data[i].adr;
+									obj2.name = "Optical 7";
+									obj2.value = data[i].value;
+									data1.push(obj2);
+								}
+								if (170 == data[i].adr) {
+									let obj2 = {};
+									obj2.adr = data[i].adr;
+									obj2.name = "Optical 8";
+									obj2.value = data[i].value;
+									data1.push(obj2);
+								}
+								if (179 == data[i].adr) {
+									let obj2 = {};
+									obj2.adr = data[i].adr;
+									obj2.name = "Optical  (UL)";
+									obj2.value = data[i].value;
+									data1.push(obj2);
+								}
+
+
+								helios.LightPIN = data1;
+
+
+								//POUT
+								if (74 == data[i].adr) {
+									let obj2 = {};
+									obj2.adr = data[i].adr;
+									obj2.name = "Optical  1";
+									obj2.value = data[i].value;
+									data2.push(obj2);
+								}
+								if (75 == data[i].adr) {
+									let obj2 = {};
+									obj2.adr = data[i].adr;
+									obj2.name = "Optical  2";
+									obj2.value = data[i].value;
+									data2.push(obj2);
+								}
+								if (76 == data[i].adr) {
+									let obj2 = {};
+									obj2.adr = data[i].adr;
+									obj2.name = "Optical  3";
+									obj2.value = data[i].value;
+									data2.push(obj2);
+								}
+								if (77 == data[i].adr) {
+									let obj2 = {};
+									obj2.adr = data[i].adr;
+									obj2.name = "Optical  4";
+									obj2.value = data[i].value;
+									data2.push(obj2);
+								}
+								if (171 == data[i].adr) {
+									let obj2 = {};
+									obj2.adr = data[i].adr;
+									obj2.name = "Optical  5";
+									obj2.value = data[i].value;
+									data2.push(obj2);
+								}
+								if (172 == data[i].adr) {
+									let obj2 = {};
+									obj2.adr = data[i].adr;
+									obj2.name = "Optical  6";
+									obj2.value = data[i].value;
+									data2.push(obj2);
+								}
+								if (173 == data[i].adr) {
+									let obj2 = {};
+									obj2.adr = data[i].adr;
+									obj2.name = "Optical  7";
+									obj2.value = data[i].value;
+									data2.push(obj2);
+								}
+								if (174 == data[i].adr) {
+									let obj2 = {};
+									obj2.adr = data[i].adr;
+									obj2.name = "Optical  8";
+									obj2.value = data[i].value;
+									data2.push(obj2);
+								}
+								if (180 == data[i].adr) {
+									let obj2 = {};
+									obj2.adr = data[i].adr;
+									obj2.name = "Optical  (DL)";
+									obj2.value = data[i].value;
+									data2.push(obj2);
+								}
+							}
+							helios.LightPOUT = data2;
+
+
+						});
+					},
+
+					//温度，编号
+					Equipment() {
+						var obj1 = [82, 83];
+						var obj = {
+							"data": obj1.join(),
+							"action": "READ",
+						}
+						util.getattrajax(obj, function(data) {
+							var data = (data.data);
+							var data1 = [];
+							for (var i = 0; i < data.length; i++) {
+								if (82 == data[i].adr) {
+									let obj = {
+										adr: data[i].adr,
+										name: "Site No",
+										value: (data[i].value)
+									}
+									data1.push(obj);
+								}
+								if (83 == data[i].adr) {
+									function int2hex(num, width) {
+										var hex = "0123456789abcdef";
+										var s = "";
+										while (num) {
+											s = hex.charAt(num % 16) + s;
+											num = Math.floor(num / 16);
+										}
+										if (typeof width === "undefined" || width <= s.length) {
+											return " " + s;
+										}
+										var delta = width - s.length;
+										var padding = "";
+										while (delta-- > 0) {
+											padding += "0";
+										}
+										return " " + padding + s;
+									}
+									let obj = {
+										adr: data[i].adr,
+										name: "Equipment ID",
+										//value: int2hex(data[i].value)
+										value: (data[i].value)
+									}
+									data1.push(obj);
+								}
+							}
+							helios.DEVICE = data1
+						});
+					},
+
+
+					getAlarm() {
+						var adr = [54, 55, 57, 56]; /* 58 59 60 61  DC AC 状态 */
+						adr.push(66, 67, 68, 69, 163, 164, 165, 166); /* 62, 63, 64, 65 光收发  */
+
+						adr.push(177, 178);
+
+
+						//	adr.push(9, 10); /*下行输入欠过 功率 */
+						var obj = {
+							"data": adr.join(),
+							"action": "READ"
+						};
+						util.getattrajax(obj, function(data) {
+							var data = data.data;
+
+							var data1 = [];
+							if (data.length > 0) {
+								for (var i = 0; i < data.length; i++) {
+									var obj = {
+										adr: "",
+										value: ""
+									}
+									if (54 == data[i].adr) {
+										helios.Alarm_state(data[i].adr, "Power Off Alarm Enable 1", data[i].value, 58);
+									}
+									if (55 == data[i].adr) {
+										helios.Alarm_state(data[i].adr, "Power Failure Alarm Enable 1", data[i].value, 59);
+									}
+									if (56 == data[i].adr) {
+										helios.Alarm_state(data[i].adr, "Over Temp Alarm Enable", data[i].value, 60);
+									}
+									if (57 == data[i].adr) {
+										helios.Alarm_state(data[i].adr, "Door Open Alarm Enable", data[i].value, 61);
+									}
+									/* LIGHTFAULT1- 4 */
+									if (66 == data[i].adr) {
+										helios.Alarm_state(data[i].adr, "Optical Transceiver Failure 1", data[i].value, 62);
+									}
+									if (67 == data[i].adr) {
+										helios.Alarm_state(data[i].adr, "Optical Transceiver Failure 2", data[i].value, 63);
+									}
+									if (68 == data[i].adr) {
+										helios.Alarm_state(data[i].adr, "Optical Transceiver Failure 3", data[i].value, 64);
+									}
+									if (69 == data[i].adr) {
+										helios.Alarm_state(data[i].adr, "Optical Transceiver Failure 4", data[i].value, 65);
+									}
+									if (163 == data[i].adr) {
+										helios.Alarm_state(data[i].adr, "Optical Transceiver Failure 5", data[i].value, 167);
+									}
+									if (164 == data[i].adr) {
+										helios.Alarm_state(data[i].adr, "Optical Transceiver Failure 6", data[i].value, 168);
+									}
+									if (165 == data[i].adr) {
+										helios.Alarm_state(data[i].adr, "Optical Transceiver Failure 7", data[i].value, 169);
+									}
+									if (166 == data[i].adr) {
+										helios.Alarm_state(data[i].adr, "Optical Transceiver Failure 8", data[i].value, 170);
+									}
+									if (177 == data[i].adr) {
+										helios.Alarm_state(data[i].adr, "Optical Transceiver Failure(UL)", data[i].value, 179);
+									}
+									if (178 == data[i].adr) {
+										helios.Alarm_state(data[i].adr, "Optical Transceiver Failure(DL)", data[i].value, 180);
+									}
+
+								}
+							} else {
+								toast.$message.error("Error");
+							}
+						})
+					},
+
+
+					//处理告警状态
+					Alarm_state(Fadr, name, value, state) {
+
+						let adr = [state];
+						if (value == 3 ) { //全开=3 才进入处理
+							var obj1 = {
+								"data": adr.join(),
+								"action": "READ",
+							}
+
+							util.getattrajax(obj1, function(data) {
+								var data = (data.data);
+
+								for (var i = 0; i < data.length; i++) {
+									let obj = {
+										adr: Fadr,
+										name: name,
+										value: data[i].value
+									}
+									helios.alarmdata.push(obj);
+								}
+							});
+						}
+					}
+				},
+
+			})
+		</script>
+	</body>
+</html>

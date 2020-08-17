@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>loginfo </title>
+		<link rel="stylesheet" href="assets/css/bootstrap.min.css?2019827" />
+		<link rel="stylesheet" href="assets/css/global.css?2019827" />
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="assets/css/font-awesome.min.css?2019827" />
+		<!-- Theme style -->
+		<link rel="stylesheet" href="assets/css/AdminLTE.min.css?2019827" />
+		<link rel="stylesheet" href="assets/css/skins/skin-black.min.css?2019827" />
+		<link rel="stylesheet" href="assets/css/index.css?2019827">
+	</head>
+	<style>
+		.clear{
+	 	 overflow: auto;
+	 	  zoom: 1;
+	 	  background: #fff;
+	 }
+	 .box-header.with-border {
+	     padding-bottom: 20px;
+	 }
+	 .el-form-item__content{
+		 margin-bottom: 8px;
+	 }
+	 .nullempty .icon {
+	     display: block;
+	     margin-bottom:10px;
+	     font-size: 60px;
+	 }
+	  .nullempty h3{
+		  padding-top: 10px;
+	  }
+	 .nullempty{
+		 text-align: center;
+		 padding: 60px 20px;
+		 border-top: 1px solid #e6e6e6;
+	 }
+	 .el-input-group__prepend ,.el-input-group__prepend .el-select{
+	     width: 180px;
+	 }
+	 .el-input-group{
+		width: 85%;
+	 }
+	 .box-title{
+		 width: 800px;
+	 }
+	 .searchbom{
+		 font-size: 14px;
+		 margin-bottom: 14px;
+	 }
+	 .el-input.el-input--suffix .el-input__inner,.el-input-group__append .el-icon-search{
+		  color: #0c9868 !important;
+	 }
+	
+</style>
+	<body class="skin-black sidebar-open sidebar-mini">
+		<div class="wrapper">
+			<!-- 页头 -->
+			<div id="comp-header" class="main-header" style="position: relative; z-index: 99;">
+				<el-main-header></el-main-header>
+			</div>
+			<!-- 页头end -->
+			<!-- 内容区域 -->
+			<div id="content-wrapper">
+
+				<!-- 主要内容显示 -->
+				<section class="content container-fluid" id="MainContext" style="padding:15px; min-width: 1200px;">
+
+					<div class="wrapper" id="content" style="background:#f1f4f6; margin-top: 12px;">
+						<div class="box-header" style="background: #f5f5f5;">
+							<div class="box-title">
+								<!-- <el-input v-model="keyValue" placeholder="Please enter keywords" style="width:240px">
+								</el-input>
+								<el-button type="primary" @click="Search">Search</el-button>
+								<el-button @click="getReport(1)" :disabled="!Read">Read</el-button> -->
+
+								<el-input :placeholder="keys" ref='id' clearable v-model="keyValue" class="input-with-select">
+									<el-select v-model="searchType" slot="prepend" placeholder="Please selects" @change="onChangeValue">
+										<el-option label="Site number" value="1"></el-option>
+										<el-option label="Device ID" value="2"></el-option>
+										<el-option label="Alarm Information" value="3"></el-option>
+										<el-option label="Alarm level" value="4"></el-option>
+										<!-- <el-option label="Date/time" value="5"></el-option> -->
+									</el-select>
+									<el-button slot="append" icon="el-icon-search" @click="Search"></el-button>
+								</el-input>
+								<el-button @click="getReport(1)" :disabled="!Read">Read</el-button>
+							</div>
+						</div>
+						<p class="searchbom" v-if="keylength>0">
+							Search for <span class="text-green">{{keylength}}</span> items of <span class="text-green">{{keyValue}} </span>
+							related content
+
+						</p>
+						<div class="col-md-12" style="padding-left: 0px;">
+							<div class="nav-tabs-custom">
+								<ul class="nav nav-tabs">
+									<li :class="{active:cur==0}" @click="cur=0"><a href="javascript:void(0);">
+											Alarm Log</a> </li>
+									<li :class="{active:cur==1}" @click="cur=1"><a href="javascript:void(0);">
+											System Log
+										</a>
+									</li>
+								</ul>
+							</div>
+
+							<div class="row">
+								<!-- External START -->
+								<div class="col-md-12">
+									<div class="box" v-show="cur==0">
+										<div class="clear">
+											<table class="table table-hover" v-if="almData.GetData.length>0">
+												<tbody>
+													<tr>
+														<th width="190">Site number</th>
+														<th>Device ID</th>
+														<th>Alarm Information</th>
+														<th>Alarm level </th>
+														<th>Date/time </th>
+													</tr>
+													<tr v-for="(v,i ) in almData.dataShow">
+														<td>{{v.s}}</td>
+														<td>{{v.e}}</td>
+														<td>{{v.i}}</td>
+														<td>{{v.l}}</td>
+														<td>{{v.d}}</td>
+													</tr>
+												</tbody>
+											</table>
+
+											<div class="nullempty" v-else>
+												<span class="icon iconfont icon-kongshuju"></span>
+												LOG
+												<span class="text-green">{{keyValue}}</span>
+												Information
+												<h3>EMPTY</h3>
+											</div>
+
+											<div class="box-footer clearfix" style="text-align: center;">
+												<span>Total {{almData.GetData.length}} Article</span>&nbsp;
+												<ul class="pagination pagination-sm no-margin" style="vertical-align: middle;" v-if="">
+													<li :class="almData.currentPage==0?'disabled':''" @click="prePage('almData')">
+														<a href="javascript:void(0);">«</a>
+													</li>
+													<li v-for="(v,i) in almData.pageNum" :class="almData.currentPage==i?'active':''" @click="pagingpage('almData',i)"><a
+														 href="javascript:void(0);">{{i}}</a></li>
+
+													<li :class="almData.currentPage==almData.pageNum-1?'disabled':''" @click="nextPage('almData')"><a href="javascript:void(0);">»</a></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+
+									<div class="box" v-show="cur==1">
+										<div class="clear">
+											<table class="table table-hover" v-if="sysData.GetData.length>0">
+												<tbody>
+													<tr>
+														<th width="190">Site number</th>
+														<th>Device ID</th>
+														<th>Alarm Information</th>
+														<th>Alarm level </th>
+														<th>Date/time </th>
+													</tr>
+													<tr v-for="(v,i ) in sysData.dataShow">
+														<td>{{v.s}}</td>
+														<td>{{v.e}}</td>
+														<td>{{v.i}}</td>
+														<td>{{v.l}}</td>
+														<td>{{v.d}}</td>
+													</tr>
+												</tbody>
+											</table>
+											<div class="nullempty" v-else>
+												<span class="icon iconfont icon-kongshuju"></span>
+												LOG
+												<span class="text-green">{{keyValue}}</span>
+												Information
+												<h3>EMPTY</h3>
+											</div>
+											<div class="box-footer clearfix" style="text-align: center;">
+												<span>Total {{sysData.GetData.length}} Article</span>&nbsp;
+
+												<ul class="pagination pagination-sm no-margin" style="vertical-align: middle;" v-if="sysData.GetData.length>sysData.pageSize">
+
+													<li :class="sysData.currentPage==0?'disabled':''" @click="prePage('sysData')">
+														<a href="javascript:void(0);">«</a>
+													</li>
+													<li :class="sysData.currentPage==i?'active':''" v-for="(v,i) in sysData.pageNum" @click="pagingpage('sysData',i)"><a
+														 href="javascript:void(0);">{{i}}</a></li>
+													<li :class="sysData.currentPage==sysData.pageNum-1?'disabled':''" @click="nextPage('sysData')"><a href="javascript:void(0);">»</a></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+
+								</div>
+								<!-- External END -->
+							</div>
+						</div>
+					</div>
+				</section>
+				<!-- 内容区域 -->
+			</div>
+		</div>
+		<script type="text/javascript" src="assets/js/jquery.js"></script>
+		<script type="text/javascript" src="assets/js/vue.js"></script>
+		<script type="text/javascript" src="assets/js/index.js"></script>
+		<script type="text/javascript" src="assets/js/comment.js"></script>
+		<script type="text/javascript" src="assets/js/adminlte.js"></script>
+
+		<script>
+			let helios;
+			let data = {
+				form: {
+					name: "data...",
+					tag: 111,
+				},
+				value: '1',
+				cur: 0,
+
+				Read: true,
+				searchType: "",
+				keyValue: "",
+				keys: "Please enter  Device ID ",
+				keylength: 0,
+				almData: {
+					GetData: [],
+					// 假设这是后台传来的数据来源
+					// 所有页面的数据
+					totalPage: [],
+					// 每页显示数量
+					pageSize: 10,
+					// 共几页
+					pageNum: 1,
+					// 当前显示的数据
+					dataShow: "",
+					// 默认当前显示第一页
+					currentPage: 0
+				},
+				sysData: {
+					GetData: [],
+					// 假设这是后台传来的数据来源
+					// 所有页面的数据
+					totalPage: [],
+					// 每页显示数量
+					pageSize: 10,
+					// 共几页
+					pageNum: 1,
+					// 当前显示的数据
+					dataShow: "",
+					// 默认当前显示第一页
+					currentPage: 0
+				},
+
+
+			};
+			helios = new Vue({
+				el: "#MainContext",
+				data: data,
+				beforeMount() {
+					this.getReport();
+				},
+				mounted() {
+					$("body").resize();
+				},
+				/* //事件 */
+				methods: {
+					getReport(c) {
+						var xmlhttp;
+						if (window.XMLHttpRequest) {
+							xmlhttp = new XMLHttpRequest();
+						} else {
+							xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+						}
+
+						if (c > 0) {
+							helios.$data.Read = false;
+							helios.$data.keyValue = "";
+							setTimeout(() => {
+								helios.$data.Read = true;
+								helios.almData.currentPage = 0;
+								helios.sysData.currentPage = 0;
+								helios.sysData.dataShow = helios.sysData.totalPage[0];
+								helios.almData.dataShow = helios.almData.totalPage[0];
+
+								util.success('success');
+							}, 150);
+						}
+
+
+						xmlhttp.onreadystatechange = function() {
+							if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+								var obj = helios.log2json(xmlhttp.responseText.toString());
+								var obj1 = JSON.parse(obj);
+
+								let almData = [],
+									sysData = [];
+								let jige = obj1.log.map((value, key, arr) => {
+									if ("alm" == value.t) {
+										almData.push(value);
+									} else {
+										sysData.push(value);
+									}
+								});
+								/* 
+								// 假设这是后台传来的数据来源
+								data: [],
+								// 所有页面的数据
+								totalPage: [],
+								// 每页显示数量
+								pageSize: 5,
+								// 共几页
+								pageNum: 1,
+								// 当前显示的数据
+								dataShow: "", */
+								helios.almData.GetData = almData;
+								helios.almData.pageNum = Math.ceil(almData.length / helios.almData.pageSize) || 1;
+
+								for (let i = 0; i < helios.almData.pageNum; i++) {
+									// 每一页都是一个数组 形如 [['第一页的数据'],['第二页的数据'],['第三页数据']]
+									// 根据每页显示数量 将后台的数据分割到 每一页,假设pageSize为5， 则第一页是1-5条，即slice(0,5)，第二页是6-10，条即slice(0,5)...
+									helios.almData.totalPage[i] = almData.slice(helios.almData.pageSize * i, helios.almData.pageSize * (i + 1))
+								}
+								// 当前显示的内容
+								helios.almData.dataShow = helios.almData.totalPage[helios.almData.currentPage];
+
+
+								helios.sysData.GetData = sysData;
+								helios.sysData.pageNum = Math.ceil(sysData.length / helios.sysData.pageSize) || 1;
+
+								for (let i = 0; i < helios.sysData.pageNum; i++) {
+									// 每一页都是一个数组 形如 [['第一页的数据'],['第二页的数据'],['第三页数据']]
+									// 根据每页显示数量 将后台的数据分割到 每一页,假设pageSize为5， 则第一页是1-5条，即slice(0,5)，第二页是6-10，条即slice(0,5)...
+									helios.sysData.totalPage[i] = sysData.slice(helios.sysData.pageSize * i, helios.sysData.pageSize * (i + 1))
+								}
+								// 当前显示的内容
+								helios.sysData.dataShow = helios.sysData.totalPage[helios.sysData.currentPage];
+
+
+							}
+						}
+						xmlhttp.open("GET", "elog_file.log?t=" + Math.random(), true);
+						xmlhttp.send();
+					},
+					log2json(src) {
+						src = src.slice(1, -1);
+						return "{\"log\":[" + src + "],\"currentPage\":1, \"pagesize\":10}";
+					},
+					pagingpage(value, page) {
+						if ("almData" == value) {
+							helios.almData.currentPage = page;
+							helios.almData.dataShow = helios.almData.totalPage[page];
+						} else {
+							helios.sysData.currentPage = page;
+							helios.sysData.dataShow = helios.sysData.totalPage[page];
+						}
+					},
+					// 下一页
+					nextPage(value) {
+						if ("almData" == value) {
+							//如果==0不处理否则 分页累加
+							if (helios.almData.currentPage === helios.almData.pageNum - 1) {
+								return;
+							} else {
+								helios.almData.dataShow = helios.almData.totalPage[++helios.almData.currentPage];
+							}
+						} else {
+							if (helios.sysData.currentPage === helios.sysData.pageNum - 1) {
+								return;
+							} else {
+								helios.sysData.dataShow = helios.sysData.totalPage[++helios.sysData.currentPage];
+							}
+						}
+					},
+					// 上一页
+					prePage(value) {
+						if ("almData" == value) {
+							//如果==0不处理否则 分页累加
+							if (helios.almData.currentPage === 0) {
+								return;
+							} else {
+								helios.almData.dataShow = helios.almData.totalPage[--helios.almData.currentPage];
+							}
+						} else {
+							if (helios.sysData.currentPage === 0) {
+								return;
+							} else {
+								helios.sysData.dataShow = helios.sysData.totalPage[--helios.sysData.currentPage];
+							}
+						}
+					},
+					/* 	l表示告警等级
+						d表示告警日期时间
+						i表示告警信息
+						e 表示设备ID
+						s表示站点编号 */
+					Search() {
+						let keyValue = helios.keyValue.replace(/(^\s*)|(\s*$)/g, "");
+						if (0 == this.cur) {
+							let almData = [];
+							if (keyValue == "") {
+								this.$refs.id.focus(); // 焦点
+								toast.$message.warning("Please Alarm Log  enter search keywords");
+							} else {
+
+								let searData = helios.almData.GetData.map((value, key, arr) => {
+									if (helios.searchType == 1) {
+										if (keyValue == value.s) {
+											almData.push(value);
+											//helios.$data.keyValue = "";
+										} else {}
+									}
+									if (helios.searchType == "" || helios.searchType == 2) {
+										if (keyValue == value.e) {
+											almData.push(value);
+											//helios.$data.keyValue = "";
+										} else {}
+									}
+									if (helios.searchType == 3) {
+										if (keyValue == value.i) {
+											almData.push(value);
+											//helios.$data.keyValue = "";
+										} else {}
+									}
+									if (helios.searchType == 4) {
+
+										if (keyValue == value.l) {
+											almData.push(value);
+											//helios.$data.keyValue = "";
+										} else {}
+									}
+
+								});
+								helios.almData.GetData = almData;
+								helios.keylength = helios.almData.GetData.length;
+								helios.almData.pageNum = Math.ceil(almData.length / helios.almData.pageSize) || 1;
+
+								for (let i = 0; i < helios.almData.pageNum; i++) {
+									helios.almData.totalPage[i] = almData.slice(helios.almData.pageSize * i, helios.almData.pageSize * (i + 1))
+								}
+								// 当前显示的内容
+								helios.almData.dataShow = helios.almData.totalPage[helios.almData.currentPage];
+							}
+
+						} else {
+							let sysData = [];
+							if (keyValue == "") {
+								this.$refs.id.focus();
+								toast.$message.warning("Please System Log  enter search keywords");
+							} else {
+								let searData = helios.sysData.GetData.map((value, key, arr) => {
+									if (helios.searchType == 1) {
+										if (keyValue == value.s) {
+											sysData.push(value);
+
+										} else {}
+									}
+									if (helios.searchType == "" || helios.searchType == 2) {
+										if (keyValue == value.e) {
+											sysData.push(value);
+
+										} else {}
+									}
+									if (helios.searchType == 3) {
+										if (keyValue == value.i) {
+											sysData.push(value);
+
+										} else {}
+									}
+									if (helios.searchType == 4) {
+										if (keyValue == value.l) {
+											sysData.push(value);
+
+										} else {}
+									}
+								});
+								helios.sysData.GetData = sysData;
+								helios.keylength = helios.sysData.GetData.length;
+								helios.sysData.pageNum = Math.ceil(sysData.length / helios.sysData.pageSize) || 1;
+
+								for (let i = 0; i < helios.sysData.pageNum; i++) {
+									/* 每一页都是一个数组 形如 [['第一页的数据'],['第二页的数据'],['第三页数据']]
+									 根据每页显示数量 将后台的数据分割到 每一页,假设pageSize为5，
+									  则第一页是1-5条，即slice(0,5)，第二页是6-10，条即slice(0,5)... */
+									helios.sysData.totalPage[i] = sysData.slice(helios.sysData.pageSize * i, helios.sysData.pageSize * (i + 1))
+								}
+								// 当前显示的内容
+								helios.sysData.dataShow = helios.sysData.totalPage[helios.sysData.currentPage];
+							}
+						}
+					},
+					onChangeValue() {
+						this.$data.keyValue = "";
+						switch (this.$data.searchType) {
+							case "1":
+								this.$data.keys = "Please enter Site number";
+								break;
+							case "2":
+								this.$data.keys = "Please enter Device ID";
+								break;
+							case "3":
+								this.$data.keys = "Please enter Alarm Information";
+								break;
+							case "4":
+								this.$data.keys = "Please enter Alarm level";
+								break;
+						}
+					}
+				},
+
+			});
+		</script>
+
+
+	</body>
+
+
+</html>
