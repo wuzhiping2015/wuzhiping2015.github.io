@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Deviceinfo</title>
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/global.css?2019827" />
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css?2019827" />
+	<!-- Theme style -->
+	<link rel="stylesheet" href="assets/css/AdminLTE.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/skins/skin-black.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/index.css?2019827">
+</head>
+<style>
+	.viswCard span {
+		color: #fff;
+		margin-right: 0px;
+	}
+
+	.box-header .el-button--mini,
+	.el-button--mini.is-round {
+		padding: 1px 3px;
+		color: #fff;
+		vertical-align: middle;
+	}
+
+	.el-input {
+		vertical-align: middle;
+	}
+
+	.label-text-vm {
+		text-align: left;
+	}
+
+	.col-sm-4 {
+		margin: 10px 0;
+	}
+
+	.row .label {
+		display: inline-block;
+		width: 18px;
+		height: 18px;
+		margin-top: 5px;
+	}
+
+	.description-block {
+		margin: 10px 0px;
+	}
+
+	.list-group {
+		margin-bottom: 0px;
+	}
+
+	.box-header.with-border {
+		padding-bottom: 14px;
+	}
+
+	.clear {
+		overflow: auto;
+		zoom: 1;
+		background: #fff;
+	}
+
+	.el-form-item {
+		margin-bottom: 6px !important;
+	}
+
+	.height {
+		height: 220px;
+	}
+</style>
+
+<body>
+	<!-- hold-transition skin-blue-light sidebar-mini sidebar-collapse -->
+	<div class="wrapper" id="content" style="background:#f1f4f6; margin-top: 10px;">
+
+		<div class="col-md-12" style="padding-left: 0px;">
+			<div class="row">
+				<!--  DL I/P  start-->
+				<div class="col-md-12">
+
+					<div class="box" style="padding-bottom:40px;">
+						<div class="box-header with-border">
+							<h3 class="box-title">DeviceInfo</h3>
+							<div class="box-tools pull-right" style="top: 9px;">
+								<el-button @click="setnetwork" :disabled="!Set" size="small" type="primary">Set</el-button>
+								<el-button @click="getDev(1)" :disabled="!Read" size="small">Read</el-button>
+								<!-- <el-button type="primary" @click="onSubmit" size="small">Read</el-button> -->
+							</div>
+						</div>
+
+						<div class="clear" style="padding-top:10px;">
+							<el-form ref="DEVICE" label-width="220px">
+								<div style="width:80%;">
+									<!-- RU var obj1 = [82, 83, 211, 212, 213, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313]; -->
+									<!-- EU AU	var obj1 = [82, 83, 49, 50, 51, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313]; -->
+
+									<!-- 	var obj1 = [82, 83, 211, 212, 213, 210, 310, 311, 312, 313, 304, 305, 306, 307, 308, 309]; -->
+
+									<div v-if="heliosUser">
+										<el-row :gutter="20">
+											<!-- 68, 69, 64, 65, 66, 67, 70, 71, 72, 73, 74, 75 -->
+											<el-col :span="12" v-for="(v,i) in DEVICE" v-if="v.adr==68 || v.adr==69">
+												<el-form-item :label="v.name">
+													{{v.value | valnull}}
+												</el-form-item>
+											</el-col>
+											<el-col :span="18" v-else>
+												<el-form-item :label="v.name">
+													<el-input v-model="v.value" v-if="v.adr==64"></el-input>
+													<el-input v-model="v.value" v-if="v.adr==65"></el-input>
+													<el-input v-model="v.value" v-if="v.adr==66"></el-input>
+													<el-input v-model="v.value" v-if="v.adr==67"></el-input>
+													<el-input v-model="v.value" v-if="v.adr==70"></el-input>
+													<el-input v-model="v.value" v-if="v.adr==71"></el-input>
+													<el-input v-model="v.value" v-if="v.adr==72"></el-input>
+													<el-input v-model="v.value" v-if="v.adr==73"></el-input>
+													<el-input v-model="v.value" v-if="v.adr==74"></el-input>
+
+
+													<el-input v-model="v.value" v-if="v.adr==75"></el-input>
+												</el-form-item>
+											</el-col>
+										</el-row>
+									</div>
+
+									<div v-else>
+										<el-row :gutter="20">
+											<el-col :span="12" v-for="(v,i) in DEVICE" v-if="v.adr==68 || v.adr==69 || v.adr==64 || v.adr==65 || v.adr==66 || v.adr==67">
+												<el-form-item :label="v.name">
+													{{v.value | valnull}}
+												</el-form-item>
+											</el-col>
+											<el-col :span="18" v-else>
+												<el-form-item :label="v.name">
+													<el-input v-model="v.value" v-if="v.adr==70"></el-input>
+													<el-input v-model="v.value" v-if="v.adr==71"></el-input>
+													<el-input v-model="v.value" v-if="v.adr==72"></el-input>
+													<el-input v-model="v.value" v-if="v.adr==73"></el-input>
+													<el-input v-model="v.value" v-if="v.adr==74"></el-input>
+													<!-- 	<el-input v-model="v.value"></el-input> -->
+
+													<!-- 					<el-date-picker v-if="v.adr==74" v-model="v.value" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" type="datetime"
+													 placeholder="please"></el-date-picker> -->
+
+
+													</el-date-picker>
+													<el-input v-model="v.value" v-if="v.adr==75"></el-input>
+												</el-form-item>
+											</el-col>
+										</el-row>
+									</div>
+
+								</div>
+							</el-form>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<!-- /.nav-tabs-custom -->
+		</div>
+
+	</div>
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/vue.js"></script>
+	<script type="text/javascript" src="assets/js/index.js"></script>
+	<script type="text/javascript" src="assets/js/comment.js"></script>
+
+	<style scoped>
+	</style>
+	<script type="text/javascript">
+		var helios;
+		let data = {
+			Set: true,
+			Read: true,
+			DEVICE: [],
+			equipment: sessionStorage.getItem("equipment"),
+			heliosUser: heliosUser[0] == $session,
+		};
+
+		helios = new Vue({
+			el: "#content",
+			data: data,
+			mounted() {
+				$("body").resize();
+				this.getDev();
+			},
+			methods: {
+				getDev(c) {
+					var obj1 = [68, 69, 64, 65, 66, 67, 70, 71, 72, 73, 74, 75];
+					var obj = {
+						"data": obj1.join(),
+						"action": "READ",
+					}
+					util.getattrajax(obj, function (data) {
+						var data = (data.data);
+						var data1 = [];
+						var getdata = new Object;
+						if (data.length > 0) {
+							if (c) {
+								util.success('success');
+							}
+						}
+						for (var i = 0; i < data.length; i++) {
+							if (68 == data[i].adr) {
+								let obj = {
+									adr: data[i].adr,
+									name: "Hardware Version",
+									value: data[i].value
+								}
+								data1.push(obj);
+							}
+							if (69 == data[i].adr) {
+								let obj = {
+									adr: data[i].adr,
+									name: "Software Version",
+									value: (data[i].value)
+								}
+								data1.push(obj);
+							}
+							if (64 == data[i].adr) {
+								let obj = {
+									adr: data[i].adr,
+									name: "Serial Number",
+									value: data[i].value
+								}
+								data1.push(obj);
+							}
+							if (65 == data[i].adr) {
+								let obj = {
+									adr: data[i].adr,
+									name: "Part Number",
+									value: data[i].value
+								}
+								data1.push(obj);
+							}
+							if (66 == data[i].adr) {
+								let obj = {
+									adr: data[i].adr,
+									name: "Model Number",
+									value: data[i].value
+								}
+								data1.push(obj);
+							}
+							if (67 == data[i].adr) {
+								let obj = {
+									adr: data[i].adr,
+									name: "Manufacturer",
+									value: data[i].value
+								}
+								data1.push(obj);
+							}
+							if (70 == data[i].adr) {
+								let obj = {
+									adr: data[i].adr,
+									name: "Site Name",
+									value: data[i].value /*+ " °C" */
+								}
+								data1.push(obj);
+							}
+							if (71 == data[i].adr) {
+								let obj = {
+									adr: data[i].adr,
+									name: "Site Address",
+									value: data[i].value
+								}
+								data1.push(obj);
+							}
+							if (72 == data[i].adr) {
+								let obj = {
+									adr: data[i].adr,
+									name: "Site No",
+									value: data[i].value
+								}
+								data1.push(obj);
+							}
+							if (73 == data[i].adr) {
+								let obj = {
+									adr: data[i].adr,
+									name: "Site Property Number",
+									value: data[i].value
+								}
+								data1.push(obj);
+							}
+							if (74 == data[i].adr) {
+								let obj = {
+									adr: data[i].adr,
+									name: "Site Installation Date",
+									value: data[i].value
+								}
+								data1.push(obj);
+							}
+							if (75 == data[i].adr) {
+								let obj = {
+									adr: data[i].adr,
+									name: "Site Owner",
+									value: data[i].value
+								}
+								data1.push(obj);
+							}
+
+							helios.DEVICE = data1;
+						}
+					});
+
+
+				},
+				//设置
+				setnetwork() {
+					helios.$data.Set = false;
+					var data = [];
+					/* let start = {
+						adr: 204,
+						value: "1"
+					}
+					data.push(start); */
+					/* 	68, 69,   64, 65, 66, 67, 70, 71, 72, 73, 74, 75 */
+					helios.DEVICE.forEach((v, i) => {
+						var obj = {
+							adr: "",
+							value: ""
+						}
+						if (64 == v.adr) {
+							obj.adr = 64;
+							obj.value = v.value
+							data.push(obj);
+						}
+						if (65 == v.adr) {
+							obj.adr = 65;
+							obj.value = v.value
+							data.push(obj);
+						}
+						if (66 == v.adr) {
+							obj.adr = 66;
+							obj.value = v.value
+							data.push(obj);
+						}
+						if (67 == v.adr) {
+							obj.adr = 67;
+							obj.value = v.value
+							data.push(obj);
+						}
+						if (70 == v.adr) {
+							obj.adr = 70;
+							obj.value = v.value
+							data.push(obj);
+
+						}
+						if (71 == v.adr) {
+							obj.adr = 71;
+							obj.value = v.value
+							data.push(obj);
+
+						}
+						if (72 == v.adr) {
+							obj.adr = 72;
+							obj.value = v.value
+							data.push(obj);
+
+						}
+						if (73 == v.adr) {
+							obj.adr = 73;
+							obj.value = v.value
+							data.push(obj);
+
+						}
+						if (74 == v.adr) {
+							obj.adr = 74;
+							obj.value = v.value
+							data.push(obj);
+
+						}
+						if (75 == v.adr) {
+							obj.adr = 75;
+							obj.value = v.value
+							data.push(obj);
+
+						}
+					});
+					var obj = {
+						"data": "",
+						"action": "SET"
+					}
+					/* 	let end = {
+							adr: 205,
+							value: "1"
+						}
+						data.push(end);
+						 */
+
+					if (heliosUser) {
+						obj.data = JSON.stringify(data);
+						//adrs = [64, 65, 66, 67, 70, 71, 72, 73, 74, 75];
+					} else {
+						/* adrs = [64, 65, 66, 67, 70, 71, 72, 73, 74, 75]; */
+						obj.data = JSON.stringify(data);
+					}
+
+
+					util.postattrajax(obj, function (data) {
+						if (1 != data) {
+							helios.$data.Set = true;
+							util.error(' Error：' + JSON.stringify(data));
+						} else {
+							setTimeout(() => {
+								helios.$data.Set = true;
+								util.success('success');
+							}, 500);
+						}
+					});
+				}
+			},
+			filters: {
+				valnull(Element) {
+					if (Element == "") {
+						return "Empty...";
+					} else {
+						return Element;
+					}
+				}
+			},
+			computed: {
+
+			}
+		})
+	</script>
+</body>
+
+</html>

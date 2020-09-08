@@ -1,0 +1,62 @@
+,{"s":"000000ff","e":"00ff","l":"WARN","t":"alm","d":"2020-12-17 01:16:18","i":"Door Open"}
+,{"s":"11","e":"0000","l":"MAJOR","t":"alm","d":"2020-12-17 01:16:47","i":"Communication Failed Alarm"}
+,{"s":"22","e":"0100","l":"MAJOR","t":"alm","d":"2020-12-17 01:16:47","i":"Communication Failed Alarm"}
+,{"s":"33","e":"0101","l":"MAJOR","t":"alm","d":"2020-12-17 01:16:47","i":"Communication Failed Alarm"}
+,{"s":"44","e":"0000","l":"MAJOR","t":"alm","d":"2020-12-17 01:21:29","i":"Communication Failed Alarm"}
+,{"s":"55","e":"0100","l":"MAJOR","t":"alm","d":"2020-12-17 01:21:29","i":"Communication Failed Alarm"}
+,{"s":"66","e":"0101","l":"MAJOR","t":"sys","d":"2020-07-15 04:31:43","i":"Communication Failed Alarm"}
+,{"s":"77","e":"0101","l":"MAJOR","t":"sys","d":"2020-07-15 04:31:43","i":"Communication Failed Alarm"}
+,{"s":"88","e":"0101","l":"MAJOR","t":"sys","d":"2020-07-15 04:31:43","i":"Communication Failed Alarm"}
+,{"s":"99","e":"0101","l":"MAJOR","t":"alm","d":"2020-12-17 01:21:29","i":"Communication Failed Alarm"}
+,{"s":"10","e":"00ff","l":"WARN","t":"alm","d":"2020-12-17 01:31:20","i":"Door Open"}
+,{"s":"11","e":"0000","l":"MAJOR","t":"alm","d":"2020-12-17 01:31:50","i":"Communication Failed Alarm"}
+,{"s":"12","e":"0100","l":"MAJOR","t":"alm","d":"2020-12-17 01:31:50","i":"Communication Failed Alarm"}
+,{"s":"13","e":"0101","l":"MAJOR","t":"alm","d":"2020-12-17 01:31:50","i":"Communication Failed Alarm"}
+,{"s":"14","e":"00ff","l":"WARN","t":"alm","d":"2020-07-25 20:31:14","i":"Door Open"}
+,{"s":"44","e":"0101","l":"MAJOR","t":"sys","d":"2020-07-15 04:31:43","i":"Communication Failed Alarm"}
+,{"s":"55","e":"0101","l":"MAJOR","t":"sys","d":"2020-07-15 04:31:43","i":"Communication Failed Alarm"}
+,{"s":"66","e":"0101","l":"MAJOR","t":"sys","d":"2020-07-15 04:31:43","i":"Communication Failed Alarm"}
+,{"s":"77","e":"0101","l":"MAJOR","t":"sys","d":"2020-07-15 04:31:43","i":"Communication Failed Alarm"}
+,{"s":"88","e":"0000","l":"MAJOR","t":"alm","d":"2020-07-15 04:31:43","i":"Communication Failed Alarm"}
+,{"s":"99","e":"0100","l":"MAJOR","t":"alm","d":"2020-07-15 04:31:43","i":"Communication Failed Alarm"}
+,{"s":"11","e":"0101","l":"MAJOR","t":"alm","d":"2020-07-15 04:31:43","i":"Communication Failed Alarm"}
+,{"s":"22","e":"0101","l":"MAJOR","t":"sys","d":"2020-07-15 04:31:43","i":"Communication Failed Alarm"}
+,{"s":"34","e":"00ff","l":"WARN","t":"alm","d":"2020-07-15 15:43:29","i":"Door Open"}
+,{"s":"25","e":"0000","l":"MAJOR","t":"alm","d":"2020-07-15 15:43:58","i":"Communication Failed Alarm"}
+,{"s":"27","e":"0100","l":"MAJOR","t":"alm","d":"2020-07-15 15:43:58","i":"Communication Failed Alarm"}
+,{"s":"26","e":"0101","l":"MAJOR","t":"alm","d":"2020-07-15 15:43:58","i":"Communication Failed Alarm"}
+,{"s":"000000ff","e":"00ff","l":"WARN","t":"alm","d":"2020-07-16 09:12:20","i":"Door Open"}
+,{"s":"12345678","e":"0000","l":"MAJOR","t":"alm","d":"2020-07-16 09:12:48","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0100","l":"MAJOR","t":"alm","d":"2020-07-16 09:12:48","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0101","l":"MAJOR","t":"alm","d":"2020-07-16 09:12:48","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0000","l":"MAJOR","t":"alm","d":"2020-07-16 16:48:04","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0100","l":"MAJOR","t":"alm","d":"2020-07-16 16:48:04","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0101","l":"MAJOR","t":"alm","d":"2020-07-16 16:48:04","i":"Communication Failed Alarm"}
+,{"s":"","e":"","l":"WARN","t":"alm","d":"2020-07-16 17:07:32","i":"Door Open"}
+,{"s":"12345678","e":"0000","l":"MAJOR","t":"alm","d":"2020-07-16 17:08:01","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0100","l":"MAJOR","t":"alm","d":"2020-07-16 17:08:01","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0101","l":"MAJOR","t":"alm","d":"2020-07-16 17:08:01","i":"Communication Failed Alarm"}
+,{"s":"","e":"","l":"WARN","t":"alm","d":"2020-07-16 17:33:44","i":"Door Open"}
+,{"s":"12345678","e":"0000","l":"MAJOR","t":"alm","d":"2020-07-16 17:34:13","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0100","l":"MAJOR","t":"alm","d":"2020-07-16 17:34:13","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0101","l":"MAJOR","t":"alm","d":"2020-07-16 17:34:13","i":"Communication Failed Alarm"}
+,{"s":"","e":"","l":"WARN","t":"alm","d":"2020-07-16 17:42:30","i":"Door Open"}
+,{"s":"12345678","e":"0000","l":"MAJOR","t":"alm","d":"2020-07-16 17:42:59","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0100","l":"MAJOR","t":"alm","d":"2020-07-16 17:42:59","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0101","l":"MAJOR","t":"alm","d":"2020-07-16 17:42:59","i":"Communication Failed Alarm"}
+,{"s":"","e":"","l":"WARN","t":"alm","d":"2020-07-16 17:46:14","i":"Door Open"}
+,{"s":"12345678","e":"0000","l":"MAJOR","t":"alm","d":"2020-07-16 17:46:43","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0100","l":"MAJOR","t":"alm","d":"2020-07-16 17:46:43","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0101","l":"MAJOR","t":"alm","d":"2020-07-16 17:46:43","i":"Communication Failed Alarm"}
+,{"s":"","e":"","l":"WARN","t":"alm","d":"2020-07-17 09:09:33","i":"Door Open"}
+,{"s":"12345678","e":"0000","l":"MAJOR","t":"alm","d":"2020-07-17 09:10:01","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0100","l":"MAJOR","t":"alm","d":"2020-07-17 09:10:01","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0101","l":"MAJOR","t":"alm","d":"2020-07-17 09:10:01","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0102","l":"MAJOR","t":"alm","d":"2020-07-17 09:10:01","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0200","l":"MAJOR","t":"alm","d":"2020-07-17 09:10:01","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0201","l":"MAJOR","t":"alm","d":"2020-07-17 09:10:01","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0202","l":"MAJOR","t":"alm","d":"2020-07-17 09:10:01","i":"Communication Failed Alarm"}
+,{"s":"","e":"","l":"WARN","t":"alm","d":"2020-07-17 11:00:01","i":"Door Open"}
+,{"s":"12345678","e":"0000","l":"MAJOR","t":"alm","d":"2020-07-17 11:00:30","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0100","l":"MAJOR","t":"alm","d":"2020-07-17 11:00:30","i":"Communication Failed Alarm"}
+,{"s":"12345678","e":"0101","l":"MAJOR","t":"alm","d":"2020-07-17 11:00:30","i":"Communication Failed Alarm"}

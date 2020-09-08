@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<!-- saved from url=(0100)https://www.17sucai.com/preview/166243/2014-09-25/pd-ac69f6e6-3ed8-11e4-bb45-00163e001348/index.html -->
+<html lang="en" class="no-js">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+		<title> Cluster</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="assets/indexes/style.css">
+		<script type="text/javascript" src="assets/js/jquery.js"></script>
+		<link rel="stylesheet" href="assets/css/index.css?2019827">
+
+		<script type="text/javascript" src="assets/indexes/jquery.particleground.min.js"></script>
+		<script type="text/javascript" src="assets/indexes/demo.js"></script>
+		<script type="text/javascript" src="assets/js/vue.js"></script>
+		<script type="text/javascript" src="assets/js/index.js"></script>
+
+
+	</head>
+	<body>
+
+		<div id="particles">
+		 <div id="app">
+			<model ref='mod' v-show=isShow @addlist="addItem" @editlist='editDate' @cancle='cancle' :passvalue="c"></model>
+			<datalist id="data">
+				<option v-for="list in search(keys)">{{ list.name}}</option>
+			</datalist>
+			<input type="text" placeholder="关键字查询" class="search" list="data" v-model="keys">
+			<button class="add" @click="add">添加</button>
+			<table cellspacing="0">
+				<thead>
+					<tr>
+						<th style="border-top-left-radius: 10px;">Id</th>
+						<th>Name</th>
+						<th>Sex</th>
+						<th>Email</th>
+						<th>Address</th>
+						<th>Hobby</th>
+						<th width="150px" style="border-top-right-radius: 10px;">Operation</th>
+					</tr>
+				</thead> 
+				<tbody>
+					<tr @mouseenter="high(index)" @mouseleave="currentIndex=-1" v-for="(item,index) in search(keys)" :class="[index==currentIndex?highlight:'']">
+						<td>{{ index+1}}</td>
+						<td>{{ item.name}}</td>
+						<td>{{ item.sex}}</td>
+						<td>{{ item.email}}</td>
+						<td>{{ item.address}}</td>
+						<td>{{ item.hobby}}</td>
+						<td><a href="JavaScript:void(0);" @click="remove(index)">删除</a> <span @click="change(index)" :class="[index==currentIndex?edit:'']"></span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+		 
+
+		<script>
+			 Vue.component('model', {
+	template: `<div style='position:relative'  @update="changeValue">
+	<div class='floor'></div>
+	<div class='modify'>
+	<span>Name:</span><input type='text' v-model='setName' /><br>
+	<span>Sex:</span>&nbsp;&nbsp;&nbsp;&nbsp;<input type='radio' v-model='setSex' value='男' />男<input type='radio' value='女' v-model='setSex' />女 <input type='radio' value='未知' v-model='setSex' />未知 <br>
+	<span>Email:</span>&nbsp;<input type='text' v-model='setEmail' /><br>
+	<span>Address:</span><select class='select' v-model='AddrSelect'>
+		<option size='4'>北京</option>
+		<option>浙江</option>7
+		<option>朝阳</option>
+		<option>西安</option>
+		<option>深圳</option>
+		<option>自定义</option>
+	</select><input type='text' class='dryAddr' v-if=dryAddr  v-model='AddrSelect' /><br>
+	<span>Hobby</span>:
+	<input type='checkbox' v-model='setHobby' value='唱' />唱
+	<input type='checkbox' v-model='setHobby' value='跳' />跳
+	<input type='checkbox' v-model='setHobby' value='rap' />rap
+	<input type='checkbox' v-model='setHobby' value='篮球' />篮球
+	<input type='checkbox' v-model='setHobby' value='嚼摈榔' />嚼摈榔
+	<input type='checkbox' v-model='setHobby' value='要棒棒糖' />要棒棒糖
+	<input type='checkbox' v-model='setHobby' value='giao' />giao
+	<input type='checkbox' v-model='setHobby' value='cbb' />cbb
+	<input type='checkbox' v-model='setHobby' value='奥力给'/>奥力给
+	<input type='checkbox' v-model='setHobby' value='正能量语录' />正能量语录
+	<input type='checkbox' v-model='setHobby' value='游泳' />游泳
+	<input type='checkbox' v-model='setHobby' value='优质吃播' />优质吃播
+	<br>
+	<button style='margin-left:120px' @click='test'>取消</button>
+	<button @click='save' v-show='isSave'>保存</button>
+	<button @click='upDate' v-show='!isSave'>更新</button>
+	</div>
+	</div>`,
+	data() {
+		return {
+			dryAddr: false,
+			AddrSelect: '北京',
+			setName: '',
+			setSex: '',
+			setEmail: '@qq.com',
+			setHobby: [],
+			add: {
+				name: '',
+				sex: '',
+				email: '',
+				address: '',
+				hobby: ''
+			},
+			quote: {},
+			isSave: true,
+			id:'',
+		}
+	},
+	props: {
+		passvalue: Object,
+	},
+	methods: {
+		test() {
+			this.$emit('cancle');
+			this.AddrSelect = '北京'
+			this.setName = ''
+			this.setSex = ''
+			this.setEmail = '@qq.com'
+			this.setHobby = []
+		},
+		changeValue() {
+			this.$nextTick(() => {
+				this.AddrSelect = this.passvalue.address;
+				this.setName = this.passvalue.name;
+				this.setSex = this.passvalue.sex;
+				this.setEmail = this.passvalue.email;
+				this.setHobby = this.passvalue.hobby.split(',');
+				this.id = this.passvalue.id;
+			});
+			this.isSave = false;
+		},
+		save() {
+			this.add.name = this.setName;
+			this.add.sex = this.setSex;
+			this.add.email = this.setEmail;
+			this.add.address = this.AddrSelect;
+			this.add.hobby = this.setHobby.toString();
+			this.$emit('addlist', this.add);
+			this.setName = '';
+			this.setSex = [];
+			this.setEmail = '@qq.com';
+			this.AddrSelect = '北京';
+			this.setHobby = [];
+		},
+		upDate() {
+			this.add.name = this.setName;
+			this.add.sex = this.setSex;
+			this.add.email = this.setEmail;
+			this.add.address = this.AddrSelect;
+			this.add.hobby = this.setHobby.toString();
+			this.$emit('editlist', this.add,this.id);
+			this.setName = '';
+			this.setSex = [];
+			this.setEmail = '@qq.com';
+			this.AddrSelect = '北京';
+			this.setHobby = [];
+			this.isSave = true;
+		}
+	},
+	watch: {
+		AddrSelect(v, oldv) {
+			if (v == '自定义') {
+				this.dryAddr = true
+			}
+		}
+	}
+
+})
+
+let vm = new Vue({
+	el: "#particles",
+	data() {
+		return {
+			list: [{
+					id: 1,
+					name: '坤坤',
+					sex: '未知',
+					address: '浙江',
+					email: 'www.caoxukun@qq.com',
+					hobby: "唱,跳,rap,篮球"
+				},
+				{
+					id: 2,
+					name: '啊giao',
+					sex: '男',
+					address: '西安',
+					email: 'www.giaogiao@qq.com',
+					hobby: "嚼摈榔,要棒棒糖,giao"
+				},
+				{
+					id: 3,
+					name: '朝阳泳怪',
+					sex: '男',
+					address: '朝阳',
+					email: 'www.aoligei@qq.com',
+					hobby: "游泳,正能量语录,奥力给"
+				},
+				{
+					id: 4,
+					name: '老八',
+					sex: '男',
+					address: '沈阳',
+					email: 'www.bage@qq.com',
+					hobby: "cbb,优质吃播"
+				}
+			],
+			keys: '',
+			highlight: 'highlight',
+			edit: 'edit',
+			currentIndex: -1,
+			isShow: false,
+			o: {},
+			c: {},
+		}
+	},
+	methods: {
+		search(keys) {
+			return this.list.filter(item => {
+				if (item.name.includes(keys)) {
+					return item;
+				};
+
+			})
+		},
+		remove(index) {
+			this.list.splice(index, 1)
+		},
+		high(index) {
+			this.currentIndex = index;
+		},
+		add() {
+			this.isShow = true
+		},
+		addItem(item) {
+			this.isShow = false;
+			//这无法使用this.list.push(item)添加，因为浅拷贝,下次提价数据会把前面的数据也给改变了
+			this.o = {
+				name: item.name,
+				sex: item.sex,
+				email: item.email,
+				address: item.address,
+				hobby: item.hobby,
+			};
+
+			this.list.push(this.o);
+		},
+		editDate(item,index){
+			this.isShow = false;
+			this.o = {
+				name: item.name,
+				sex: item.sex,
+				email: item.email,
+				address: item.address,
+				hobby: item.hobby,
+			};
+			this.list.splice(index,1,this.o);
+		},
+		cancle() {
+			this.isShow = false;
+		},
+		change(index) {
+			this.c = this.list[index];
+			this.c.id = index;
+			this.isShow = true;
+			this.$refs.mod.changeValue();
+		}
+	}
+})
+		</script>
+
+
+	</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Helios </title>
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/global.css?2019827" />
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css?2019827" />
+	<!-- Theme style -->
+	<link rel="stylesheet" href="assets/css/AdminLTE.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/skins/skin-black.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/index.css?2019827">
+</head>
+<style>
+	.slide-fade {
+		position: fixed;
+		left: 0;
+		right: 0;
+		width: 100%;
+		background-color: white;
+	}
+
+	.slide-fade-enter,
+	.slide-fade-leave-to {
+		left: 0;
+		top: 0;
+		right: 0;
+		position: absolute;
+		transform: translateX(-500px) translateY(-500px) rotate(-150deg) scale(0.5);
+		opacity: 1;
+	}
+
+	.slide-fade-enter-active {
+		background-color: white;
+		transition: all 0.6s ease;
+	}
+
+	.slide-fade-leave-active {
+		transition: all 0.7s ease;
+		background-color: white;
+		transform: translateX(500px) translateY(500px) rotate(150deg) scale(1);
+		z-index: 100;
+	}
+
+	.viswCard span {
+		color: #fff;
+		margin-right: 0px;
+	}
+
+	.box-header .el-button--mini,
+	.el-button--mini.is-round {
+		padding: 1px 3px;
+		color: #fff;
+		vertical-align: middle;
+	}
+
+	.el-input {
+		vertical-align: middle;
+	}
+
+	.label-text-vm {
+		text-align: left;
+	}
+
+	html,
+	body {
+		overflow: hidden;
+	}
+</style>
+
+<body class="skin-black  sidebar-open sidebar-mini">
+	<!-- hold-transition skin-blue-light sidebar-mini sidebar-collapse -->
+	<div class="wrapper">
+		<!-- 页头 -->
+		<div id="comp-header" class="main-header" style="position: relative; z-index: 99;">
+			<el-main-header :loguser="logUserName"></el-main-header>
+		</div>
+		<!-- 页头end -->
+
+		<!-- 侧边栏导航 -->
+		<div id="index-sidebar">
+			<el-index-slidebar></el-index-slidebar>
+		</div>
+		<!-- 侧边栏导航 end -->
+
+		<!-- 内容区域 -->
+
+		<transition name="slide-fade">
+			<div class="content-wrapper" id="content-wrapper">
+				<section class="content container-fluid" id="MainContext" style="padding:15px; min-width: 1200px;">
+
+
+					<div class="nav-tabs-custom">
+						<device></device>
+						<div class="loadingbox" v-show="heliosload">
+							<div class="loading">
+								<div class="logo"></div>
+								<div class="dots animate">
+									<div class="dot"></div>
+									<div class="dot"></div>
+									<div class="dot"></div>
+									<div class="dot"></div>
+									<div class="dot"></div>
+								</div>
+							</div>
+						</div>
+
+						<iframe id="iframe1" scrolling="no" :src="Tagurl" frameborder="0" border="none" style="width:100%;height:100%;"></iframe>
+
+					</div>
+				</section>
+			</div>
+		</transition>
+
+
+
+	</div>
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/vue.js"></script>
+	<script type="text/javascript" src="assets/js/index.js"></script>
+	<script type="text/javascript" src="assets/js/comment.js"></script>
+	<script type="text/javascript" src="assets/js/adminlte.js"></script>
+
+
+	<script>
+	</script>
+
+	<script type="text/javascript">
+		const animage = setInterval(function () {
+			document.querySelectorAll(".dots")[0].classList.remove('animate');
+			setInterval(function () {
+				document.querySelectorAll(".dots")[0].classList.add('animate');
+			}, 100);
+		}, 2000);
+
+		setTimeout(function () {
+			clearInterval(animage);
+		}, 2500);
+
+
+		var helios;
+		let data = {
+			url: sessionStorage.getItem("url"),
+			equipment: sessionStorage.getItem("equipment"),
+			Tagurl: '',
+			heliosload: true,
+		};
+		helios = new Vue({
+			el: "#content-wrapper",
+			data: data,
+			mounted() {
+				$("body").resize();
+				const animage = setInterval(function () {
+					document.querySelectorAll(".dots")[0].classList.remove('animate');
+					setTimeout(function () {
+						document.querySelectorAll(".dots")[0].classList.add('animate');
+					}, 100);
+				}, 2000);
+
+				setTimeout(function () {
+					helios.heliosload = false;
+					clearInterval(animage);
+				}, 2500);
+
+				const oIframe = document.getElementById('iframe1');
+				const deviceWidth = document.documentElement.clientWidth;
+				const deviceHeight = document.documentElement.clientHeight;
+				oIframe.style.width = (Number(deviceWidth) - 240) + 'px'; //数字是页面布局宽度差值
+				oIframe.style.height = (Number(deviceHeight) - 120) + 'px'; //数字是页面布局高度差
+			},
+
+			created() {
+				this.Tagurl = "status_page.html";
+				/* 	if (this.equipment == "au") {
+						if (this.url == "Status") {
+							this.Tagurl = "status_page.html";
+						}
+						if (this.url == "ParaSet") {
+							this.Tagurl = "paraset.html";
+						}
+						if (this.url == "Band") {
+							this.Tagurl = "roc.html";
+						}
+						if (this.url == "Device Info") {
+							this.Tagurl = "deviceinfo.html";
+						}
+					} else if (this.equipment == "eu") {
+						if (this.url == "Status") {
+							this.Tagurl = "status_pageeu.html";
+						}
+						if (this.url == "ParaSet") {
+							this.Tagurl = "paraseteu.html";
+						}
+						if (this.url == "Device Info") {
+							this.Tagurl = "deviceinfo.html";
+						}
+					} else if (this.equipment == "ru") {
+						if (this.url == "Status") {
+							this.Tagurl = "status_pageru.html";
+						}
+						if (this.url == "ParaSet") {
+							this.Tagurl = "parasetru.html";
+						}
+						if (this.url == "Band") {
+							this.Tagurl = "rocru.html";
+						}
+						if (this.url == "Device Info") {
+							this.Tagurl = "deviceinfo.html";
+						}
+					} */
+			},
+			/* 
+				beforeMount() {
+					if (this.equipment == "au") {
+						if (this.url == "Status") {
+							this.Tagurl = "status_page.html";
+						}
+						if (this.url == "ParaSet") {
+							this.Tagurl = "paraset.html";
+						}
+						if (this.url == "Band") {
+							this.Tagurl = "roc.html";
+						}
+						if (this.url == "Device Info") {
+							this.Tagurl = "deviceinfo.html";
+						}
+					} else if (this.equipment == "eu") {
+						if (this.url == "Status") {
+							this.Tagurl = "status_pageeu.html";
+						}
+						if (this.url == "ParaSet") {
+							this.Tagurl = "paraseteu.html";
+						}
+						if (this.url == "Device Info") {
+							this.Tagurl = "deviceinfo.html";
+						}
+					} else if (this.equipment == "ru") {
+						if (this.url == "Status") {
+							this.Tagurl = "status_pageru.html";
+						}
+						if (this.url == "ParaSet") {
+							this.Tagurl = "parasetru.html";
+						}
+						if (this.url == "Band") {
+							this.Tagurl = "rocru.html";
+						}
+						if (this.url == "Device Info") {
+							this.Tagurl = "deviceinfo.html";
+						}
+					}
+				}, */
+
+		})
+	</script>
+</body>
+
+</html>
