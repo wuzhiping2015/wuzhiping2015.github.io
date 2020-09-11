@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Helios Login</title>
+	<link rel="stylesheet" href="assets/css/Helios_Login.css">
+	<link rel="stylesheet" href="assets/css/index.css">
+	<link rel="shortcut icon" href="assets/images/helios.ico">
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/vue.js"></script>
+	<script type="text/javascript" src="assets/js/index.js"></script>
+
+
+
+</head>
+
+<body>
+	<div id="login111">
+		<input type="number" v-model="order" v-on:input="search(order)">
+	</div>
+	<script>
+
+		let data = {
+			order: 112,
+		};
+		var Helios = new Vue({
+			el: "#login111",
+			data: data,
+			methods: {
+				search(data) {
+					if (data > 100) {
+						data = 0;
+						return false;
+					}
+					else {
+						console.log(11);
+					}
+
+				}
+			},
+			watch: {
+				order(newVal, oldVal) {
+					/* 	console.log(newVal, oldVal);
+						if (newVal > 100) {
+							this.order = 0;
+							return false;
+						} */
+					/* 	if (newVal.length > 10) {
+							newVal = newVal.slice(0, 50)
+							this.$nextTick(() => {
+								this.order = newVal
+							})
+						} else {
+							this.$nextTick(() => {
+								this.order = 0
+							})
+						} */
+				},
+			},
+			filter: {
+
+			}
+		});
+	</script>
+
+
+	<style>
+	 
+	</style>
+</body>
+
+</html>

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Dashboard</title>
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/global.css?2019827" />
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css?2019827" />
+	<!-- Theme style -->
+	<link rel="stylesheet" href="assets/css/AdminLTE.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/skins/skin-black.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/index.css?2019827">
+	<link rel="stylesheet" href="assets/css/comon.css">
+</head>
+<style>
+	html,
+	body {
+		background: #000d4a url(assets/images/bg.jpg) center top;
+		background-size: cover;
+		color: #666;
+		padding-bottom: 30px;
+		font-size: .1rem;
+	}
+
+	.clear {
+		overflow: auto;
+		zoom: 1;
+		background: #fff;
+	}
+
+	.box-header.with-border {
+		padding-bottom: 14px;
+	}
+
+	.el-form-item__content {
+		margin-bottom: 8px;
+	}
+
+	#MainContext>ul>li {
+		width: 30%;
+		float: left;
+		padding: 0 15px;
+		text-align: center;
+
+	}
+
+	#MainContext>ul>li:nth-child(2) {
+		width: 40%;
+		padding: 0 30px;
+	}
+
+	.map {
+		position: relative;
+		height: 305px;
+		z-index: 9;
+		text-align: center;
+		margin: 0px auto;
+		width: 300px;
+		margin-top: 90px;
+	}
+
+	.map1,
+	.map2,
+	.map3 {
+		position: absolute;
+	}
+
+	.map1 {
+		width: 338px;
+		z-index: 2;
+		top: -32px;
+		left: -31px;
+		animation: myfirst2 15s infinite linear;
+	}
+
+	.map2 {
+		width: 298px;
+		top: -14px;
+		left: -7px;
+		z-index: 3;
+		opacity: 0.2;
+		animation: myfirst 10s infinite linear;
+	}
+
+	.map3 {
+		width: 273px;
+		top: 0px;
+		z-index: 1;
+	}
+
+	img {
+		border: none;
+		max-width: 100%;
+	}
+
+	@keyframes myfirst2 {
+		from {
+			transform: rotate(0deg);
+		}
+
+		to {
+			transform: rotate(359deg);
+		}
+	}
+
+	@keyframes myfirst {
+		from {
+			transform: rotate(0deg);
+		}
+
+		to {
+			transform: rotate(-359deg);
+		}
+	}
+
+	#MainContext {
+
+		height: 100vh;
+	}
+
+	.widget-user-2 .widget-user-username,
+	.widget-user-2 .widget-user-desc {
+		text-align: left;
+	}
+
+	.bg-olive {
+		background-color: #227cd4 !important;
+	}
+</style>
+
+<body class="skin-black sidebar-open sidebar-mini">
+	<div class="wrapper" style="background: none;">
+		<!-- 页头 -->
+		<div id="comp-header" class="main-header" style="position: relative; z-index: 99;">
+			<el-main-header></el-main-header>
+		</div>
+		<!-- 页头end -->
+
+
+		<!-- 内容区域 -->
+		<div id="MainContext">
+			<!-- 	<h5 style="    text-align: center;
+    color: rgb(255, 255, 255);
+    position: relative;
+    top: 220px;
+    font-size: 50px;
+    z-index: 99;">统计
+			开发中...</h5> -->
+			<ul class="clearfix">
+				<li>
+					<div class="boxall" style="height:750px;">
+						<div class="alltitle">M - DOTS</div>
+						<div class="sycm">
+							<!-- <ul class="clearfix">
+									<li style="width: 100%;">
+										<h2>824</h2><span>Heartbeat Message per Hour</span>
+									</li>
+								</ul> -->
+							<ul class="clearfix">
+								<li v-for="i in data3" v-if="i.adr==325 || i.adr==326 || i.adr==327 ">
+									<h2 v-html="i.value"></h2>
+									<span v-html="i.name"></span>
+								</li>
+
+							</ul>
+							<div style="border-bottom: 1px solid rgba(255,255,255,.1)"></div>
+							<ul class="clearfix">
+								<li v-for="i in data3" v-if="i.adr==328 || i.adr==329 || i.adr==330 ">
+									<h2 v-html="i.value"></h2>
+									<span v-html="i.name"></span>
+								</li>
+							</ul>
+						</div>
+
+						<div class="alltitle"> Activation Alarm</div>
+						<div id="main" style="width:100%;height:400px;"></div>
+
+
+						<div class="boxfoot"></div>
+					</div>
+				</li>
+				<li>
+					<div class="alltitle">Alarm Level</div>
+					<div class="bar">
+						<div class="barbox ">
+							<ul class="clearfix">
+								<li class="pulll_left counter" v-for="i in data1" v-if="i.adr==318 || i.adr==319">
+									{{i.value}}</li>
+							</ul>
+						</div>
+						<div class="barbox2">
+							<ul class="clearfix">
+								<li class="pulll_left counter" v-for="i in data1" v-if="i.adr==318 || i.adr==319">
+									{{i.name}}</li>
+							</ul>
+						</div>
+					</div>
+					<div class="bar">
+						<div class="barbox ">
+							<ul class="clearfix">
+								<li class="pulll_left counter" v-for="i in data1" v-if="i.adr==320 || i.adr==321">
+									{{i.value}}</li>
+							</ul>
+						</div>
+						<div class="barbox2">
+							<ul class="clearfix">
+								<li class="pulll_left counter" v-for="i in data1" v-if="i.adr==320 || i.adr==321">
+									{{i.name}}</li>
+							</ul>
+						</div>
+					</div>
+					<div class="map">
+						<div class="map1">
+							<img src="assets/images/lbx.png">
+						</div>
+						<div class="map2">
+							<img src="assets/images/jt.png">
+						</div>
+						<div class="map3">
+							<img src="assets/images/map.png">
+						</div>
+						<div class="map4" id="map_1"></div>
+					</div>
+				</li>
+
+				<li>
+					<div class=" box-widget widget-user-2">
+						<!-- <div class="widget-user-header bg-olive">
+							<div class="widget-user-image">
+								<span class="icon iconfont icon-snmp1 img-circle"></span>
+							</div>
+							<h3 class="widget-user-username">SNMP</h3>
+							<h5 class="widget-user-desc">运行正常</h5>
+						</div>
+						<div class="widget-user-header bg-olive">
+							<div class="widget-user-image">
+								<span class="icon iconfont icon--guangxianluyouguanli- img-circle"></span>
+							</div>
+							<h3 class="widget-user-username">Modem</h3>
+							<h5 class="widget-user-desc">运行正常</h5>
+						</div>
+						<div class="widget-user-header bg-red">
+							<div class="widget-user-image">
+								<span class="icon iconfont icon-VPN img-circle"></span>
+							</div>
+							<h3 class="widget-user-username">VPN</h3>
+							<h5 class="widget-user-desc">运行 异常</h5>
+						</div>
+						<div class="widget-user-header bg-red">
+							<div class="widget-user-image">
+								<span class="icon iconfont icon-tongbushijian img-circle"></span>
+							</div>
+							<h3 class="widget-user-username">NTP</h3>
+							<h5 class="widget-user-desc">运行 异常</h5>
+						</div> -->
+
+						<div class="widget-user-header" :class="v.value==0 ? 'bg-orange': 'bg-olive' "
+							v-for="v in data4" v-if="v.adr!=257">
+							<div class="widget-user-image">
+								<!-- adr.push(140, 152, 148, 296); -->
+								<span class="icon iconfont icon-snmp1 img-circle" v-if="v.adr==140"></span>
+								<span class="icon iconfont icon--guangxianluyouguanli- img-circle"
+									v-if="v.adr==152"></span>
+								<span class="icon iconfont icon-VPN img-circle" v-if="v.adr==148"></span>
+								<span class="icon iconfont icon-tongbushijian img-circle" v-if="v.adr==296"></span>
+								<span class="icon iconfont icon-gaojing3  img-circle" v-if="v.adr==257"></span>
+							</div>
+							<h3 class="widget-user-username" v-html="v.name"></h3>
+							<h5 class="widget-user-desc " v-if="v.value==0">Is not enabled</h5>
+							<h5 class="widget-user-desc" v-else>Running normally</h5>
+						</div>
+
+
+						<div class="widget-user-header" :class="v.value==1 ? 'bg-red': 'bg-olive' " v-for="v in data4"
+							v-if="v.adr==257">
+							<div class="widget-user-image">
+								<!-- adr.push(140, 152, 148, 296); -->
+								<span class="icon iconfont icon-gaojing3  img-circle" v-if="v.adr==257"></span>
+							</div>
+							<h3 class="widget-user-username" v-html="v.name"></h3>
+							<h5 class="widget-user-desc " v-if="v.value==1">The alarm</h5>
+							<h5 class="widget-user-desc" v-else>Running normally</h5>
+						</div>
+						<!-- 0是正常 1是告警 -->
+					</div>
+					<!-- 
+						<div class="boxall" style="height:700px;">
+							<div class="alltitle">System Statistics</div>
+							
+							<div class="boxfoot"></div>
+						</div> -->
+
+				</li>
+
+			</ul>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/echarts.min.js"></script>
+	<script type="text/javascript" src="assets/js/vue.js"></script>
+
+	<script type="text/javascript" src="assets/js/index.js"></script>
+	<script type="text/javascript" src="assets/js/comment.js"></script>
+
+
+	<script>
+		var alarm_value = [];
+		var alarm_name = [];
+		let data = {
+			equipment: sessionStorage.getItem("equipment"),
+			url: sessionStorage.getItem("url"),
+			data1: [],
+			data2: [],
+			data3: [],
+			data4: [],
+		};
+		var Helios = new Vue({
+			el: "#MainContext",
+			data: data,
+			beforeMount() { },
+			mounted() {
+				$("body").resize();
+				this.getchart()
+
+				setInterval(function () {
+					alarm_value.length = 0;
+					alarm_name.length = 0;
+					Helios.getchart()
+				}, 3000000);
+
+
+			},
+			created() {
+				/* console.log("创建完成：");
+				console.log(this.$data); */
+			},
+			updated() {
+				/* console.log("==更新成功==");
+				console.log(this.$data); */
+			},
+			//事件
+			methods: {
+
+				getchart() {
+					var adr = [318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330];
+					adr.push(140, 152, 148, 296, 257);
+					var obj = {
+						"data": adr.join(),
+						"action": "READ"
+					};
+
+
+					util.getattrajax(obj, function (data) {
+						var data = data.data;
+						var data1 = [];
+						var data2 = [];
+						var data3 = [];
+						var data4 = [];
+						data.forEach((v, i) => {
+							switch (v.adr) {
+								case 318:
+									Helios.callData(v, "Warn", data1);
+									break;
+								case 319:
+									Helios.callData(v, "Minor", data1);
+									break;
+								case 320:
+									Helios.callData(v, "Major", data1);
+									break;
+								case 321:
+									Helios.callData(v, "Critical", data1);
+									break;
+								case 322:
+									Helios.callData(v, "MU", data2);
+									break;
+								case 323:
+									Helios.callData(v, "EU", data2);
+									break;
+								case 324:
+									Helios.callData(v, "RU", data2);
+									break;
+								case 325:
+									Helios.callData(v, "MU Alarm", data3);
+									break;
+								case 326:
+									Helios.callData(v, "EU Alarm", data3);
+									break;
+								case 327:
+									Helios.callData(v, "RU Alarm", data3);
+									break;
+								case 328:
+									Helios.callData(v, "MU Equipment", data3);
+									break;
+								case 329:
+									Helios.callData(v, "EU Equipment", data3);
+									break;
+								case 330:
+									Helios.callData(v, "RU Equipment", data3);
+									break;
+
+								/* adr.push(140, 152, 148, 296); */
+								case 140:
+									Helios.callData(v, "SNMP", data4);
+									break;
+								case 152:
+									Helios.callData(v, "Modem", data4);
+									break;
+								case 148:
+									Helios.callData(v, "VPN", data4);
+									break;
+								case 296:
+									Helios.callData(v, "NTP", data4);
+									break;
+								case 257:
+									Helios.callData(v, "System Alarm", data4);
+									break;
+
+							}
+						});
+						Helios.data1 = data1;
+						Helios.data2 = data2;
+						Helios.data3 = data3;
+						Helios.data4 = data4;
+
+						let allactiva = 0;
+						data2.forEach(function (i, v) {
+							alarm_value.push(i.value);
+							allactiva += Number(i.value); //合计
+							alarm_name.push(i.name);
+						});
+						alarm_name.push("Combined"); //名称
+						alarm_value.push(allactiva + ""); //数量
+					});
+
+
+
+					// 基于准备好的dom，初始化echarts实例
+					var myChart = echarts.init(document.getElementById('main'));
+					myChart.showLoading();
+					// 指定图表的配置项和数据
+					var option = {
+						title: {
+							text: ''
+						},
+						tooltip: {},
+						legend: {
+							data: ['']
+						},
+						yAxis: {},
+						xAxis: {
+							data: alarm_name
+						},
+						series: [{
+							name: '',
+							type: 'bar',
+							data: alarm_value
+						}],
+						color: ['#008dff', '#008dff', '#c5ccff', '#c5ccff', '#c5ccff', '#c5ccff'],
+
+						textStyle: {
+							fontSize: 25, //字体大小
+							color: '#ffffff' //字体颜色
+						},
+						emphasis: {
+							itemStyle: {
+								color: "#00b050 "
+							}
+						},
+					};
+
+					// 使用刚指定的配置项和数据显示图表。
+
+					setTimeout(function () {
+						myChart.hideLoading();
+						myChart.setOption(option);
+					}, 500);
+				},
+				//adr 方法
+				callData(v, name, data1) {
+					var obj1 = {
+						adr: v.adr,
+						name: name,
+						value: v.value
+					}
+					data1.push(obj1);
+				},
+			},
+
+		});
+	</script>
+
+
+</body>
+
+
+</html>

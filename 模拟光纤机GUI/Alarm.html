@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Alarm </title>
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/global.css?2019827" />
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css?2019827" />
+	<!-- Theme style -->
+	<link rel="stylesheet" href="assets/css/AdminLTE.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/skins/skin-black.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/index.css?2019827">
+</head>
+<style>
+	.clear {
+		overflow: auto;
+		zoom: 1;
+		background: #fff;
+	}
+
+	.box-header.with-border {
+		padding-bottom: 14px;
+	}
+
+	.el-form-item__content {
+		margin-bottom: 8px;
+	}
+
+	.el-button {
+		padding: 8px 20px;
+	}
+
+	.table>tbody>tr>td {
+		font-size: 16px;
+	}
+
+	.nullempty {
+		text-align: center;
+		padding: 20px 0;
+		font-family: 'Roboto Condensed';
+	}
+
+	.nullempty .icon {
+		display: inline-block;
+		margin-bottom: 5px;
+		font-size: 60px;
+	}
+</style>
+
+<body class="skin-black sidebar-open sidebar-mini">
+	<div class="wrapper">
+		<!-- 页头 -->
+		<div id="comp-header" class="main-header" style="position: relative; z-index: 99;">
+			<el-main-header></el-main-header>
+		</div>
+		<!-- 页头end -->
+
+		<!-- 内容区域 -->
+		<div id="content-wrapper">
+
+			<!-- 主要内容显示 -->
+			<section class="content container-fluid" id="MainContext" style="padding:15px; min-width: 1200px;">
+
+				<div class="wrapper" id="content" style="background:#f1f4f6; margin-top: 12px;">
+
+					<div class="col-md-12" style="padding-left: 0px;">
+
+						<div class="nav-tabs-custom" style="border-bottom: 8px solid #f1f4f6;">
+							<ul class="nav nav-tabs">
+								<li :class="{active:curTab==0}" @click="curTab=0">
+									<a href="javascript:void(0);">
+										<span class="icon iconfont icon-guangxianxiangduanzi"></span> System Alarm</a>
+								</li>
+
+								<li :class="{active:curTab==1}" @click="curTab=1">
+									<a href="javascript:void(0);">
+										<span class="icon iconfont icon-shebei1"></span>Module Alarm</a>
+								</li>
+
+							</ul>
+						</div>
+						<div class="row">
+							<!-- External START -->
+							<div class="col-md-12" v-if="curTab==0">
+								<div class="box" v-if="heliosUser3=='Technician'">
+									<div class="nullempty"><span class="icon iconfont icon-kongshuju"></span>
+										<h3>No permission</h3>
+									</div>
+								</div>
+								<div class="box" v-else>
+
+									<div class="box-header with-border">
+										<h3 class="box-title">MCU Alarm</h3>
+										<!-- GRPS -->
+										<div class="box-tools pull-right" style="top: 9px;">
+											<el-button type="primary" @click="setAlarm()" :disabled="!Set">Set
+											</el-button>
+											<el-button @click="getAlarm(1)" :disabled="!Read">Read</el-button>
+										</div>
+									</div>
+									<div class="clear">
+										<table class="table table-hover">
+											<tbody>
+												<tr>
+													<th width="300">Alarm</th>
+													<th width="300">Alarm Enabled</th>
+													<th width=""> Level</th>
+												</tr>
+												<tr v-for="(v,i ) in AlarmData" v-if="heliosUser">
+													<td>{{v.name}}</td>
+													<td>
+														<el-checkbox-group v-model="v.agent" size="small">
+															<el-checkbox label="Agent Switch" border></el-checkbox>
+														</el-checkbox-group>
+														<el-checkbox-group v-model="v.enbale" size="small">
+															<el-checkbox label="Enable" border></el-checkbox>
+														</el-checkbox-group>
+													</td>
+													<td>
+														<el-select v-model="v.DJ">
+															<el-option v-for="item in Grade" :key="item.value"
+																:label="item.label" :value="item.value">
+															</el-option>
+														</el-select>
+													</td>
+												</tr>
+
+												<tr v-else-if="!heliosUser && v.Agentenable">
+													<td>{{v.name}}</td>
+													<td>
+														<el-checkbox-group v-model="v.enbale" size="small">
+															<el-checkbox label="Enable" border></el-checkbox>
+														</el-checkbox-group>
+													</td>
+													<td>
+														<el-select v-model="v.DJ">
+															<el-option v-for="item in Grade" :key="item.value"
+																:label="item.label" :value="item.value">
+															</el-option>
+														</el-select>
+													</td>
+
+
+												</tr>
+												<tr v-else style="height: 0px; display: none;">
+													<td></td>
+													<td>
+													</td>
+													<td>
+													</td>
+												</tr>
+												<tr v-for="(v,i) in AlarmData1length" v-if="AlarmData1show">
+													<td>
+														<template v-if="heliosUser">
+															{{ AlarmData1[0].name[i]}}
+														</template>
+
+														<template
+															v-else-if="!heliosUser && AlarmData1[0].Agentenable[i]">
+															{{ AlarmData1[0].name[i]}}
+														</template>
+
+													</td>
+
+													<td v-if="heliosUser">
+														<el-checkbox-group v-model="AlarmData1[0].agent[i]"
+															size="small">
+															<el-checkbox label="Agent Switch" border></el-checkbox>
+														</el-checkbox-group>
+														<el-checkbox-group v-model="AlarmData1[0].enbale[i]"
+															size="small">
+															<el-checkbox label="Enable" border></el-checkbox>
+														</el-checkbox-group>
+													</td>
+
+													<td v-else>
+														<el-checkbox-group v-model="AlarmData1[0].enbale[i]"
+															size="small" v-show="AlarmData1[0].Agentenable[i]">
+															<el-checkbox label="Enable" border></el-checkbox>
+														</el-checkbox-group>
+													</td>
+
+													<td style="background-color: #f5f5f5;">
+														<!-- <el-select v-model="AlarmData1[0].DJ" v-if="i==0">
+															<el-option key="0" label="Warn" value="0"></el-option>
+															<el-option key="1" label="Minor" value="1"></el-option>
+															<el-option key="2" label="Major" value="2"></el-option>
+															<el-option key="3" label="Critical" value="3"></el-option>
+														</el-select> -->
+														<el-select v-model="AlarmData1[0].DJ" v-if="i==0">
+															<el-option v-for="item in Grade" :key="item.value"
+																:label="item.label" :value="item.value">
+															</el-option>
+														</el-select>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+
+									</div>
+								</div>
+							</div>
+							<!-- External END -->
+
+
+							<!-- Port1 START -->
+							<div class="col-md-12" v-if="curTab==1">
+
+								<div class="box">
+									<div class="box-header with-border">
+										<h3 class="box-title">Equipment Alarm </h3>
+										<div class="box-tools pull-right" style="top: 9px;">
+											<el-button type="primary" @click="setDevAlarm()" :disabled="!Set">Set
+											</el-button>
+											<el-button @click="getDevAlarm(1)" :disabled="!Read">Read</el-button>
+										</div>
+									</div>
+									<div class="clear">
+										<table class="table table-hover">
+											<tbody>
+												<tr>
+													<th width="300">Alarm</th>
+													<th>Level</th>
+												</tr>
+												<tr v-for="(v,i) in DevAlarmdata">
+													<td>{{v.name}}</td>
+													<td>
+														<el-select v-model="v.value">
+															<el-option v-for="item in Grade" :key="item.value"
+																:label="item.label" :value="item.value">
+															</el-option>
+														</el-select>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<!-- Port1 END -->
+						</div>
+
+					</div>
+				</div>
+			</section>
+			<!-- 内容区域 -->
+		</div>
+	</div>
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/vue.js"></script>
+	<script type="text/javascript" src="assets/js/index.js"></script>
+	<script type="text/javascript" src="assets/js/comment.js"></script>
+	<script type="text/javascript" src="assets/js/adminlte.js"></script>
+
+
+	<script>
+		var helios;
+		let data = {
+			Set: true,
+			Read: false,
+			curTab: 0,
+			/* //监控板 */
+			AlarmData: [],
+			AlarmData1: [],
+			AlarmDataget: [],
+			AlarmData1get: [],
+			AlarmData1length: 0,
+			/* 	//设备 */
+			DevAlarmdata: [],
+			equipment: sessionStorage.getItem("equipment"),
+			url: sessionStorage.getItem("url"),
+			AlarmData1show: true,
+
+			value: '0',
+			Grade: [{
+				value: '0',
+				label: 'Warn'
+			}, {
+				value: '1',
+				label: 'Minor'
+			}, {
+				value: '2',
+				label: 'Major'
+			}, {
+				value: '3',
+				label: 'Critical'
+			}],
+			heliosUser: heliosUser[0] == $session,
+			heliosUser3: $session,
+		};
+		var helios = new Vue({
+			el: "#MainContext",
+			data: data,
+			beforeMount() {
+				this.getAlarm();
+				this.getDevAlarm();
+				setTimeout(function () {
+					helios.$data.Read = true;
+				}, 200);
+
+
+
+
+			},
+			mounted() {
+				$("body").resize();
+			},
+			/* 事件 */
+			methods: {
+				getAlarm(c) {
+					var obj1 = [];
+					if (heliosUser[0] == $session || heliosUser[1] == $session || heliosUser[2] == $session) {
+						obj1.push(53, 54, 55, 56, 57, 58);
+					}
+					var obj = {
+						"data": obj1.join(),
+						"action": "READ"
+					};
+					util.getattrajax(obj, function (data) {
+						var data = data.data;
+						var data1 = [];
+						var data2 = [];
+						if (c > 0) {
+							helios.$data.Read = false;
+							helios.AlarmData.length = 0;
+							helios.AlarmData1.length = 0;
+							util.success('success');
+							setTimeout(function () {
+								helios.$data.Read = true;
+							}, 1200);
+						}
+						/* 53, 54, 55, 56, 57, 58 */
+						/* 38,39,40,41,42,43 */
+						data.forEach(function (v, i, arr) {
+							switch (v.adr) {
+								/* 	case 266:
+										helios.ResTruefalse("Communication Fault ", v.adr, v.value, 265);
+										break; */
+								case 54:
+									helios.ResTruefalse("AC Alarm", v.adr, v.value, 39);
+									break;
+								case 55:
+									helios.ResTruefalse("DC Alarm ", v.adr, v.value, 40);
+									break;
+								case 53:
+									helios.ResTruefalse("Door Open ", v.adr, v.value, 38);
+									break;
+								case 56:
+									helios.ResTruefalse("GPS Offline ", v.adr, v.value, 41);
+									break;
+								case 57:
+									helios.ResTruefalse("Battery Fault", v.adr, v.value, 42);
+									break;
+								case 58:
+									/*监控板风扇 [0-3] */
+									helios.ResTruefalse("Fan Alarm", v.adr, v.value.split(","), 43);
+									/* helios.AlarmData1length = obj.name.length; */
+									break;
+							}
+						});
+
+						/*console.log(data1);
+						console.log(data2);
+						helios.AlarmData = data1;
+						helios.AlarmData1 = data2; */
+
+					});
+				},
+
+				ResTruefalse(name, adr, value, dengji) {
+					/* ! 监控板风扇  [0-3] */
+					if (adr != 58) {
+						let obj = {
+							name: "",
+							adr: "",
+							agent: "",
+							enbale: "",
+							DJ: "",
+							Agentenable: false,
+						}
+						obj.adr = adr;
+						obj.name = name;
+						if ("0" == value) {
+							obj.agent = false;
+							obj.enbale = false;
+						}
+						if ("1" == value) {
+							obj.agent = false;
+							obj.enbale = true;
+						}
+						if ("2" == value) {
+							obj.agent = true;
+							obj.enbale = false;
+							obj.Agentenable = true;
+						}
+						if ("3" == value) {
+							obj.agent = true;
+							obj.enbale = true;
+							obj.Agentenable = true;
+						}
+						let DJ = [dengji];
+						var obj1 = {
+							"data": DJ.join(),
+							"action": "READ",
+						}
+						/* 38,39,40,41,42,43*/
+
+						util.getattrajax(obj1, function (data) {
+							var data = (data.data);
+							switch (data[0].adr) {
+								case 38:
+									obj.DJ = data[0].value;
+									break;
+								case 39:
+									obj.DJ = data[0].value;
+									break;
+								case 40:
+									obj.DJ = data[0].value;
+									break;
+								case 41:
+									obj.DJ = data[0].value;
+									break;
+								case 42:
+									obj.DJ = data[0].value;
+									break;
+								case 43:
+									obj.DJ = data[0].value;
+									break;
+							}
+						});
+
+						helios.AlarmData.push(obj);
+
+						/* helios.AlarmDataget = helios.AlarmData; */
+						setTimeout(function () {
+							sessionStorage.setItem("AlarmData", JSON.stringify(helios.AlarmData));
+						}, 1000);
+
+
+					} else {
+						/* 监控板风扇  0-3  */
+						let obj = {
+							adr: "",
+							name: [],
+							agent: [],
+							enbale: [],
+							DJ: "",
+							Agentenable: [],
+
+						}
+						obj.adr = adr;
+						helios.AlarmData1length = (value.length);
+						for (var i = 0; i < value.length; i++) {
+							if ("0" == value[i]) {
+								obj.name.push(name + "" + i);
+								obj.agent.push(false);
+								obj.enbale.push(false);
+								obj.Agentenable.push(false);
+							}
+							if ("1" == value[i]) {
+								obj.name.push(name + "" + i);
+								obj.agent.push(false);
+								obj.enbale.push(true);
+								obj.Agentenable.push(false);
+							}
+							if ("2" == value[i]) {
+								obj.name.push(name + "" + i);
+								obj.agent.push(true);
+								obj.enbale.push(false);
+								obj.Agentenable.push(true);
+							}
+							if ("3" == value[i]) {
+								obj.name.push(name + "" + i);
+								obj.agent.push(true);
+								obj.enbale.push(true);
+								obj.Agentenable.push(true);
+							}
+						}
+
+						let DJ = [dengji];
+						var obj1 = {
+							"data": DJ.join(),
+							"action": "READ",
+						}
+						util.getattrajax(obj1, function (data) {
+							var data = (data.data);
+							switch (data[0].adr) {
+								case 43:
+									/*	obj.DJ12 = data[0].value.split(","); */
+									obj.DJ = data[0].value;
+									break;
+							}
+						});
+						/* 	setTimeout(function() {
+								sessionStorage.setItem("AlarmData1", JSON.stringify(helios.AlarmData1));
+							}, 1100); */
+						var boxshow = util.HeliosDataLength1(obj.Agentenable, 1);
+
+						if (heliosUser[0] != $session) {
+							helios.AlarmData1show = boxshow;
+						} else {
+							helios.AlarmData1show = true;
+						}
+						helios.AlarmData1.push(obj);
+					}
+				},
+
+				resnumber() {
+					let adr = arguments[0];
+					var data = [];
+
+					/* //console.log(adr)
+					//告警使能 */
+					function enable() {
+						if (adr.agent == false && adr.enbale == false) {
+							return "0";
+						} else if (adr.agent == false && adr.enbale == true) {
+							return "1";
+						} else if (adr.agent == true && adr.enbale == false) {
+							return "2";
+						} else if (adr.agent == true && adr.enbale == true) {
+							return "3";
+						}
+					}
+
+					if (58 != adr.adr) {
+						//
+						let start = {
+							adr: arguments[1],
+							value: adr.DJ
+						}
+						data.push(start);
+						var obj = {
+							adr: adr.adr,
+							value: enable()
+						}
+						data.push(obj);
+						var obj1 = {
+							"data": JSON.stringify(data),
+							"action": "SET"
+						}
+						util.postattrajax(obj1, function (data) {
+							if (1 != data) {
+								toast.$message({
+									message: ' Error' + data,
+									type: 'error',
+									showClose: true,
+									offset: 40
+								});
+							} else {
+								util.success('success');
+								setTimeout(() => {
+									helios.$data.Set = true;
+								}, 1200);
+							}
+						});
+					} else {
+
+						/* 监控板风扇1  【0-3】 */
+						let start = {
+							adr: arguments[1],
+							value: adr.DJ
+						}
+						data.push(start);
+
+						function enable(agent, enbale) {
+							if (agent == false && enbale == false) {
+								return 0;
+							} else if (agent == false && enbale == true) {
+								return 1;
+							} else if (agent == true && enbale == false) {
+								return 2;
+							} else if (agent == true && enbale == true) {
+								return 3;
+							}
+						}
+						/* *** 监控板风扇 使能  0-3 */
+						let obj = {
+							adr: "",
+							value: [],
+						};
+						obj.adr = adr.adr;
+						for (var i = 0; i < helios.AlarmData1length; i++) {
+							var agent = arguments[0].agent[i];
+							var enbale = arguments[0].enbale[i];
+							obj.value.push(enable(agent, enbale));
+						}
+						obj.value = obj.value.join(",");
+						data.push(obj);
+
+						var obj1 = {
+							"data": JSON.stringify(data),
+							"action": "SET"
+						}
+
+						util.postattrajax(obj1, function (data) {
+							if (1 != data) {
+								toast.$message({
+									message: ' Error' + data,
+									type: 'error',
+									showClose: true,
+									offset: 40
+								});
+							} else {
+								util.success('success');
+								setTimeout(() => {
+									helios.$data.Set = true;
+								}, 900);
+							}
+						});
+					}
+				},
+				setAlarm() {
+					helios.$data.Set = false;
+					var obj1 = [53, 54, 55, 56, 57, 58];
+					var data = [];
+					helios.AlarmData.forEach(function (v, i, attr) {
+						/*  231    232     230   233   234   235 */
+						switch (v.adr) {
+							case 53:
+								helios.resnumber(attr[i], 38);
+								break;
+							case 54:
+								helios.resnumber(attr[i], 39);
+								break;
+							case 55:
+								helios.resnumber(attr[i], 40);
+								break;
+							case 56:
+								helios.resnumber(attr[i], 41);
+								break;
+							case 57:
+								helios.resnumber(attr[i], 42);
+								break;
+							/* 	case 58:
+								helios.resnumber(attr[i], 265);
+								break; */
+							/* case 263:
+								helios.resnumber(attr[i], 235);
+								break; */
+						}
+					});
+					setTimeout(function () {
+						helios.$data.Set = true;
+						helios.AlarmData1.forEach(function (v, i, attr) {
+							helios.resnumber(attr[i], 43);
+						})
+					}, 100);
+				},
+
+				getDevAlarm(c) {
+
+
+					var obj2 = {
+						"data": "97",
+						"action": "READ"
+					};
+					util.getattrajax(obj2, function (data) {
+						if (Number(data.data[0].value) == 1) {
+							var obj1 = [90, 91, 92, 93, 94, 95, 96];
+							var obj = {
+								"data": obj1.join(),
+								"action": "READ"
+							};
+							util.getattrajax(obj, function (data) {
+								var data = data.data;
+								if (c > 0 && data.length > 0) {
+									helios.$data.Read = false;
+									toast.$message({
+										message: "success",
+										type: 'success',
+										showClose: true,
+										offset: 10
+									});
+									setTimeout(function () {
+										helios.$data.Read = true;
+									}, 1200);
+								}
+								var data1 = []
+								data.forEach(function (v, i, attr) {
+									switch (v.adr) {
+										case 90:
+											var obj = {
+												adr: v.adr,
+												name: "Optical Rx Fault",
+												value: v.value
+											}
+											data1.push(obj);
+											break;
+										case 91:
+											var obj = {
+												adr: v.adr,
+												name: "Optical Tx Fault",
+												value: v.value
+											}
+											data1.push(obj);
+											break;
+										case 92:
+											var obj = {
+												adr: v.adr,
+												name: "DL PA Fault ",
+												value: v.value
+											}
+											data1.push(obj);
+											break;
+										case 93:
+											var obj = {
+												adr: v.adr,
+												name: "DL VSWR Alarm",
+												value: v.value
+											}
+											data1.push(obj);
+											break;
+										case 94:
+											var obj = {
+												adr: v.adr,
+												name: "DL PA Over Temperature",
+												value: v.value
+											}
+											data1.push(obj);
+											break;
+										case 95:
+											var obj = {
+												adr: v.adr,
+												name: "DL PA Output Over Power",
+												value: v.value
+											}
+											data1.push(obj);
+											break;
+										case 96:
+											var obj = {
+												adr: v.adr,
+												name: "UL LNA Fault",
+												value: v.value
+											}
+											data1.push(obj);
+											break;
+									}
+								});
+								helios.DevAlarmdata = data1;
+							});
+						}
+						else {
+							var obj1 = [90, 91];
+							var obj = {
+								"data": obj1.join(),
+								"action": "READ"
+							};
+							util.getattrajax(obj, function (data) {
+								var data = data.data;
+								if (c > 0 && data.length > 0) {
+									helios.$data.Read = false;
+									toast.$message({
+										message: "success",
+										type: 'success',
+										showClose: true,
+										offset: 10
+									});
+									setTimeout(function () {
+										helios.$data.Read = true;
+									}, 1200);
+								}
+								var data1 = []
+								data.forEach(function (v, i, attr) {
+									switch (v.adr) {
+										case 90:
+											var obj = {
+												adr: v.adr,
+												name: "Optical Rx Fault",
+												value: v.value
+											}
+											data1.push(obj);
+											break;
+										case 91:
+											var obj = {
+												adr: v.adr,
+												name: "Optical Tx Fault",
+												value: v.value
+											}
+											data1.push(obj);
+											break;
+									}
+								});
+								helios.DevAlarmdata = data1;
+							});
+
+						}
+					});
+
+
+
+				},
+				setDevAlarm() {
+					helios.$data.Set = false;
+					/* var adrs = [237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249]; */
+
+					let data = [];
+					helios.DevAlarmdata.forEach(function (v, i, attr) {
+						let obj = {
+							adr: v.adr,
+							value: v.value,
+						}
+						data.push(obj);
+					});
+					var obj1 = {
+						"data": JSON.stringify(data),
+						"action": "SET",
+					}
+					util.postattrajax(obj1, function (data) {
+						if (1 != data) {
+							toast.$message({
+								message: ' Error:' + data.message,
+								type: 'error',
+								showClose: true,
+								offset: 80
+							});
+							return false;
+						} else {
+							setTimeout(() => {
+								helios.$data.Set = true;
+								util.success('success');
+							}, 1200);
+						}
+					});
+				}
+
+			},
+		});
+	</script>
+</body>
+
+</html>

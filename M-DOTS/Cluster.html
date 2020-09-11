@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<!-- saved from url=(0100)https://www.17sucai.com/preview/166243/2014-09-25/pd-ac69f6e6-3ed8-11e4-bb45-00163e001348/index.html -->
+<html lang="en" class="no-js">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+		<title> Cluster</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="assets/indexes/style.css">
+		<script type="text/javascript" src="assets/js/jquery.js"></script>
+		<link rel="stylesheet" href="assets/css/index.css?2019827">
+		<link rel="stylesheet" href="assets/css/AdminLTE.min.css?2019827" />
+
+		<script type="text/javascript" src="assets/indexes/jquery.particleground.min.js"></script>
+		<script type="text/javascript" src="assets/indexes/demo.js"></script>
+		<script type="text/javascript" src="assets/js/vue.js"></script>
+		<script type="text/javascript" src="assets/js/index.js"></script>
+		<script type="text/javascript" src="assets/js/comment.js"></script>
+
+		<style>
+			tr th,
+		tr td {
+			color: #000;
+			padding: 10px 0;
+		}
+
+		.switch {
+			text-align: left;
+			padding: 16px;
+		}
+
+		.switch label {
+			color: #000;
+			font-size: 16px;
+			font-weight: 600;
+			font-family: 'Roboto Condensed';
+		}
+
+		.el-col-12 {
+			width: 70%;
+		}
+	</style>
+	</head>
+
+	<body>
+
+		<div id="particles">
+			<canvas class="pg-canvas" width="1496" height="318"></canvas>
+			<div class="intro" id="Context">
+				<span class="login-text" @click="location" title="Helios"></span>
+				<!-- system -->
+				<div class="row">
+					<el-col :span="12">
+						<div class="nav-tabs-custom">
+							<div class="box-header with-border" style=" height: 66px; line-height: 40px;">
+								<span class="icon iconfont text-teal " style="float: right;">
+									<el-button type="info" @click="back($event)" :disabled="added">
+										<em>&lt;</em> GO back</el-button>
+									<el-button type="primary" @click="showData($event)" v-show="!heliosUser1" :disabled="added" style="float: right;">New
+										added
+									</el-button>
+
+								</span>
+								<h3 class="box-title">Cluster Management</h3>
+							</div>
+							<div class="box">
+								<div class="col-md-12">
+									<div style="color: #000;"></div>
+									<div class="switch" v-show="!heliosUser1">
+										<label v-html="status.name"> </label>&nbsp;&nbsp;
+										<el-switch v-model="status.value"></el-switch>&nbsp;&nbsp;
+										<el-button size="small" type="primary" @click="Setstatus">Set</el-button>
+									</div>
+								</div>
+								<div class="box-body table-responsive no-padding">
+									<div class="box-body table-responsive no-padding" style="padding: 0 !important;
+    max-height: 600px;
+    overflow: scroll;">
+
+										<table class="table table-hover el-table">
+											<tbody>
+												<tr>
+													<th style="width:100px">
+														<div class="cell">serial</div>
+													</th>
+													<th style="width: 150px;">
+														<div class="cell">System Name</div>
+													</th>
+													<th style="width: 150px;">
+														<div class="cell">System IP</div>
+													</th>
+													<th style="width:370px;">
+
+														<div class="cell">
+															<span style="padding-top: 11px;
+    display: inline-block;">Operation </span>
+
+														</div>
+													</th>
+												</tr>
+												<!--  <tr v-for="(v,ii) in clusterDataLength" v-if="clusterData[0].value[ii]!='0.0.0.0' || clusterData[1].value[ii]!='0.0.0.0'"> -->
+												<tr v-for="(v,ii) of clusterData" v-if="v.name!='0' && v.ip!='0.0.0.0' ">
+													<td>
+														<div class="cell">
+															{{ii}}
+														</div>
+													</td>
+													<td>
+														<div class="cell" v-if="heliosUser1" v-html="v.name">
+														</div>
+														<div class="cell" v-else>
+															<el-input v-model="v.name" placeholder="Please enter"></el-input>
+														</div>
+													</td>
+													<td>
+														<div class="cell" v-if="heliosUser1" v-html="v.ip">
+														</div>
+														<div class="cell" v-else>
+															<el-input v-model="v.ip" placeholder="Please enter"></el-input>
+														</div>
+													</td>
+													<td>
+														<el-button size="medium" v-if="!heliosUser1" class="Enter el-icon-setting" type="success" @click="Clusterfun('save',ii)">
+															Save</el-button>
+														<el-button size="medium" class="Enter el-icon-share" type="primary" @click="Clusterfun('Enter',ii)">
+															Enter</el-button>
+														<el-button size="medium" v-if="!heliosUser1" class="Enter el-icon-delete" type="danger" @click="Clusterfun('Delete',ii)">
+															Delete</el-button>
+													</td>
+												</tr>
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</el-col>
+				</div>
+				<!-- system end -->
+			</div>
+		</div>
+		<div id="TranslateExDiv"></div>
+		<div id="cli_dialog_div"></div>
+		<script>
+			let helios;
+			let data = {
+				heliosUser1: heliosUser[3] == $session,
+				added: false,
+				clusterData: [],
+				keys: '0',
+				clusterDataLength: 0,
+				status: "",
+			};
+			helios = new Vue({
+				el: "#Context",
+				data: data,
+				beforeMount() {
+					this.getcluster();
+
+				},
+				mounted() {
+					$("body").resize();
+				},
+
+				methods: {
+					//获取数据
+					getcluster() {
+						var adr = [290, 291, 292];
+						var obj = {
+							"data": adr.join(),
+							"action": "READ"
+						};
+						util.getattrajax(obj, function(data) {
+							var data = data.data;
+							var data1 = [];
+							let obj2 = {
+								name: "",
+								ip: "",
+								status: 0,
+							}
+							let Status = {
+								adr: "",
+								value: "",
+								name: "",
+							}
+							data.forEach(function(v, i) {
+								if (v.adr == 290) {
+									obj2.name = helios.ISempty(v.value.split(","), 290);
+									//obj2.length = (v.value.split(","));
+								}
+								if (v.adr == 291) {
+									obj2.ip = helios.ISempty(v.value.split(","), 291);
+								}
+								if (v.adr == 292) {
+									Status = {
+										adr: 292,
+										value: (Number(v.value) == 1) ? true : false,
+										name: `Cluster Switch`
+									}
+								}
+							});
+							let clusterdata = [];
+							helios.status = Status;
+							obj2.ip.forEach(function(v, i) {
+								let obj3 = {
+									ip: v,
+									name: obj2.name[i],
+									serial: i,
+								}
+								clusterdata.push(obj3);
+							});
+
+
+
+							helios.clusterDataLength = clusterdata.length;
+							helios.clusterData = clusterdata;
+
+							//事件
+						});
+					},
+
+					ISempty(value, adr) {
+						var arr = [];
+						if (adr == 290) {
+							value.forEach(function(v, i) {
+								if (v != "0") {
+									arr.push(v);
+								}
+							});
+						}
+						if (adr == 291) {
+							value.forEach(function(v, i) {
+								if (v != "0.0.0.0") {
+									arr.push(v);
+								}
+							});
+						}
+						return arr;
+					},
+
+					//保存, 删除,
+					Clusterfun(name, index) {
+						if ("Delete" == name) {
+							//删除
+							helios.Delsaveafun("Delete", index);
+
+						}
+						if ("save" == name) {
+							//保存
+							if ("" == helios.clusterData[index].ip && "" == helios.clusterData[index].name) {
+								util.error(`Error:System Name && System IP Can't be empty`);
+							} else {
+								helios.Delsaveafun("save", index);
+							}
+						}
+						if ("Enter" == name) {
+							//链接
+							if ("" == helios.clusterData[index].ip && "" == helios.clusterData[index].name) {
+								util.error(`Error:System Name && System IP Can't be empty`);
+							} else {
+								sessionStorage.removeItem("$session");
+								sessionStorage.removeItem("url");
+								sessionStorage.removeItem("equipment");
+								sessionStorage.removeItem("AlarmData");
+								localStorage.removeItem("MDOTS");
+								localStorage.removeItem("code");
+								window.open(`http://` + helios.clusterData[index].ip);
+							}
+						}
+					},
+
+					//保存, 删除,为空自动填充
+					Delsaveafun(TypeName, TypeIndex) {
+						helios.added = true;
+						let obj = {
+							ip: [],
+							name: []
+						}
+						helios.clusterData.forEach(function(v, i) {
+							//添加的TABLE没有数据自动填充
+							obj.ip.push(v.ip == "" ? "0.0.0.0" : v.ip);
+							obj.name.push(v.name == "" ? "0" : v.name);
+						});
+
+						for (var i = 0; i < 16 - helios.clusterData.length; i++) {
+							//添加的TABLE未到16条自动填充
+							obj.ip.push("0.0.0.0");
+							obj.name.push("0");
+						}
+						var data = [{
+								adr: 290,
+								value: obj.name.toString()
+							},
+							{
+								adr: 291,
+								value: obj.ip.toString()
+							}
+						]
+						var obj1 = {
+							"data": JSON.stringify(data),
+							"action": "SET"
+						}
+						if ("Delete" == TypeName) {
+							helios.added = false;
+							if ("" == helios.clusterData[TypeIndex].ip && "" == helios.clusterData[TypeIndex].name) {
+								//删除Table 数据
+								helios.clusterData.splice(TypeIndex, 1);
+							} else {
+								toast.$confirm('You determine whether or not to delete the cluster?', 'Delete the cluster', {
+									confirmButtonText: 'Confirm',
+									cancelButtonText: 'Cancel',
+									type: 'warning'
+								}).then(() => {
+									util.postattrajax(obj1, function(data) {
+										if (1 != data) {
+											util.error('Error' + data.message);
+										} else {
+											setTimeout(() => {
+												//删除Table 数据
+												helios.clusterData.splice(TypeIndex, 1);
+												helios.added = false;
+												util.success('success');
+											}, 200);
+										}
+									});
+								}).catch(() => {
+									helios.added = false;
+								});
+							}
+
+						} else {
+							//保存
+							util.postattrajax(obj1, function(data) {
+								if (1 != data) {
+									util.error('Error' + data.message);
+								} else {
+									setTimeout(() => {
+										helios.added = false;
+										util.success('success');
+									}, 200);
+								}
+							});
+						}
+					},
+					Setstatus() {
+						var data = [{
+							adr: 292,
+							value: (helios.status.value == true) ? "1" : "0"
+						}]
+						var obj1 = {
+							"data": JSON.stringify(data),
+							"action": "SET"
+						}
+						util.postattrajax(obj1, function(data) {
+							if (1 != data) {
+								util.error('Error' + data.message);
+							} else {
+								setTimeout(() => {
+									util.success('success');
+								}, 200);
+							}
+						});
+					},
+					//新增table
+					showData(event) {
+						this.added = false;
+						if (17 > helios.clusterData.length) {
+							var obj = {
+								"ip": "",
+								"name": "",
+								"serial": "",
+							}
+							helios.clusterData.push(obj);
+							helios.clusterDataLength = helios.clusterData.length;
+							this.added = true;
+							setTimeout(() => {
+								this.added = false;
+							}, 200);
+						} else {
+							//this.added = true;
+							this.$message.warning("Add sixteen bar clusters at most！");
+						}
+					},
+					back() {
+						(this.heliosUser1) ? window.location.replace('login.html'): window.location.replace('Status.html');
+					},
+					// 跳转
+					location() {
+						//window.location.href = "login.html"
+					},
+
+
+				},
+
+
+			});
+		</script>
+
+
+	</body>
+
+</html>

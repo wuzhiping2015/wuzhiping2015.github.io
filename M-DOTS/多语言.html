@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>language</title>
+	<meta name="Keywords" content="language" />
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
+</head>
+
+<body>
+	<div class="leng_hw">hello word!</div>
+	<div class="col-links">
+		<div class="dropdown lang">
+			<a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">English
+				<i class="caret"></i>
+			</a>
+			<ul class="dropdown-menu">
+				<li>
+					<a href="?lang=en">English</a>
+				</li>
+				<li>
+					<a href="?lang=de">Deutsch</a>
+				</li>
+				<li>
+					<a href="?lang=in">हिन्दी</a>
+				</li>
+				<li>
+					<a href="?lang=id">Indonesia</a>
+				</li>
+				<li>
+					<a href="?lang=kr">한국의</a>
+				</li>
+				<li>
+					<a href="?lang=jp">にほんご</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+</body>
+<script>
+
+	$(function () {
+
+
+		var leng_text = {
+			"en": {
+				"leng_hw": 'hello world!',  //元素的class : 文本
+				"dropdown-toggle": 'English<i class="caret"></i>'  //元素的class : 文本
+			},
+			"de": {
+				"leng_hw": 'Hallo Welt!',
+				"dropdown-toggle": 'Deutsch<i class="caret"></i>'
+			},
+			"in": {
+				"leng_hw": 'नमस्ते दुनिया!',
+				"dropdown-toggle": 'हिन्दी<i class="caret"></i>'
+			},
+			"kr": {
+				"leng_hw": '안녕 세상!',
+				"dropdown-toggle": '한국의<i class="caret"></i>'
+			},
+			"jp": {
+				"leng_hw": 'こんにちは世界！',
+				"dropdown-toggle": 'にほんご<i class="caret"></i>'
+			}
+		}
+
+		//获取浏览器语言
+		var leng = navigator.language ? navigator.language : "en";
+
+		//获取用户选择的语言 例如url:  http://www.***.com/?leng=en
+		var lang_search = location.search.split("=")[1];
+		if (lang_search) {
+			leng = lang_search;
+		}
+
+		//如果leng的长度小于2 默认是en
+		if (leng.length < 2) {
+			leng = "en";
+		}
+
+		var leng_xh = false;
+
+		for (var la in leng_text) {
+			if (leng.indexOf(la) >= 0) {
+				leng = la;
+				leng_xh = true;
+				break;
+			}
+		}
+
+		// 如果没有设置该语言的翻译 默认使用en语言
+		if (leng_xh == false) {
+			leng = "en";
+		}
+
+		//html中已经有en对应的文本信息，不用执行插入操作
+		if (leng != 'en') {
+			//插入对应的文本或html元素
+			for (var x in leng_text[leng]) {
+				$("." + x).html(leng_text[leng][x]);
+
+			}
+		}
+	});
+</script>
+<style>
+	.col-links {
+		width: 20%;
+		min-height: auto;
+		float: right;
+		margin-bottom: 26px;
+		margin-top: 30px;
+	}
+
+	.col-links .lang {
+		display: inline-block;
+		font-size: 14px;
+		color: #919191;
+		border: 1px solid #FFFFFF;
+		min-width: 100px;
+		box-sizing: border-box;
+	}
+
+	.dropdown,
+	.dropup {
+		position: relative;
+	}
+
+	.col-links .lang>a {
+		display: block;
+		padding: 8px 20px;
+		color: #FFFFFF;
+	}
+
+	.col-links .dropdown-menu {
+		min-width: 120px;
+		padding-top: 10px;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		z-index: 1000;
+		display: block;
+		float: left;
+		padding: 5px 0;
+		margin: 2px 0 0;
+		list-style: none;
+		font-size: 14px;
+		text-align: left;
+		background-color: #fff;
+		border: 1px solid rgba(0, 0, 0, .15);
+		border-radius: 4px;
+		box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+		background-clip: padding-box;
+		height: 165px;
+		overflow: overlay;
+	}
+
+	.caret {
+		display: inline-block;
+		width: 0;
+		height: 0;
+		margin-left: 2px;
+		vertical-align: middle;
+		border-top: 4px dashed;
+		border-right: 4px solid transparent;
+		border-left: 4px solid transparent;
+	}
+
+	.col-links .lang ul li {
+		margin-bottom: 0;
+		color: #919191;
+	}
+
+	.col-links .lang ul li a {
+		padding: 5px 15px;
+		display: block;
+		color: #919191;
+	}
+
+	.dropdown-menu>li>a {
+		clear: both;
+		font-weight: 400;
+		line-height: 1.428571429;
+		white-space: nowrap;
+	}
+
+	.open>.dropdown-menu {
+		display: block;
+	}
+
+	.dropdown-menu li:hover {
+		background: rgba(158, 154, 154, 0.25);
+	}
+</style>
+
+</html>
