@@ -1,0 +1,292 @@
+﻿
+
+192.168.93.245  光纤 v1
+
+
+192.168.93.250   光纤 v2
+
+
+http://192.168.93.114/login.html
+
+
+http://192.168.93.245
+
+
+
+8-24 
+
+
+
+http://192.168.93.250:80/cgi-bin/doaction.cgi?action=SET_SINGLE&data=[{"adr":236,"value":"2","index":"1"}]
+
+http://192.168.93.250:80/cgi-bin/doaction.cgi?action=READ_SINGLE&data=236,1
+
+
+
+
+http://192.168.93.250:80/cgi-bin/doaction.cgi?action=READ_SINGLE&data=99,0 ,100,0 ,101,0 ,102,0 ,103,0 ,110,0,111,0,116,0,117,0,104,0,105,0,112,0,118,0,99,1 ,100,1 ,101,1 ,102,1 ,103,1 ,110,1,111,1,116,1,117,1,104,1,105,1,112,1,118,1
+
+
+http://192.168.93.250:80/cgi-bin/doaction.cgi?action=SET_SINGLE&data=[{"adr":105,"value":"0","index":"1"}]
+
+
+
+236,1,122,1
+
+
+
+
+
+
+86	站点编号列表
+87	站点IP列表
+88	站点端口列表
+300	站点名称列表
+
+工厂参数，设置该光纤机系统管理的AU
+
+{
+    "data": [
+        {
+            "adr": 86,
+            "value": "305419896,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"
+        },
+        {
+            "adr": 87,
+            "value": "192.168.224.110,0.0.0.0,0.0.0.0,0.0.0.0,0.0.0.0,0.0.0.0,0.0.0.0,0.0.0.0,0.0.0.0,0.0.0.0,0.0.0.0,0.0.0.0,0.0.0.0,0.0.0.0,0.0.0.0,0.0.0.0"
+        },
+        {
+            "adr": 88,
+            "value": "6088,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"
+        },
+        {
+            "adr": 300,
+            "value": "12345678,0100,0,0,0,0,0,0,0,0,0,0,0,0,0,0"
+        }
+    ],
+    "code": 1
+}	
+
+sessionStorage.removeItem("TopoNull");
+
+
+
+
+
+http://110.86.9.242:4080/msc/login
+admin admin6230
+
+
+
+
+
+
+子不语，安之乐:
+http://192.168.93.245:80/cgi-bin/doaction.cgi?action=READ&data=77,66 
+
+
+POST
+http://192.168.93.245/cgi-bin/doaction.cgi?action=filename="abc.jpg";
+
+
+
+删除 扩普
+http://192.168.93.245:80/cgi-bin/doaction.cgi?action=SET&data=[{"adr":298,"value":"12345678,100"}]
+
+
+
+
+
+子不语，安之乐:
+
+
+http://192.168.93.245:80/cgi-bin/doaction.cgi?action=SET&data=[{"adr":1,"value":"2350003,1747502,2640001,1950001,807001,902002",}]
+
+
+
+//退出
+http://192.168.93.245:80/cgi-bin/doaction.cgi?action=USER_LOGOUT&user=Factory
+
+
+//退出
+http://192.168.93.245:80/cgi-bin/doaction.cgi?action=GetOnline&session=952019496ADA2204269229288CB54164BEB510F18D8B25A1BFDA53CD
+
+
+
+
+登录
+http://192.168.93.250:80/cgi-bin/doaction.cgi?action=USER_LOGIN&user=Factory&pwd=3A7Q9644
+
+
+
+
+http://192.168.93.245:80/cgi-bin/doaction.cgi?action=BACKUP_FILE
+
+
+
+Factory 3A7Q9644 
+
+Provider  Provider
+
+User  User
+
+Operator   Operator
+
+二 
+
+Factory （工厂）	Agent（代理）	Admin （管理员）	Technician 技术员
+
+
+
+
+
+
+
+
+
+http://192.168.93.245:80/cgi-bin/doaction.cgi?action=STATION_SAVE&stationInfo={
+	"sites": [{
+		"site_no": "12345678",
+		"x": "0",
+		"y": "0",
+		"device": [{
+			"route": "10000000",
+			"device_id": "0100",
+			"type": "EU",
+			"x": "375",
+			"y": "311"
+		},{
+			"route": "21000000",
+			"device_id": "0201",
+			"type": "RU",
+			"x": "495",
+			"y": "191"
+		},{
+			"route": "21000000",
+			"device_id": "0202",
+			"type": "RU",
+			"x": "495",
+			"y": "191"
+		}]
+	}]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{"data":[{"adr":206,"value":"admin"},{"adr":207,"value":"CaiJi!#%&("}],"code":1}
+
+
+
+
+
+
+
+[{"adr":82,"value":"305419896"},{"adr":83,"value":"0"}]
+
+
+{"data":[{"adr":82,"value":"305419896"},{"adr":83,"value":"259"}],"code":1}
+
+
+{
+	"sites":	[{
+			"site_no":	"12345678",
+			"device":	[{
+					"route":	"10000000",
+					"device_id":	"0100",
+					"type":	"EU"
+				}, {
+					"route":	"13000000",
+					"device_id":	"0103",
+					"type":	"RU"
+				}]
+		}]
+}
+
+
+
+
+
+
+obj1.push(1, 2, 3, 4, 5); /* RF */
+
+
+obj1.push(202, 203, 198, 199 ); /* DL */
+
+
+obj1.push(187, 188,  191, 193); /* PA */
+
+
+
+
+
+
+
+<span class="icon iconfont icon-kaiqi text-green" v-if="v.value=='1'"></span>
+
+<span class="icon iconfont icon-guanbi text-red" v-if="v.value=='0'"></span>
+
+
+
+
+
+
+
+
+
+snpm:
+
+选择POST:   设备配置，
+
+登录：
+http://192.168.90.34:8089/snmp/user/login?account=root&password=root     
+
+
+http://192.168.90.34:8089/snmp/device/putConfig?productName=11&hwVersion=11&swVersion=11&description=11&serialNumber=11&aggregateCapacity=11&mac=22&sn=2333
+
+
+http://192.168.90.34:8089/snmp/device/putConfig?productName=11&hwVersion=11&swVersion=11&description=11&serialNumber=11&aggregateCapacity=11&mac=22&sn=2333
+
+
+
+提交基本信息：
+
+http://192.168.90.34:8089/snmp/device/putBaseInfo?type=1&mac=22&sn=22&slaveList=22222&switch=1&sectorId=11&siteName=1&productName=1&antennaType=1&frequency=1&band=11&channelBw=111&ip=&subnetMask=1111&TXRatio=11&resourceAllocation=11&location=111&workMode=1
+
+
+
+
+
+
+获取基本信息：
+http://192.168.90.34:8089/snmp/device/getBaseInfo?sn=22&mac=22
+
+
+
+
+
+
+
+
+
+
+
