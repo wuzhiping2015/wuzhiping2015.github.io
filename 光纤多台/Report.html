@@ -120,7 +120,7 @@
 									</div>
 
 									<div class="col-xs-5" v-if="cur==0">
-										<el-form-item label="Alarm level">
+										<el-form-item label="Alarm Level">
 											<el-select v-model="level" @change="onChangeValue" placeholder="Please select">
 												<el-option label="Warn" value="0"></el-option>
 												<el-option label="Minor" value="1"></el-option>
@@ -133,8 +133,8 @@
 									<div class="col-xs-5">
 										<el-form-item label="Starting Date / End Date">
 											<el-col :span="11">
-												<el-date-picker type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="Select starting Date" v-model="sear.Statime"
-												    style="width: 100%;"></el-date-picker>
+												<el-date-picker type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="Select Starting Date" v-model="sear.Statime"
+												 style="width: 100%;"></el-date-picker>
 
 											</el-col>
 											<el-col class="line" :span="2" style="  text-align: center;
@@ -247,8 +247,8 @@
 													<th width="180">Site Name</th>
 													<th width="180">Device ID</th>
 													<th>Alarm Information</th>
-													<th>Alarm level </th>
-													<th>Date/time </th>
+													<th>Alarm Level </th>
+													<th>Date/Time </th>
 												</tr>
 												<tr v-for="(v,i ) in almData.dataShow">
 													<td>{{v.s}}</td>
@@ -295,7 +295,7 @@
 													<th width="180">Device ID</th>
 													<th>Alarm Information</th>
 													<!-- <th>Alarm level </th> -->
-													<th>Date/time </th>
+													<th>Date/Time </th>
 												</tr>
 												<tr v-for="(v,i ) in sysData.dataShow">
 													<td>{{v.s}}</td>
@@ -424,8 +424,7 @@
 					var interval;
 					interval = setInterval(function () {
 						percent++;
-						cnt.innerHTML = percent;
-
+						cnt.innerHTML = percent.toFixed(2);
 						water.style.transform = 'translate(0' + ',' + (100 - percent) + '%)';
 						var obj = {
 							"data": [331].join(),
@@ -439,7 +438,7 @@
 						if (percent == percent1) {
 							clearInterval(interval);
 						}
-					}, 600);
+					}, 3000);
 				},
 
 				getReport(c) {
@@ -481,10 +480,11 @@
 					xmlhttp.onreadystatechange = function () {
 						if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 							var obj = helios.log2json(xmlhttp.responseText.toString());
-							var obj1 = JSON.parse(obj);
+
+							var obj1 = eval("(" + obj + ")");
 							let almData = [],
 								sysData = [];
-							let jige = obj1.log.map((value, key, arr) => {
+							obj1.log.map((value, key, arr) => {
 								if ("alm" == value.t) {
 									almData.push(value);
 								} else {
@@ -535,7 +535,7 @@
 				},
 				log2json(src) {
 					src = src.slice(1, -1);
-					return "{\"log\":[" + src + "],\"currentPage\":1, \"pagesize\":10}";
+					return "{\"log\":[" + src + "]}";
 				},
 				pagingpage(value, page) {
 					if ("almData" == value) {
@@ -543,7 +543,6 @@
 						helios.almData.dataShow = helios.almData.totalPage[page];
 
 					} else {
-						console.log(6666);
 						helios.sysData.currentPage = page;
 						helios.sysData.dataShow = helios.sysData.totalPage[page];
 					}

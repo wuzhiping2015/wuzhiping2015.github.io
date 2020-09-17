@@ -117,9 +117,7 @@
 	.col-xs-2.hover:hover {
 		background: #f6fbfd;
 	}
-
-	.el-input-group__append,
-	.el-input-group__prepend {
+	.el-input-group__append, .el-input-group__prepend{
 		padding: 0 4px;
 	}
 </style>
@@ -317,13 +315,13 @@
 								</td>
 								<td v-if="vv.adr==13">
 									<el-input v-model="vv.value[i]" size="mini">
-										<template slot="append"> -127 ~ +127</template>
+										<template slot="append"> 0 ~ +256</template>
 									</el-input>
 								</td>
 
 								<td v-if="vv.adr==14">
 									<el-input v-model="vv.value[i]" size="mini">
-										<template slot="append"> -127 ~ +127</template>
+										<template slot="append"> 0 ~ +256</template>
 									</el-input>
 								</td>
 							</tr>
@@ -580,6 +578,7 @@
 										getdata.push(obj);
 									}
 
+
 									if (data[i].adr == 13) {
 										let obj = {
 											name: "DL_PIN_LP",
@@ -686,6 +685,8 @@
 						if (Helios.Rocdata[j].adr == 315) {
 							obj.adr = Helios.Rocdata[j].adr;
 							RocdataValue[index] = this.ISmax127(Helios.Rocdata[j].value[index]);
+
+
 							obj.value = RocdataValue.join();
 							data.push(obj)
 						}
@@ -721,14 +722,14 @@
 					} */
 						if (Helios.Rocdata[j].adr == 13) {
 							obj.adr = Helios.Rocdata[j].adr;
-							RocdataValue[index] = this.ISmax127(Helios.Rocdata[j].value[index]);
+							RocdataValue[index] = this.ISmax256(Helios.Rocdata[j].value[index]);
 							obj.value = RocdataValue.join();
 							data.push(obj)
 						}
 
 						if (Helios.Rocdata[j].adr == 14) {
 							obj.adr = Helios.Rocdata[j].adr;
-							RocdataValue[index] = this.ISmax127(Helios.Rocdata[j].value[index]);
+							RocdataValue[index] = this.ISmax256(Helios.Rocdata[j].value[index]);
 							obj.value = RocdataValue.join();
 							data.push(obj)
 						}

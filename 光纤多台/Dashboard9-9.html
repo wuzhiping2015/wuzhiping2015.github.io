@@ -72,14 +72,14 @@
 		width: 338px;
 		z-index: 2;
 		top: -32px;
-		left: -31px;
+		left: -8px;
 		animation: myfirst2 15s infinite linear;
 	}
 
 	.map2 {
 		width: 298px;
-		top: -14px;
-		left: -7px;
+		top: -5px;
+		left: 15px;
 		z-index: 3;
 		opacity: 0.2;
 		animation: myfirst 10s infinite linear;
@@ -100,7 +100,6 @@
 		from {
 			transform: rotate(0deg);
 		}
-
 		to {
 			transform: rotate(359deg);
 		}
@@ -110,7 +109,6 @@
 		from {
 			transform: rotate(0deg);
 		}
-
 		to {
 			transform: rotate(-359deg);
 		}
@@ -187,28 +185,24 @@
 					<div class="bar">
 						<div class="barbox ">
 							<ul class="clearfix">
-								<li class="pulll_left counter" v-for="i in data1" v-if="i.adr==318 || i.adr==319">
-									{{i.value}}</li>
+								<li class="pulll_left counter" v-for="i in data1" v-if="i.adr==318 || i.adr==319">{{i.value}}</li>
 							</ul>
 						</div>
 						<div class="barbox2">
 							<ul class="clearfix">
-								<li class="pulll_left counter" v-for="i in data1" v-if="i.adr==318 || i.adr==319">
-									{{i.name}}</li>
+								<li class="pulll_left counter" v-for="i in data1" v-if="i.adr==318 || i.adr==319">{{i.name}}</li>
 							</ul>
 						</div>
 					</div>
 					<div class="bar">
 						<div class="barbox ">
 							<ul class="clearfix">
-								<li class="pulll_left counter" v-for="i in data1" v-if="i.adr==320 || i.adr==321">
-									{{i.value}}</li>
+								<li class="pulll_left counter" v-for="i in data1" v-if="i.adr==320 || i.adr==321">{{i.value}}</li>
 							</ul>
 						</div>
 						<div class="barbox2">
 							<ul class="clearfix">
-								<li class="pulll_left counter" v-for="i in data1" v-if="i.adr==320 || i.adr==321">
-									{{i.name}}</li>
+								<li class="pulll_left counter" v-for="i in data1" v-if="i.adr==320 || i.adr==321">{{i.name}}</li>
 							</ul>
 						</div>
 					</div>
@@ -257,13 +251,11 @@
 							<h5 class="widget-user-desc">运行 异常</h5>
 						</div> -->
 
-						<div class="widget-user-header" :class="v.value==0 ? 'bg-orange': 'bg-olive' "
-							v-for="v in data4" v-if="v.adr!=257">
+						<div class="widget-user-header" :class="v.value==0 ? 'bg-orange': 'bg-olive' " v-for="v in data4" v-if="v.adr!=257">
 							<div class="widget-user-image">
 								<!-- adr.push(140, 152, 148, 296); -->
 								<span class="icon iconfont icon-snmp1 img-circle" v-if="v.adr==140"></span>
-								<span class="icon iconfont icon--guangxianluyouguanli- img-circle"
-									v-if="v.adr==152"></span>
+								<span class="icon iconfont icon--guangxianluyouguanli- img-circle" v-if="v.adr==152"></span>
 								<span class="icon iconfont icon-VPN img-circle" v-if="v.adr==148"></span>
 								<span class="icon iconfont icon-tongbushijian img-circle" v-if="v.adr==296"></span>
 								<span class="icon iconfont icon-gaojing3  img-circle" v-if="v.adr==257"></span>
@@ -274,8 +266,7 @@
 						</div>
 
 
-						<div class="widget-user-header" :class="v.value==1 ? 'bg-red': 'bg-olive' " v-for="v in data4"
-							v-if="v.adr==257">
+						<div class="widget-user-header" :class="v.value==1 ? 'bg-red': 'bg-olive' " v-for="v in data4" v-if="v.adr==257">
 							<div class="widget-user-image">
 								<!-- adr.push(140, 152, 148, 296); -->
 								<span class="icon iconfont icon-gaojing3  img-circle" v-if="v.adr==257"></span>
@@ -321,7 +312,7 @@
 		var Helios = new Vue({
 			el: "#MainContext",
 			data: data,
-			beforeMount() { },
+			beforeMount() {},
 			mounted() {
 				$("body").resize();
 				this.getchart()
@@ -402,7 +393,7 @@
 									Helios.callData(v, "RU Equipment", data3);
 									break;
 
-								/* adr.push(140, 152, 148, 296); */
+									/* adr.push(140, 152, 148, 296); */
 								case 140:
 									Helios.callData(v, "SNMP", data4);
 									break;

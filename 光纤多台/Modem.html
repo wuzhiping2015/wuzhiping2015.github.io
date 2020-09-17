@@ -1,438 +1,466 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Modem </title>
-		<link rel="stylesheet" href="assets/css/bootstrap.min.css?2019827" />
-		<link rel="stylesheet" href="assets/css/global.css?2019827" />
-		<!-- Font Awesome -->
-		<link rel="stylesheet" href="assets/css/font-awesome.min.css?2019827" />
-		<!-- Theme style -->
-		<link rel="stylesheet" href="assets/css/AdminLTE.min.css?2019827" />
-		<link rel="stylesheet" href="assets/css/skins/skin-black.min.css?2019827" />
-		<link rel="stylesheet" href="assets/css/index.css?2019827">
-	</head>
-	<style>
-		.clear{
-			overflow: auto;
-			zoom: 1;
-	 	    background: #fff;
-		 }
-		 .box-header.with-border {
-			 padding-bottom: 14px;
-		 }
-		 .el-form-item__content{
-			 margin-bottom: 8px;
-		 }
-		.el-form .iconfont {
-		    font-size: 38px !important;
-		}
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Modem </title>
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/global.css?2019827" />
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css?2019827" />
+	<!-- Theme style -->
+	<link rel="stylesheet" href="assets/css/AdminLTE.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/skins/skin-black.min.css?2019827" />
+	<link rel="stylesheet" href="assets/css/index.css?2019827">
+</head>
+<style>
+	.clear {
+		overflow: auto;
+		zoom: 1;
+		background: #fff;
+	}
+
+	.box-header.with-border {
+		padding-bottom: 14px;
+	}
+
+	.el-form-item__content {
+		margin-bottom: 8px;
+	}
+
+	.el-form .iconfont {
+		font-size: 38px !important;
+	}
 </style>
-	<body class="skin-black sidebar-open sidebar-mini">
-		<div class="wrapper">
-			<!-- 页头 -->
-			<div id="comp-header" class="main-header" style="position: relative; z-index: 99;">
-				<el-main-header></el-main-header>
-			</div>
-			<!-- 页头end -->
+
+<body class="skin-black sidebar-open sidebar-mini">
+	<div class="wrapper">
+		<!-- 页头 -->
+		<div id="comp-header" class="main-header" style="position: relative; z-index: 99;">
+			<el-main-header></el-main-header>
+		</div>
+		<!-- 页头end -->
 
 
-			<!-- 内容区域 -->
-			<div id="content-wrapper">
+		<!-- 内容区域 -->
+		<div id="content-wrapper">
 
-				<!-- 主要内容显示 -->
-				<section class="content container-fluid" id="MainContext" style="padding:15px; min-width: 1200px;">
-					<section class="">
-						<ol class="breadcrumb">
-							<li>
-								<a href="Ethernet.html">Ethernet</a>
-							</li>
-							<li>
-								<a href="Modem.html" style="font-weight: bold;">Modem</a>
-							</li>
-							<li>
-								<a href="SNMP.html">SNMP</a>
-							</li>
-							<li>
-								<a href="VPN.html">VPN</a>
-							</li>
-						</ol>
-					</section>
-					<div class="wrapper" id="content" style="background:#f1f4f6; margin-top: 12px;">
-						<div class="col-md-12" style="padding-left: 0px;">
-							<div class="row">
-								<!-- Port1 START -->
-								<div class="col-md-6">
-									<div class="box">
-										<div class="box-header with-border">
-											<h3 class="box-title">Gprs Modem</h3> <!-- GRPS -->
-											<div class="box-tools pull-right" style="top: 9px;">
-												<el-button @click="setGprs" :disabled="!Set" size="small" type="primary">Set</el-button>
-												<el-button @click="getGprs(1)" :disabled="!Read" size="small">Read</el-button>
-											</div>
+			<!-- 主要内容显示 -->
+			<section class="content container-fluid" id="MainContext" style="padding:15px; min-width: 1200px;">
+				<section class="">
+					<ol class="breadcrumb">
+						<li>
+							<a href="Ethernet.html">Ethernet</a>
+						</li>
+						<li>
+							<a href="Modem.html" style="font-weight: bold;">Modem</a>
+						</li>
+						<li>
+							<a href="SNMP.html">SNMP</a>
+						</li>
+						<li>
+							<a href="VPN.html">VPN</a>
+						</li>
+					</ol>
+				</section>
+				<div class="wrapper" id="content" style="background:#f1f4f6; margin-top: 12px;">
+					<div class="col-md-12" style="padding-left: 0px;">
+						<div class="row">
+							<!-- Port1 START -->
+							<div class="col-md-6">
+								<div class="box">
+									<div class="box-header with-border">
+										<h3 class="box-title">Gprs Modem</h3> <!-- GRPS -->
+										<div class="box-tools pull-right" style="top: 9px;">
+											<el-button @click="setGprs" :disabled="!Set" size="small" type="primary">Set
+											</el-button>
+											<el-button @click="getGprs(1)" :disabled="!Read" size="small">Read
+											</el-button>
 										</div>
-										<div class="clear" style="padding-top: 10px;">
-											<el-form ref="gprsdata" label-width="250px" size="medium">
-												<div class="col-md-10" v-for="(v,i) in gprsdata">
-													<el-form-item :label="v.name" v-if="v.adr!=152">
-														<el-input v-model="v.value" type="password" v-if="v.adr==151"></el-input>
-														<el-input v-model="v.value" v-else></el-input>
-													</el-form-item>
+									</div>
+									<div class="clear" style="padding-top: 10px;">
+										<el-form ref="gprsdata" label-width="250px" size="medium">
+											<div class="col-md-10" v-for="(v,i) in gprsdata">
+												<el-form-item :label="v.name" v-if="v.adr!=152">
+													<el-input v-model="v.value" type="password" v-if="v.adr==151">
+													</el-input>
+													<el-input v-model="v.value" v-else></el-input>
+												</el-form-item>
 
-													<el-form-item :label="v.name" v-else>
-														<!-- <span class="icon iconfont icon-kaiqi text-green" v-if="v.value=='1'"></span>
+												<el-form-item :label="v.name" v-else>
+													<!-- <span class="icon iconfont icon-kaiqi text-green" v-if="v.value=='1'"></span>
 														<span class="icon iconfont icon-guanbi text-red" v-if="v.value=='2'"></span> -->
 
-													
-														
-														<i class="icon iconfont icon-on-off text-green rescss" v-if="Number(v.value)==1"></i>
-														<i class=" icon iconfont icon-off rescss" v-else></i>
-														
-													</el-form-item>
 
-												</div>
-											</el-form>
 
-										</div>
+													<i class="icon iconfont icon-on-off text-green rescss"
+														v-if="Number(v.value)==1"></i>
+													<i class=" icon iconfont icon-off rescss" v-else></i>
+
+												</el-form-item>
+
+											</div>
+										</el-form>
+
 									</div>
 								</div>
-								<!-- Port1 END -->
+							</div>
+							<!-- Port1 END -->
 
-								<!-- Port1 START -->
-								<div class="col-md-6">
-									<div class="box">
-										<div class="box-header with-border">
-											<h3 class="box-title">&nbsp;</h3>
-											<div class="box-tools pull-right" style="top: 9px;">
-												<el-button @click="gprsdata2(1)" :disabled="!Read" size="small">Read</el-button>
-											</div>
+							<!-- Port1 START -->
+							<div class="col-md-6">
+								<div class="box">
+									<div class="box-header with-border">
+										<h3 class="box-title">&nbsp;</h3>
+										<div class="box-tools pull-right" style="top: 9px;">
+											<el-button @click="gprsdata2(1)" :disabled="!Read" size="small">Read
+											</el-button>
 										</div>
-										<div class="clear" style="padding-top: 10px;">
-											<el-form ref="data2" label-width="250px" size="medium">
-												<div class="col-md-12" v-for="(v,i) in  data2" v-if="v.adr!=152">
+									</div>
+									<div class="clear" style="padding-top: 10px;">
+										<el-form ref="data2" label-width="250px" size="medium">
+											<div class="col-md-12" v-for="(v,i) in  data2" v-if="v.adr!=152">
+
+												
+												<template v-if="v.adr==302">
+													<div class="el-form-item el-form-item--medium">
+														<label class="el-form-item__label" style="width: 250px;">
+															{{v.name}}
+															<span class="text-green ">
+																(dBm)</span>
+														</label>
+														<div class="el-form-item__content" style="margin-left: 250px;">
+															<div class="el-input el-input--medium">
+																{{v.value}}
+															</div>
+														</div>
+													</div>
+												</template>
+												<template v-if="v.adr!=302"> 
 													<el-form-item :label="v.name">
 														{{v.value}}
-													</el-form-item> 
-												</div>
-											
-											</el-form>
-										</div>
+													</el-form-item>
+												</template>
+											</div>
+										</el-form>
 									</div>
 								</div>
-								<!-- Port1 END -->
+							</div>
+							<!-- Port1 END -->
 
 
-								<div class="col-md-6">
-									<div class="box">
-										<div class="box-header with-border">
-											<h3 class="box-title">Phone</h3> <!-- GRPS -->
-											<div class="box-tools pull-right" style="top: 9px;">
-												<el-button @click="setPhone" :disabled="!Set" size="small" type="primary">Set</el-button>
-												<el-button @click="getPhone(1)" :disabled="!Read" size="small">Read</el-button>
+							<div class="col-md-6">
+								<div class="box">
+									<div class="box-header with-border">
+										<h3 class="box-title">Phone</h3> <!-- GRPS -->
+										<div class="box-tools pull-right" style="top: 9px;">
+											<el-button @click="setPhone" :disabled="!Set" size="small" type="primary">
+												Set</el-button>
+											<el-button @click="getPhone(1)" :disabled="!Read" size="small">Read
+											</el-button>
+										</div>
+									</div>
+									<div class="clear" style="padding-top: 10px;">
+										<el-form ref="Phonedata" label-width="250px" size="medium">
+											<div class="col-md-9" v-for="(v,i) in  Phonedata">
+												<el-form-item :label="v.name">
+													<el-input v-model="v.value"></el-input>
+												</el-form-item>
 											</div>
-										</div>
-										<div class="clear" style="padding-top: 10px;">
-											<el-form ref="Phonedata" label-width="250px" size="medium">
-												<div class="col-md-9" v-for="(v,i) in  Phonedata">
-													<el-form-item :label="v.name">
-														<el-input v-model="v.value"></el-input>
-													</el-form-item>
-												</div>
-											</el-form>
-										</div>
+										</el-form>
 									</div>
 								</div>
 							</div>
 						</div>
-
-
-
 					</div>
-				</section>
-				<!-- 内容区域 -->
-			</div>
+
+
+
+				</div>
+			</section>
+			<!-- 内容区域 -->
 		</div>
-		<script type="text/javascript" src="assets/js/jquery.js"></script>
-		<script type="text/javascript" src="assets/js/vue.js"></script>
-		<script type="text/javascript" src="assets/js/index.js"></script>
-		<script type="text/javascript" src="assets/js/comment.js"></script>
-		<script type="text/javascript" src="assets/js/adminlte.js"></script>
+	</div>
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/vue.js"></script>
+	<script type="text/javascript" src="assets/js/index.js"></script>
+	<script type="text/javascript" src="assets/js/comment.js"></script>
+	<script type="text/javascript" src="assets/js/adminlte.js"></script>
 
 
-		<script>
-			let data = {
-				equipment: sessionStorage.getItem("equipment"),
-				url: sessionStorage.getItem("url"),
-				gprsdata: [],
-				Phonedata: [],
-				data2: [],
-				Set: true,
-				Read: true,
-			};
-			var helios = new Vue({
-				el: "#MainContext",
-				data: data,
-				mounted() {
-					$("body").resize();
-				},
-				beforeMount() {
-					this.getGprs();
-					this.getPhone();
-					this.gprsdata2();
-				},
-				/* //事件 */
-				methods: {
-					getGprs(c) {
-						var adr = [149, 150, 151, 152]; /* 152 状态 */
-						var obj = {
-							"data": adr.join(),
-							"action": "READ"
-						};
-						util.getattrajax(obj, function(data) {
-							var data = data.data;
-							var data1 = [];
-							if (data.length > 0) {
-								if (c > 0) {
-									helios.$data.Read = false;
-									setTimeout(() => {
-										helios.$data.Read = true;
-										util.success('success');
-									}, 100);
-								}
-								for (var i = 0; i < data.length; i++) {
-									if (149 == data[i].adr) {
-										let obj = {
-											adr: data[i].adr,
-											name: "GPRS Modem Apn Code",
-											value: data[i].value
-										}
-										data1.push(obj);
-									}
-									if (150 == data[i].adr) {
-										let obj = {
-											adr: data[i].adr,
-											name: "GPRS Modem Apn Username",
-											value: data[i].value
-										}
-										data1.push(obj);
-									}
-									if (151 == data[i].adr) {
-										let obj = {
-											adr: data[i].adr,
-											name: "GPRS Modem Apn User Password",
-											value: data[i].value
-										}
-										data1.push(obj);
-									}
-									if (152 == data[i].adr) {
-										let obj = {
-											adr: data[i].adr,
-											name: "Modem Connection Status",
-											/* value: data[i].value == "1" ? true : false */
-											value: data[i].value
-										}
-										data1.push(obj);
-									}
-								}
-								helios.gprsdata = data1;
-							} else {
-								util.error('Error');
-							}
-						})
-					},
-					setGprs() {
-						helios.$data.Set = false;
-						var adrs = [149, 150, 151]; /* // 与 新数据配对  */
-						var data = [];
-						for (var i = 0; i < helios.gprsdata.length; i++) {
-							var obj = {
-								adr: "",
-								value: ""
-							}
-							if (149 == helios.gprsdata[i].adr) {
-								obj.adr = helios.gprsdata[i].adr;
-								obj.value = helios.gprsdata[i].value;
-								data.push(obj);
-							}
-							if (150 == helios.gprsdata[i].adr) {
-								obj.adr = helios.gprsdata[i].adr;
-								obj.value = helios.gprsdata[i].value;
-								data.push(obj);
-							}
-							if (151 == helios.gprsdata[i].adr) {
-								obj.adr = helios.gprsdata[i].adr;
-								obj.value = helios.gprsdata[i].value;
-								data.push(obj);
-							}
-						}
-
-						var obj = {
-							"data": JSON.stringify(data),
-							"action": "SET"
-						}
-
-						util.postattrajax(obj, function(data) {
-							if (1 != data) {
-								util.error('Error' + data.message);
-
-							} else {
+	<script>
+		let data = {
+			equipment: sessionStorage.getItem("equipment"),
+			url: sessionStorage.getItem("url"),
+			gprsdata: [],
+			Phonedata: [],
+			data2: [],
+			Set: true,
+			Read: true,
+		};
+		var helios = new Vue({
+			el: "#MainContext",
+			data: data,
+			mounted() {
+				$("body").resize();
+			},
+			beforeMount() {
+				this.getGprs();
+				this.getPhone();
+				this.gprsdata2();
+			},
+			/* //事件 */
+			methods: {
+				getGprs(c) {
+					var adr = [149, 150, 151, 152]; /* 152 状态 */
+					var obj = {
+						"data": adr.join(),
+						"action": "READ"
+					};
+					util.getattrajax(obj, function (data) {
+						var data = data.data;
+						var data1 = [];
+						if (data.length > 0) {
+							if (c > 0) {
+								helios.$data.Read = false;
 								setTimeout(() => {
-									helios.$data.Set = true;
+									helios.$data.Read = true;
 									util.success('success');
 								}, 100);
 							}
-						});
-					},
-
-					gprsdata2(c) {
-						var adr = [153, 154,301,302];
+							for (var i = 0; i < data.length; i++) {
+								if (149 == data[i].adr) {
+									let obj = {
+										adr: data[i].adr,
+										name: "GPRS Modem Apn Code",
+										value: data[i].value
+									}
+									data1.push(obj);
+								}
+								if (150 == data[i].adr) {
+									let obj = {
+										adr: data[i].adr,
+										name: "GPRS Modem Apn Username",
+										value: data[i].value
+									}
+									data1.push(obj);
+								}
+								if (151 == data[i].adr) {
+									let obj = {
+										adr: data[i].adr,
+										name: "GPRS Modem Apn User Password",
+										value: data[i].value
+									}
+									data1.push(obj);
+								}
+								if (152 == data[i].adr) {
+									let obj = {
+										adr: data[i].adr,
+										name: "Modem Connection Status",
+										/* value: data[i].value == "1" ? true : false */
+										value: data[i].value
+									}
+									data1.push(obj);
+								}
+							}
+							helios.gprsdata = data1;
+						} else {
+							util.error('Error');
+						}
+					})
+				},
+				setGprs() {
+					helios.$data.Set = false;
+					var adrs = [149, 150, 151]; /* // 与 新数据配对  */
+					var data = [];
+					for (var i = 0; i < helios.gprsdata.length; i++) {
 						var obj = {
-							"data": adr.join(),
-							"action": "READ"
-						};
-						util.getattrajax(obj, function(data) {
-							var data = data.data;
-							var data1 = [];
-							if (data.length > 0) {
-								if (c > 0) {
-									helios.$data.Read = false;
-									setTimeout(() => {
-										helios.$data.Read = true;
-										util.success('success');
-									}, 100);
-								}
-								for (var i = 0; i < data.length; i++) {
-									if (153 == data[i].adr) {
-										let obj = {
-											adr: data[i].adr,
-											name: "Modem IP",
-											value: data[i].value
-										}
-										data1.push(obj);
-									}
-									if (154 == data[i].adr) {
-										let obj = {
-											adr: data[i].adr,
-											name: "Modem Gateway",
-											value: data[i].value
-										}
-										data1.push(obj);
-									}
-									if (301 == data[i].adr) {
-										let obj = {
-											adr: data[i].adr,
-											name: "Modem CSQ",
-											value: data[i].value
-										}
-										data1.push(obj);
-									}
-									if (302 == data[i].adr) {
-										let obj = {
-											adr: data[i].adr,
-											name: "Modem RSSI",
-											value: data[i].value
-										}
-										data1.push(obj);
-									}
-								}
-								helios.data2 = data1;
-							} else {
-								util.error('Error');
-							}
-						})
-					},
+							adr: "",
+							value: ""
+						}
+						if (149 == helios.gprsdata[i].adr) {
+							obj.adr = helios.gprsdata[i].adr;
+							obj.value = helios.gprsdata[i].value;
+							data.push(obj);
+						}
+						if (150 == helios.gprsdata[i].adr) {
+							obj.adr = helios.gprsdata[i].adr;
+							obj.value = helios.gprsdata[i].value;
+							data.push(obj);
+						}
+						if (151 == helios.gprsdata[i].adr) {
+							obj.adr = helios.gprsdata[i].adr;
+							obj.value = helios.gprsdata[i].value;
+							data.push(obj);
+						}
+					}
 
-					getPhone() {
-						var adr = [282];
+					var obj = {
+						"data": JSON.stringify(data),
+						"action": "SET"
+					}
+
+					util.postattrajax(obj, function (data) {
+						if (1 != data) {
+							util.error('Error' + data.message);
+
+						} else {
+							setTimeout(() => {
+								helios.$data.Set = true;
+								util.success('success');
+							}, 100);
+						}
+					});
+				},
+
+				gprsdata2(c) {
+					var adr = [153, 154, 301, 302];
+					var obj = {
+						"data": adr.join(),
+						"action": "READ"
+					};
+					util.getattrajax(obj, function (data) {
+						var data = data.data;
+						var data1 = [];
+						if (data.length > 0) {
+							if (c > 0) {
+								helios.$data.Read = false;
+								setTimeout(() => {
+									helios.$data.Read = true;
+									util.success('success');
+								}, 100);
+							}
+							for (var i = 0; i < data.length; i++) {
+								if (153 == data[i].adr) {
+									let obj = {
+										adr: data[i].adr,
+										name: "Modem IP",
+										value: data[i].value
+									}
+									data1.push(obj);
+								}
+								if (154 == data[i].adr) {
+									let obj = {
+										adr: data[i].adr,
+										name: "Modem Gateway",
+										value: data[i].value
+									}
+									data1.push(obj);
+								}
+								if (301 == data[i].adr) {
+									let obj = {
+										adr: data[i].adr,
+										name: "Modem CSQ",
+										value: data[i].value
+									}
+									data1.push(obj);
+								}
+								if (302 == data[i].adr) {
+									let obj = {
+										adr: data[i].adr,
+										name: "Modem RSSI",
+										value: data[i].value
+									}
+									data1.push(obj);
+								}
+							}
+							helios.data2 = data1;
+						} else {
+							util.error('Error');
+						}
+					})
+				},
+
+				getPhone() {
+					var adr = [282];
+					var obj = {
+						"data": adr.join(),
+						"action": "READ"
+					};
+					util.getattrajax(obj, function (data) {
+						var data = data.data;
+						var data1 = [];
+						if (data.length > 0) {
+							if (arguments[0] > 0) {
+								helios.$data.Read = false;
+								setTimeout(() => {
+									helios.$data.Read = true;
+									util.success('success');
+								}, 100);
+							}
+							for (var i = 0; i < data.length; i++) {
+								if (282 == data[i].adr) {
+									let obj = {
+										adr: data[i].adr,
+										name: "SMS cell phone number",
+										value: data[i].value
+									}
+									data1.push(obj);
+								}
+							}
+							helios.Phonedata = data1;
+						} else {
+							toast.$message.error("Error");
+						}
+					})
+				},
+				setPhone() {
+					helios.$data.Set = false;
+					var adrs = [282]; /* // 与 新数据配对  */
+					var data = [];
+					for (var i = 0; i < helios.Phonedata.length; i++) {
 						var obj = {
-							"data": adr.join(),
-							"action": "READ"
-						};
-						util.getattrajax(obj, function(data) {
-							var data = data.data;
-							var data1 = [];
-							if (data.length > 0) {
-								if (arguments[0] > 0) {
-									helios.$data.Read = false;
-									setTimeout(() => {
-										helios.$data.Read = true;
-										util.success('success');
-									}, 100);
-								}
-								for (var i = 0; i < data.length; i++) {
-									if (282 == data[i].adr) {
-										let obj = {
-											adr: data[i].adr,
-											name: "SMS cell phone number",
-											value: data[i].value
-										}
-										data1.push(obj);
-									}
-								}
-								helios.Phonedata = data1;
-							} else {
-								toast.$message.error("Error");
-							}
-						})
-					},
-					setPhone() {
-						helios.$data.Set = false;
-						var adrs = [282]; /* // 与 新数据配对  */
-						var data = [];
-						for (var i = 0; i < helios.Phonedata.length; i++) {
-							var obj = {
-								adr: "",
-								value: ""
-							}
+							adr: "",
+							value: ""
+						}
 
-							if (282 == helios.Phonedata[i].adr) {
-								var phone = helios.Phonedata[i].value;
+						if (282 == helios.Phonedata[i].adr) {
+							var phone = helios.Phonedata[i].value;
+							obj.adr = helios.Phonedata[i].adr;
+							obj.value = phone;
+							data.push(obj);
+							/* if (!(/^1[3456789]\d{9}$/.test(phone))) {
+								toast.$message({
+									message: "There is an error in the cell phone number",
+									type: 'error',
+									showClose: true,
+									offset: 80
+								});
+								helios.$data.Set = true;
+								helios.Phonedata[i].value = "";
+								return false;
+							} else {
 								obj.adr = helios.Phonedata[i].adr;
 								obj.value = phone;
 								data.push(obj);
-								/* if (!(/^1[3456789]\d{9}$/.test(phone))) {
-									toast.$message({
-										message: "There is an error in the cell phone number",
-										type: 'error',
-										showClose: true,
-										offset: 80
-									});
-									helios.$data.Set = true;
-									helios.Phonedata[i].value = "";
-									return false;
-								} else {
-									obj.adr = helios.Phonedata[i].adr;
-									obj.value = phone;
-									data.push(obj);
-								} */
-							}
+							} */
 						}
-						var obj = {
-							"data": JSON.stringify(data),
-							"action": "SET"
-						}
-
-						util.postattrajax(obj, function(data) {
-							if (1 != data) {
-								util.error('Error' + data.message);
-							} else {
-								setTimeout(() => {
-									helios.$data.Set = true;
-									util.success('success');
-								}, 100);
-							}
-						});
+					}
+					var obj = {
+						"data": JSON.stringify(data),
+						"action": "SET"
 					}
 
-				},
+					util.postattrajax(obj, function (data) {
+						if (1 != data) {
+							util.error('Error' + data.message);
+						} else {
+							setTimeout(() => {
+								helios.$data.Set = true;
+								util.success('success');
+							}, 100);
+						}
+					});
+				}
 
-			});
-		</script>
+			},
+
+		});
+	</script>
 
 
-	</body>
+</body>
 
 
 </html>

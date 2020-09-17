@@ -6,7 +6,7 @@
 
 var toast = new Vue({
     el: '',
-    mounted() { },
+    mounted() {},
 });
 
 var url = window.location.pathname;
@@ -99,7 +99,7 @@ var util = {
             "action": "READ"
         };
         var HeliosDev = false;
-        /*   var pwd1 = (heliosUser[0] == user) ? `3A7Q9644` : user; */
+      /*   var pwd1 = (heliosUser[0] == user) ? `3A7Q9644` : user; */
         util.getattrajax(obj, function (data) {
             if (283 == data.data[0].adr) {
                 if ("1" === data.data[0].value) {
@@ -115,12 +115,12 @@ var util = {
                         type: "post",
                         success: function (data, status) {
                             var data1 = JSON.parse(data);
+                            var TagLen = (data1.data.indexOf(";"));
+                            var sessionName = data1.data.slice(TagLen + 1, data1.data.length - 1);
+                            sessionStorage.setItem('sessionName', sessionName);
 
                             if (data1.code == 1) {
-                                var TagLen = (data1.data.indexOf(";"));
-                                var sessionName = data1.data.slice(TagLen + 1, data1.data.length - 1);
-                                sessionStorage.setItem('sessionName', sessionName);
-                                sessionStorage.setItem('$session', user.charAt(0).toUpperCase() + user.slice(1));
+                                sessionStorage.setItem('$session', user);
                                 sessionStorage.setItem('url', "Status");
                                 Helios.pwd == "";
                                 Helios.user == "";
@@ -133,8 +133,8 @@ var util = {
                                     window.location.href = "Index.html";
                                 }, 2000);
                             } else {
-                                /*  util.error(data1.message); */
-                                util.error(`Incorrect user name or password !`);
+                                //$(".el-input__inner").val("");
+                                util.error(data.message);
                             }
                         }
                     });
@@ -565,61 +565,61 @@ Vue.component('el-main-header', {
             TopoNull: sessionStorage.getItem("TopoNull"),
             tagurl: "",
             menuList: [{
-                url: "Dashboard.html",
-                isActive: false,
-                name: "Dashboard"
-            },
-            {
-                url: "Index.html",
-                isActive: false,
-                name: "Topology"
-            },
-            {
-                url: "Status.html",
-                isActive: false,
-                name: "Device"
-            },
-            {
-                url: "javascript:void(0);",
-                isActive: false,
-                name: "Network"
-            },
-            {
-                url: "Alarm.html",
-                isActive: false,
-                name: "Alarm"
-            },
-            {
-                url: "Equipment.html",
-                isActive: false,
-                name: "Equipment"
-            },
-            /* {
-                url: "Tools.html",
-                isActive: false,
-                name: "Tools"
-            }, */
-            {
-                url: "Report.html",
-                isActive: false,
-                name: "Report"
-            },
-            /*  {
-                    url: "Factory.html",
+                    url: "Dashboard.html",
                     isActive: false,
-                    name: "Factory"
+                    name: "Dashboard"
                 },
+                {
+                    url: "Index.html",
+                    isActive: false,
+                    name: "Topology"
+                },
+                {
+                    url: "Status.html",
+                    isActive: false,
+                    name: "Device"
+                },
+                {
+                    url: "javascript:void(0);",
+                    isActive: false,
+                    name: "Network"
+                },
+                {
+                    url: "Alarm.html",
+                    isActive: false,
+                    name: "Alarm"
+                },
+                {
+                    url: "Equipment.html",
+                    isActive: false,
+                    name: "Equipment"
+                },
+                /* {
+                    url: "Tools.html",
+                    isActive: false,
+                    name: "Tools"
+                }, */
+                {
+                    url: "Report.html",
+                    isActive: false,
+                    name: "Report"
+                },
+                /*  {
+                        url: "Factory.html",
+                        isActive: false,
+                        name: "Factory"
+                    }, */
 
-            {
-                url: "system.html",
-                isActive: false,
-                name: "System"
-            }, */
-            {
-                url: "Cluster.html",
-                isActive: false,
-                name: "Cluster",
-            },
+                {
+                    url: "system.html",
+                    isActive: false,
+                    name: "System"
+                },
+                {
+                    url: "Cluster.html",
+                    isActive: false,
+                    name: "Cluster",
+                },
             ],
             SysType: sessionStorage.getItem('$SysType'),
             logUserName: sessionStorage.getItem('$session')
@@ -684,57 +684,57 @@ Vue.component('el-main-header', {
                         instance.confirmButtonLoading = true;
                         instance.confirmButtonText = 'The execution of...';
                         setTimeout(() => {
-                            done();
-                            setTimeout(() => {
-                                instance.confirmButtonLoading = false;
-                                data.push(obj);
-                                var obj1 = {
-                                    "data": JSON.stringify(data),
-                                    "action": "SET"
-                                }
-                                util.postattrajax1(obj1, function (data) {
-                                    if ("success" != data) {
-                                        toast.$message({
-                                            message: ' Error:' + data.message,
-                                            type: 'error',
-                                            showClose: true,
-                                            offset: 80
-                                        });
-                                    } else {
-                                        /* 
-                                         */
-                                        $.ajax({
-                                            url: "../cgi-bin/doaction.cgi",
-                                            data: {
-                                                "action": "USER_LOGOUT",
-                                                "user": $session,
-                                            },
-                                            type: "post",
-                                            success: function (data, status) {
-                                                var data1 = JSON.parse(data);
-                                                if (data1.code == 1) {
-                                                    setTimeout(() => {
-                                                        sessionStorage.removeItem("$session");
-                                                        sessionStorage.removeItem("url");
-                                                        sessionStorage.removeItem("equipment");
-                                                        sessionStorage.removeItem("AlarmData");
-                                                        sessionStorage.removeItem("TopoNull");
-                                                        localStorage.removeItem("MDOTS");
-                                                        localStorage.removeItem("code");
-                                                        localStorage.removeItem("SETdisp");
-                                                        localStorage.removeItem("HeliosDev");
-                                                        window.location.href = "login.html";
-                                                    }, 0);
-                                                } else {
-                                                    //$(".el-input__inner").val("");
-                                                    util.error(data.message);
-                                                }
-                                            }
-                                        });
+                                done();
+                                setTimeout(() => {
+                                    instance.confirmButtonLoading = false;
+                                    data.push(obj);
+                                    var obj1 = {
+                                        "data": JSON.stringify(data),
+                                        "action": "SET"
                                     }
-                                });
-                            }, 100);
-                        },
+                                    util.postattrajax1(obj1, function (data) {
+                                        if ("success" != data) {
+                                            toast.$message({
+                                                message: ' Error:' + data.message,
+                                                type: 'error',
+                                                showClose: true,
+                                                offset: 80
+                                            });
+                                        } else {
+                                            /* 
+                                             */
+                                            $.ajax({
+                                                url: "../cgi-bin/doaction.cgi",
+                                                data: {
+                                                    "action": "USER_LOGOUT",
+                                                    "user": $session,
+                                                },
+                                                type: "post",
+                                                success: function (data, status) {
+                                                    var data1 = JSON.parse(data);
+                                                    if (data1.code == 1) {
+                                                        setTimeout(() => {
+                                                            sessionStorage.removeItem("$session");
+                                                            sessionStorage.removeItem("url");
+                                                            sessionStorage.removeItem("equipment");
+                                                            sessionStorage.removeItem("AlarmData");
+                                                            sessionStorage.removeItem("TopoNull");
+                                                            localStorage.removeItem("MDOTS");
+                                                            localStorage.removeItem("code");
+                                                            localStorage.removeItem("SETdisp");
+                                                            localStorage.removeItem("HeliosDev");
+                                                            window.location.href = "login.html";
+                                                        }, 0);
+                                                    } else {
+                                                        //$(".el-input__inner").val("");
+                                                        util.error(data.message);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
+                                }, 100);
+                            },
                             1000);
                     } else {
                         done();
@@ -751,7 +751,7 @@ Vue.component('el-main-header', {
             });
         },
     },
-    /*  <li><a  href="userupdate.html"><i class="fa fa-fw icon iconfont icon-gerenzhongxinxuanzhong"></i>User</a></li> */
+   /*  <li><a  href="userupdate.html"><i class="fa fa-fw icon iconfont icon-gerenzhongxinxuanzhong"></i>User</a></li> */
     template: ` <header class="main-header">
         <a href="Index.html" class="logo" title="Helios">
             <span class="logo-mini"><img src="assets/images/logo1.png" alt="whelios"  width="36"> </span>
@@ -815,6 +815,7 @@ Vue.component("el-main-sidebar", {
             menu: [],
         }
     },
+
     beforeMount() {
         this.MDOTStype();
         var vue = this;
@@ -838,9 +839,9 @@ Vue.component("el-main-sidebar", {
         }
 
         function DeviceDataPoll(site_no, devices, deviceList) {
-
             for (let i = 0; i < devices.length; i++) {
                 let devObj = {};
+
                 devObj = {
                     "site_no": site_no,
                     "route": devices[i].route,
@@ -853,14 +854,13 @@ Vue.component("el-main-sidebar", {
                 }
 
                 deviceList.push(devObj);
-
             }
         }
 
         function SitesDataPoll(sites, siteList) {
             for (let i = 0; i < sites.length; i++) {
                 let devObj = {};
-                devObj.site_no = sites[i].site_no;  //AU
+                devObj.site_no = sites[i].site_no;
                 devObj.device_id = "0";
                 devObj.equipid = "0";
                 devObj.label = util.hex2int(sites[i].site_no);
@@ -869,12 +869,11 @@ Vue.component("el-main-sidebar", {
                 devObj.routeLayer = 0;
                 devObj.devices = [];
                 devObj.children = [];
-                siteList.push(devObj); //插入变量数组
+                siteList.push(devObj);
                 //远端机处理
                 let devices = (sites[i].device);
 
                 DeviceDataPoll(devObj.site_no, devices, devObj.devices);
-
             }
         }
 
@@ -896,16 +895,11 @@ Vue.component("el-main-sidebar", {
 
         function FindTopoParentMenu(devices, device) {
             let parentLayer = device.routeLayer - 1;
-
-
             let subRoute = device.route.substring(0, parentLayer);
-
             let subPRout;
-
 
             for (let i = 0; i < devices.length; i++) {
                 subPRout = devices[i].route.substring(0, parentLayer);
-
                 if (parentLayer == devices[i].routeLayer && subRoute == subPRout) {
                     return devices[i].children;
                 }
@@ -915,7 +909,6 @@ Vue.component("el-main-sidebar", {
         }
 
         function DevicesMenu(devices, menu) {
-
             let route, routeArr;
             let node;
             for (let i = 0; i < devices.length; i++) {
@@ -925,24 +918,22 @@ Vue.component("el-main-sidebar", {
                     devices[i].type = SetDeviceType(devices[i].DEVtype);
                     menu.push(devices[i]);
                 } else {
-
                     parentMenu = FindTopoParentMenu(devices, devices[i]);
-
                     devices[i].type = SetDeviceType(devices[i].DEVtype);
+
                     if (null == parentMenu) continue;
+
                     parentMenu.push(devices[i]);
                 }
             }
         }
 
         function SitesMenu(sites, menu) {
-
             for (let i = 0; i < sites.length; i++) {
                 sites[i].type = SetDeviceType("AU");
                 menu.push(sites[i]);
                 DevicesMenu(sites[i].devices, sites[i].children);
             }
-
         }
         $.ajax({
             type: "GET",
@@ -953,7 +944,7 @@ Vue.component("el-main-sidebar", {
                     //sessionStorage.setItem('TopoNull', 1);
                     return false;
                 } else {
-                    SitesDataPoll(data1.sites, g_sitesNode.sites); //一个传值，一个接收
+                    SitesDataPoll(data1.sites, g_sitesNode.sites);
                     SitesMenu(g_sitesNode.sites, g_sitesNode.menu);
                     vue.menu = g_sitesNode.menu;
                 }
@@ -967,13 +958,13 @@ Vue.component("el-main-sidebar", {
             sessionStorage.setItem("url", "Status");
             sessionStorage.setItem("equipment", tagurl);
             let obj = [{
-                adr: 82,
-                value: util.hex2int((data.site_no + ""))
-            },
-            {
-                adr: 83,
-                value: util.hex2int((data.equipid + ""))
-            }
+                    adr: 82,
+                    value: util.hex2int((data.site_no + ""))
+                },
+                {
+                    adr: 83,
+                    value: util.hex2int((data.equipid + ""))
+                }
             ];
 
             console.log(obj);
@@ -1289,8 +1280,8 @@ function ShowInvalidLoginMessage() {
     localStorage.removeItem("MDOTS");
     localStorage.removeItem("code");
     window.location.replace("login.html");
-    parent.location.reload();
-    window.location.href = "login.html";
+	parent.location.reload(); 
+	window.location.href = "login.html";
 }
 
 function check_ev() {
@@ -1317,7 +1308,7 @@ function getOnline() {
         type: "post",
         success: function (data, status) {
             var data1 = JSON.parse(data);
-            if (data1.code == 1) { } else {
+            if (data1.code == 1) {} else {
                 toast.$notify({
                     title: ' M-DOTS  Restarts',
                     message: 'Restart the device and it will exit the system',
