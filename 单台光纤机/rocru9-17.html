@@ -225,17 +225,8 @@
 									<span class="text-green ">(dB)</span>
 								</td>
 							</tr>
-							<tr v-if="heliosUser">
-								<td colspan="2"> <b> UL I/P Adjust</b>
-									<span class="text-green ">(dBm)</span>
-								</td>
-							</tr>
 
-							<tr v-if="heliosUser">
-								<td colspan="2"> <b>DL O/P Adjust </b>
-									<span class="text-green ">(dBm)</span>
-								</td>
-							</tr>
+
 							<tr>
 								<td rowspan="7">
 									<b>Alarm Enable
@@ -323,18 +314,6 @@
 									</el-select>
 								</td>
 
-								<td v-if="vv.adr==130 && heliosUser">
-									<el-input v-model="vv.value" size="mini">
-										<template slot="append"> -127 ~ +127</template>
-									</el-input>
-								</td>
-								<td v-if="vv.adr==133 && heliosUser">
-									<el-input v-model="vv.value" size="mini">
-										<template slot="append"> -127 ~ +127</template>
-									</el-input>
-								</td>
-
-
 								<td
 									v-if="vv.adr==121 || vv.adr==122 || vv.adr==123 || vv.adr==124 || vv.adr==125 || vv.adr==126 || vv.adr==127">
 
@@ -420,7 +399,7 @@
 					var getDATA = [];
 					if (tag >= 0) {
 						this.Read = false;
-						string = `99,${tag},100,${tag} ,101,${tag} ,102,${tag} ,103,${tag} ,110,${tag},111,${tag},116,${tag},117,${tag},118,${tag},104,${tag},105,${tag},112,${tag},130,${tag},133,${tag},121,${tag},122,${tag},123,${tag},124,${tag},125,${tag},126,${tag},127,${tag}`
+						string = `99,${tag},100,${tag} ,101,${tag} ,102,${tag} ,103,${tag} ,110,${tag},111,${tag},116,${tag},117,${tag},118,${tag},104,${tag},105,${tag},112,${tag},121,${tag},122,${tag},123,${tag},124,${tag},125,${tag},126,${tag},127,${tag}`
 
 						var obj = {
 							"data": string,
@@ -463,8 +442,7 @@
 					else {
 						let index = 0;
 						let obj1 = {
-							"data": `99,${index},100,${index} ,101,${index} ,102,${index} ,103,${index} ,110,${index},111,${index},116,${index},117,${index},118,${index},104,${index},105,${index},112,${index},130,${index},133,${index},121,${index},122,${index},123,${index},124,${index},125,${index},126,${index},127,${index}`,
-
+							"data": `99,${index},100,${index} ,101,${index} ,102,${index} ,103,${index} ,110,${index},111,${index},116,${index},117,${index},118,${index},104,${index},105,${index},112,${index},121,${index},122,${index},123,${index},124,${index},125,${index},126,${index},127,${index}`,
 							"action": "READ_SINGLE",
 						}
 						let data1 = [];
@@ -487,7 +465,7 @@
 						}).then(function () {
 							let index1 = 1;
 							let obj2 = {
-								"data": `99,${index1},100,${index1} ,101,${index1} ,102,${index1} ,103,${index1} ,110,${index1},111,${index1},116,${index1},117,${index1},118,${index1},104,${index1},105,${index1},112,${index1},130,${index1},133,${index1},121,${index1},122,${index1},123,${index1},124,${index1},125,${index1},126,${index1},127,${index1}`,
+								"data": `99,${index1},100,${index1} ,101,${index1} ,102,${index1} ,103,${index1} ,110,${index1},111,${index1},116,${index1},117,${index1},118,${index1},104,${index1},105,${index1},112,${index1},121,${index1},122,${index1},123,${index1},124,${index1},125,${index1},126,${index1},127,${index1}`,
 								"action": "READ_SINGLE",
 							}
 							util.getattrajax(obj2, function (data) {
@@ -537,7 +515,6 @@
 
 					var t = 9;//前面9条只读
 					while (t < getRocdata[tag].length) {
-
 						if (getRocdata[tag][t].adr == 104 || getRocdata[tag][t].adr == 105 || getRocdata[tag][t].adr == 112 || getRocdata[tag][t].adr == 118) {
 							let obj1 = {};
 							obj1 = {
@@ -546,20 +523,7 @@
 								index: tag + ""
 							}
 							setdata.push(obj1);
-						}
-
-						else if (getRocdata[tag][t].adr == 130 || getRocdata[tag][t].adr == 133) {
-							let Val = util.ISmax127(Helios.Rocdata[tag][t].value);
-							let obj1 = {};
-							obj1 = {
-								adr: Helios.Rocdata[tag][t].adr,
-								value: Val,
-								index: tag + ""
-							}
-							setdata.push(obj1);
-						}
-
-						else {
+						} else {
 							let obj1 = {};
 							let resdata = Helios.resnumberAarray(Helios.Rocdata[tag][t]);
 							obj1 = {
@@ -569,7 +533,6 @@
 							}
 							setdata.push(obj1);
 						}
-						console.log(t);
 						t += 1;
 					}
 					var obj = {

@@ -120,7 +120,7 @@
 														</el-checkbox-group>
 													</td>
 													<td>
-														<el-select v-model="v.DJ" placeholder="请选择">
+														<el-select v-model="v.DJ">
 															<el-option v-for="item in Grade" :key="item.value"
 																:label="item.label" :value="item.value">
 															</el-option>
@@ -136,12 +136,14 @@
 														</el-checkbox-group>
 													</td>
 													<td>
-														<el-select v-model="v.DJ" placeholder="请选择">
+														<el-select v-model="v.DJ">
 															<el-option v-for="item in Grade" :key="item.value"
 																:label="item.label" :value="item.value">
 															</el-option>
 														</el-select>
 													</td>
+
+
 												</tr>
 												<tr v-else style="height: 0px; display: none;">
 													<td></td>
@@ -181,18 +183,20 @@
 														</el-checkbox-group>
 													</td>
 
-
 													<td style="background-color: #f5f5f5;">
-														<el-select v-model="AlarmData1[0].DJ" v-if="i==0">
+														<!-- <el-select v-model="AlarmData1[0].DJ" v-if="i==0">
 															<el-option key="0" label="Warn" value="0"></el-option>
 															<el-option key="1" label="Minor" value="1"></el-option>
 															<el-option key="2" label="Major" value="2"></el-option>
 															<el-option key="3" label="Critical" value="3"></el-option>
+														</el-select> -->
+														<el-select v-model="AlarmData1[0].DJ" v-if="i==0">
+															<el-option v-for="item in Grade" :key="item.value"
+																:label="item.label" :value="item.value">
+															</el-option>
 														</el-select>
 													</td>
-
 												</tr>
-
 											</tbody>
 										</table>
 

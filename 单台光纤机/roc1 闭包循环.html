@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Sub-System</title>
+	<title>ROC </title>
 	<link rel="stylesheet" href="assets/css/bootstrap.min.css?2019827" />
 	<link rel="stylesheet" href="assets/css/global.css?2019827" />
 	<!-- Font Awesome -->
@@ -72,6 +72,8 @@
 		float: right;
 	}
 
+
+
 	tr td:nth-child(4),
 	tr.res td:nth-child(5) {
 		background-color: rgb(218, 219, 219);
@@ -91,7 +93,7 @@
 	}
 
 	.dataTable td {
-		height: 49px;
+		height: 57px;
 	}
 
 	.col-xs-2 .el-checkbox-group:nth-child(1) {
@@ -118,27 +120,24 @@
 	.el-button {
 		padding: 5px 32px !important;
 	}
-
-	td .iconfont.rescss {
-		font-size: 34px;
-	}
 </style>
 
 <body>
-
+	<!-- hold-transition skin-blue-light sidebar-mini sidebar-collapse -->
 	<div class="wrapper" id="content" style="background:#f1f4f6; margin-top:2px; margin-bottom: 30px;">
+		<!--   Trap Destinations -->
 		<div class="box">
+
 			<div class="box-body" style="text-align: center; height: 95vh;" v-show="dataimg">
 				<img src="assets/images/wifi.gif" style="margin-top: 10%;">
 			</div>
 
 			<div class="box-body table-responsive no-padding" v-show="databox">
 				<div class="col-xs-2 ">
-
 					<table class="table res table-bordered  dataTable first">
 						<tbody>
 							<tr>
-								<td style="height:53px" colspan="2"> </td>
+								<td colspan="2" style="height:61px"> </td>
 							</tr>
 							<tr>
 								<td colspan="2">
@@ -148,160 +147,90 @@
 							</tr>
 							<tr>
 								<td colspan="2">
-									<b>DL PA I/P
-									</b>
+									<strong>DL LNA I/P </strong>
 									<span class="text-green "> (dBm)</span>
 								</td>
 							</tr>
 							<tr>
 								<td colspan="2">
-									<b>DL PA O/P</b>
+									<strong>Optical Tx Power</strong>
 									<span class="text-green "> (dBm)</span>
 								</td>
 							</tr>
 
 							<tr>
 								<td colspan="2">
-									<b>DL PA Temp</b>
-									<span class="text-green "> (℃)</span>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<b>DL PA Status</b>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<b>DL PA VSWR</b>
-
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<b> UL LNA I/P</b>
-									<span class="text-green ">(dBm)</span>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<b> UL LNA O/P</b>
-									<span class="text-green ">(dBm)</span>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<b>Optical Tx Power</b>
-									<span class="text-green ">(dBm)</span>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<b>Optical Rx Power</b>
-									<span class="text-green ">(dBm)</span>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<b>Optical ATT</b>
-									<span class="text-green ">(dB)</span>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<b>DL PA ATT</b>
-									<span class="text-green ">(dB)</span>
+									<strong>Optical Rx Power</strong>
+									<span class="text-green "> (dBm)</span>
 								</td>
 							</tr>
 
 							<tr>
-								<td colspan="2">
-									<b>DL PA Enable</b>
+								<td rowspan="3">
+									<b>RF</b>
 								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<b>UL LNA ATT</b>
+								<td> Optical ATT
 									<span class="text-green ">(dB)</span>
 								</td>
 							</tr>
-							<tr v-if="heliosUser">
-								<td colspan="2"> <b> UL I/P Adjust</b>
-									<span class="text-green ">(dBm)</span>
+							<tr>
+								<td> UL PA ATT
+									<span class="text-green ">(dB)</span>
+								</td>
+							</tr>
+							<tr>
+								<td> DL LNA ATT
+									<span class="text-green ">(dB)</span>
+								</td>
+							</tr>
+							<tr>
+								<td rowspan="2">
+									<b>Alarm Enable</b>
+								</td>
+								<td>Optical Rx Fault
+								</td>
+							</tr>
+							<tr>
+								<td>Optical1 Tx Fault
 								</td>
 							</tr>
 
-							<tr v-if="heliosUser">
-								<td colspan="2"> <b>DL O/P Adjust </b>
-									<span class="text-green ">(dBm)</span>
-								</td>
-							</tr>
-							<tr>
-								<td rowspan="7">
-									<b>Alarm Enable
-									</b>
-								</td>
-								<td> DL PA Fault Alarm </td>
-							</tr>
-							<tr>
-								<td> DL PA VSWR Alarm</td>
-							</tr>
-							<tr colspan="2">
-								<td> DL PA Over Temp Alarm</td>
-							</tr>
-							<tr colspan="2">
-								<td> DL PA Over Power Alarm</td>
-							</tr>
-							<tr colspan="2">
-								<td> UL LNA Fault Alarm</td>
-							</tr>
-							<tr colspan="2">
-								<td> Optical Rx Fault Alarm </td>
-							</tr>
-							<tr colspan="2">
-								<td> Optical Tx Fault Alarm </td>
-							</tr>
-							<tr>
-								<td colspan="2">&nbsp;</td>
-							</tr>
 						<tbody>
 					</table>
 				</div>
 
-				<div class="col-xs-2 hover" v-for="(v,i) in Rocdata" :style="stylecss">
+
+
+				<div class="col-xs-2 hover" v-for="(v,i) in 2" :style="stylecss">
 					<table class="table res table-bordered  dataTable">
 						<tbody>
 							<tr>
-								<td style="height:45px">
+								<td style="height:61px">
 									<div class="viswCard">
+
 										<el-button size="medium" type="success" :disabled="!canSave"
 											@click="Setroc_Data(i)">Set
 										</el-button> &nbsp;&nbsp;
 										<el-button type="primary" size="medium" :disabled="!Read"
 											@click="Getroc_Data(i)">Read
 										</el-button>
+
 									</div>
 								</td>
 							</tr>
 							<tr>
-								<td v-html="$options.filters.bandname(i)"></td>
+								<td v-html="$options.filters.bandname(i)"> </td>
 							</tr>
 							<tr v-for="(vv,ii) in Rocdata[i]">
-								<td v-if="vv.adr==99" v-html="$options.filters.dataisTrue(vv.value)"> </td>
-								<td v-if="vv.adr==100" v-html="$options.filters.dataisTrue(vv.value)"></td>
-								<td v-if="vv.adr==101">{{vv.value}}</td>
-								<td v-if="vv.adr==102" style="padding:0 10px;"
-									v-html="$options.filters.isno_of(vv.value)"> </td>
 
-
-								<td v-if="vv.adr==103">{{vv.value}}</td>
-								<td v-if="vv.adr==110" v-html="$options.filters.dataisTrue(vv.value)"> </td>
-								<td v-if="vv.adr==111" v-html="$options.filters.dataisTrue(vv.value)"></td>
+								<td v-if="vv.adr==114"> {{vv.value}} </td>
+								<!-- <td>{{i}} --- {{vv}} </td> -->
 								<td v-if="vv.adr==116">{{vv.value}}</td>
 								<td v-if="vv.adr==117">{{vv.value}}</td>
+
 								<td v-if="vv.adr==118">
 									<template v-if="heliosUser">
-										<el-select v-model="vv.value" size="mini">
+										<el-select v-model="vv.value">
 											<el-option v-for="(vvv,iii) in 31" :label="iii" :value="iii"></el-option>
 										</el-select>
 									</template>
@@ -309,35 +238,18 @@
 										{{vv.value}}
 									</template>
 								</td>
-								<td v-if="vv.adr==104">
-									<el-select v-model="vv.value" size="mini">
+								<td v-if="vv.adr==98">
+									<el-select v-model="vv.value">
 										<el-option v-for="(vvv,iii) in 26" :label="iii" :value="iii"></el-option>
 									</el-select>
 								</td>
-								<td v-if="vv.adr==105">
-									<el-switch v-model="vv.value"></el-switch>
-								</td>
-								<td v-if="vv.adr==112">
-									<el-select v-model="vv.value" size="mini">
+								<td v-if="vv.adr==115">
+									<el-select v-model="vv.value">
 										<el-option v-for="(vvv,iii) in 31" :label="iii" :value="iii"></el-option>
 									</el-select>
 								</td>
 
-								<td v-if="vv.adr==130 && heliosUser">
-									<el-input v-model="vv.value" size="mini">
-										<template slot="append"> -127 ~ +127</template>
-									</el-input>
-								</td>
-								<td v-if="vv.adr==133 && heliosUser">
-									<el-input v-model="vv.value" size="mini">
-										<template slot="append"> -127 ~ +127</template>
-									</el-input>
-								</td>
-
-
-								<td
-									v-if="vv.adr==121 || vv.adr==122 || vv.adr==123 || vv.adr==124 || vv.adr==125 || vv.adr==126 || vv.adr==127">
-
+								<td v-if="vv.adr==126">
 									<template v-if="heliosUser">
 										<el-checkbox-group size="small" v-model="vv.value[0]">
 											<el-checkbox label="Agent" border></el-checkbox>
@@ -364,29 +276,47 @@
 										</template>
 									</template>
 								</td>
-
-							</tr>
-							<tr>
-								<td style="height:45px">
-									<div class="viswCard">
-										<el-button size="medium" type="success" :disabled="!canSave"
-											@click="Setroc_Data(i)">Set
-										</el-button> &nbsp;&nbsp;
-										<el-button type="primary" size="medium" :disabled="!Read"
-											@click="Getroc_Data(i)">Read
-										</el-button>
-									</div>
+								<td v-if="vv.adr==127">
+									<template v-if="heliosUser">
+										<el-checkbox-group size="small" v-model="vv.value[0]">
+											<el-checkbox label="Agent" border></el-checkbox>
+										</el-checkbox-group>
+										<el-checkbox-group size="small" v-model="vv.value[1]">
+											<el-checkbox label="Enable" border></el-checkbox>
+										</el-checkbox-group>
+									</template>
+									<template v-else>
+										<template v-if="heliosUser1 && vv.value[2]">
+											<el-checkbox-group size="small" v-model="vv.value[1]">
+												<el-checkbox label="Enable" border disabled="disabled"
+													readonly="readonly"></el-checkbox>
+											</el-checkbox-group>
+										</template>
+										<template v-else-if="!heliosUser1 && vv.value[2]">
+											<el-checkbox-group size="small" v-model="vv.value[1]">
+												<el-checkbox label="Enable" border></el-checkbox>
+											</el-checkbox-group>
+										</template>
+										<template v-else>
+											<label role="checkbox" class="el-checkbox el-checkbox--small is-bordered"
+												style="border: none; cursor: auto;">--</label>
+										</template>
+									</template>
 								</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
+
+
 			</div>
 		</div>
 
 	</div>
 	</div>
 	<!--   Trap Destinations-->
+
+
 	<script type="text/javascript" src="assets/js/jquery.js"></script>
 	<script type="text/javascript" src="assets/js/vue.js"></script>
 	<script type="text/javascript" src="assets/js/index.js"></script>
@@ -403,25 +333,23 @@
 			heliosUser: heliosUser[0] == $session,
 			heliosUser1: heliosUser[3] == $session,
 		}
+
 		var Helios = new Vue({
 			el: "#content",
 			data: data,
 			mounted() {
-				this.Getroc_Data();
 				$("body").resize();
+				this.Getroc_Data();
 			},
-
 			methods: {
+				/* (9,10)   0-3 */
 				Getroc_Data(tag) {
-					//	util.SetHeliosDevMsg();
-					let obj2 = new Array;
+					/* 	util.SetHeliosDevMsg(); */
+					let obj2 = [];
 					let string = "";
-					var Hi = 0;
-					var getDATA = [];
 					if (tag >= 0) {
 						this.Read = false;
-						string = `99,${tag},100,${tag} ,101,${tag} ,102,${tag} ,103,${tag} ,110,${tag},111,${tag},116,${tag},117,${tag},118,${tag},104,${tag},105,${tag},112,${tag},130,${tag},133,${tag},121,${tag},122,${tag},123,${tag},124,${tag},125,${tag},126,${tag},127,${tag}`
-
+						string = `114,${tag},116,${tag},117,${tag},118,${tag},98,${tag},115,${tag},126,${tag},127,${tag}`
 						var obj = {
 							"data": string,
 							"action": "READ_SINGLE"
@@ -433,16 +361,12 @@
 							success: function (data, status) {
 								var data = JSON.parse(data).data;
 								data.forEach(function (value, index) {
-									if (value.adr == 105) {
-										if (value.value == "0") {
-											(data[index]).value = false
-										} else {
-											(data[index]).value = true
-										}
-									}
-									else if (value.adr == 121 || value.adr == 122 || value.adr == 123 || value.adr == 124 || value.adr == 125 || value.adr == 126 || value.adr == 127) {
-										let resdata = Helios.ResTruefalseArray(data[index]);
-										data[index].value = resdata;
+									if (value.adr == 126) {
+										let obj = Helios.ResTruefalseArray(data[index])
+										data[index].value = obj;
+									} else if (value.adr == 127) {
+										let obj = Helios.ResTruefalseArray(data[index])
+										data[index].value = obj;
 									}
 								});
 								Helios.Rocdata.splice(tag, 1);
@@ -461,124 +385,150 @@
 						});
 					}
 					else {
-						let index = 0;
+						/* 
 						let obj1 = {
-							"data": `99,${index},100,${index} ,101,${index} ,102,${index} ,103,${index} ,110,${index},111,${index},116,${index},117,${index},118,${index},104,${index},105,${index},112,${index},130,${index},133,${index},121,${index},122,${index},123,${index},124,${index},125,${index},126,${index},127,${index}`,
-
+							"data": `114,0,116,0,117,0,118,0,98,0,115,0,126,0,127,0`,
 							"action": "READ_SINGLE",
 						}
 						let data1 = [];
 						util.getattrajax(obj1, function (data) {
 							let data2 = data.data;
 							data2.forEach(function (value, index) {
-								if (value.adr == 105) {
-									if (value.value == "0") {
-										data2[index].value = false
-									} else {
-										data2[index].value = true
-									}
-								}
-								else if (value.adr == 121 || value.adr == 122 || value.adr == 123 || value.adr == 124 || value.adr == 125 || value.adr == 126 || value.adr == 127) {
-									let resdata = Helios.ResTruefalseArray(data2[index]);
-									data2[index].value = resdata;
+								if (value.adr == 126) {
+									let obj1 = Helios.ResTruefalseArray(data2[index])
+									data2[index].value = obj1;
+								} else if (value.adr == 127) {
+									let obj1 = Helios.ResTruefalseArray(data2[index])
+									data2[index].value = obj1;
 								}
 							});
 							data1.push(data2)
 						}).then(function () {
-							let index1 = 1;
 							let obj2 = {
-								"data": `99,${index1},100,${index1} ,101,${index1} ,102,${index1} ,103,${index1} ,110,${index1},111,${index1},116,${index1},117,${index1},118,${index1},104,${index1},105,${index1},112,${index1},130,${index1},133,${index1},121,${index1},122,${index1},123,${index1},124,${index1},125,${index1},126,${index1},127,${index1}`,
+								"data": `114,1,116,1,117,1,118,1,98,1,115,1,126,1,127,1`,
 								"action": "READ_SINGLE",
 							}
 							util.getattrajax(obj2, function (data) {
 								let data2 = data.data;
 								data2.forEach(function (value, index) {
-									if (value.adr == 105) {
-										if (value.value == "0") {
-											data2[index].value = false
-										} else {
-											data2[index].value = true
-										}
-									}
-									else if (value.adr == 121 || value.adr == 122 || value.adr == 123 || value.adr == 124 || value.adr == 125 || value.adr == 126 || value.adr == 127) {
-										let resdata = Helios.ResTruefalseArray(data2[index]);
-										data2[index].value = resdata;
+									if (value.adr == 126) {
+										let obj1 = Helios.ResTruefalseArray(data2[index])
+										data2[index].value = obj1;
+									} else if (value.adr == 127) {
+										let obj1 = Helios.ResTruefalseArray(data2[index])
+										data2[index].value = obj1;
 									}
 								});
 								data1.push(data2);
 								Helios.Rocdata = data1;
-								setTimeout(function () {
-									Helios.dataimg = false;
-									Helios.databox = true;
-								}, 1500);
-
 							});
-						});
+						}); */
 
+
+						//第二种方法********************
+						let ajax = {
+							Subdata1: [],
+
+							getimg: function (tag) {
+								var string = `114,${tag},116,${tag},117,${tag},118,${tag},98,${tag},115,${tag},126,${tag},127,${tag}`;
+								var obj = {
+									"data": string,
+									"action": "READ_SINGLE"
+								}
+								let getData = this;
+								((Targe) => {
+									$.ajax({
+										url: "../cgi-bin/doaction.cgi",
+										data: obj,
+										type: "get",
+										dataType: "json",
+										async: false,
+										cache: true,
+										success: function (data, status) {
+											let data2 = (data.data);
+											data2.forEach(function (value, index) {
+												if (value.adr == 126) {
+													let obj1 = Targe(data2[index])
+													data2[index].value = obj1;
+												} else if (value.adr == 127) {
+													let obj1 = Targe(data2[index])
+													data2[index].value = obj1;
+												}
+											});
+											ajax.Subdata1.push(data2);
+										},
+										error: function (data) {
+											console.log("error...");
+										}
+									});
+								})(getData);
+							},
+						}
+
+						ajax.getimg.call(util.ResTruefalse, 0);
+						ajax.getimg.call(util.ResTruefalse, 1);
+					
+						this.Rocdata = ajax.data1;
+
+
+
+
+
+
+						
 
 					}
+					setTimeout(function () {
+						Helios.dataimg = false;
+						Helios.databox = true;
+					}, 1500);
 				},
 
 				Setroc_Data: function (tag) {
 					Helios.$data.canSave = false;
-					function resvalue(v) {
-						let value;
-						if (v == true) {
-							value = 1 + ""
-						} else if (v == false) {
-							value = 0 + ""
+					var setdata = [], setdata1 = [], setdata2 = [];
+					for (var j = 0; j < Helios.Rocdata[tag].length; j++) {
+						let obj1 = {
+						};
+						if (j >= 3) {
+							if (Helios.Rocdata[tag][j].adr == 126 || Helios.Rocdata[tag][j].adr == 127) {
+								let resdata = Helios.resnumberAarray(Helios.Rocdata[tag][j]);
+								obj1 = {
+									adr: Helios.Rocdata[tag][j].adr,
+									value: resdata,
+									index: tag + ""
+								}
+							} else {
+								obj1 = {
+									adr: Helios.Rocdata[tag][j].adr,
+									value: Helios.Rocdata[tag][j].value + "",
+									index: tag + ""
+								}
+							}
+							let obj2 = {
+								adr: Helios.Rocdata[tag][j].adr,
+								value: Helios.Rocdata[tag][j].value + "",
+							}
+							setdata.push(obj1); //璁剧疆
+							setdata2.push(obj2);//鏈湴瀛樺偍
 						} else {
-							value = v + "";
+							//鍓嶉潰3涓彧璇伙紝鍚堝苟鏈湴
+							obj1 = {
+								adr: Helios.Rocdata[tag][j].adr,
+								value: Helios.Rocdata[tag][j].value + "",
+							}
+							setdata1.push(obj1);
 						}
-						return value;
 					}
-					var setdata = [];
-					let getRocdata = this.Rocdata;
 
-					var t = 9;//前面9条只读
-					while (t < getRocdata[tag].length) {
-
-						if (getRocdata[tag][t].adr == 104 || getRocdata[tag][t].adr == 105 || getRocdata[tag][t].adr == 112 || getRocdata[tag][t].adr == 118) {
-							let obj1 = {};
-							obj1 = {
-								adr: Helios.Rocdata[tag][t].adr,
-								value: resvalue(Helios.Rocdata[tag][t].value),
-								index: tag + ""
-							}
-							setdata.push(obj1);
-						}
-
-						else if (getRocdata[tag][t].adr == 130 || getRocdata[tag][t].adr == 133) {
-							let Val = util.ISmax127(Helios.Rocdata[tag][t].value);
-							let obj1 = {};
-							obj1 = {
-								adr: Helios.Rocdata[tag][t].adr,
-								value: Val,
-								index: tag + ""
-							}
-							setdata.push(obj1);
-						}
-
-						else {
-							let obj1 = {};
-							let resdata = Helios.resnumberAarray(Helios.Rocdata[tag][t]);
-							obj1 = {
-								adr: Helios.Rocdata[tag][t].adr,
-								value: resdata,
-								index: tag + ""
-							}
-							setdata.push(obj1);
-						}
-						console.log(t);
-						t += 1;
-					}
 					var obj = {
 						"data": JSON.stringify(setdata),
 						"action": "SET_SINGLE"
 					}
+
+					//	console.log(setdata);
 					util.postattrajax(obj, function (data) {
 						if (1 != data) {
-							Helios.$data.canSave = true;
 							toast.$message({
 								message: ' Error' + data,
 								type: 'error',
@@ -586,13 +536,17 @@
 								offset: 40
 							});
 						} else {
+							util.success('success');
+							/* var Storage_data = setdata1.concat(setdata2);
+							let Rocdata = JSON.parse(localStorage.getItem("Rocdata"));
+							Rocdata.splice(tag, 1);
+							Rocdata.splice(tag, 0, Storage_data);
+							localStorage.setItem("Rocdata", JSON.stringify(Rocdata)); */
 							setTimeout(() => {
-								util.success('success');
 								Helios.$data.canSave = true;
-							}, 200);
+							}, 1000);
 						}
 					});
-
 				},
 				ResTruefalseArray(resdata) {
 					let Enable = [];
@@ -623,7 +577,6 @@
 					}
 					return make;
 				}
-
 			},
 			filters: {
 				bandname: function (value) {
@@ -642,15 +595,6 @@
 						return "Sub-System 6"
 					}
 				},
-				isno_of: function (v) {
-					return (0 == Number(v)) ?
-						` <i class="icon iconfont icon-off  rescss"></i>` :
-						`<i class="icon iconfont icon-on-off text-green rescss"></i>`;
-				},
-				dataisTrue: function (v) {
-
-					return v == '-127' ? `--` : v;
-				}
 			},
 			computed: {
 				stylecss: function () {
@@ -663,7 +607,7 @@
 							width: "21.2% !important"
 						}
 					}
-				},
+				}
 			}
 		});
 	</script>

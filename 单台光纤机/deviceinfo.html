@@ -86,7 +86,8 @@
 						<div class="box-header with-border">
 							<h3 class="box-title">DeviceInfo</h3>
 							<div class="box-tools pull-right" style="top: 9px;">
-								<el-button @click="setnetwork" :disabled="!Set" size="small" type="primary">Set</el-button>
+								<el-button @click="setnetwork" :disabled="!Set" size="small" type="primary">Set
+								</el-button>
 								<el-button @click="getDev(1)" :disabled="!Read" size="small">Read</el-button>
 								<!-- <el-button type="primary" @click="onSubmit" size="small">Read</el-button> -->
 							</div>
@@ -108,20 +109,74 @@
 													{{v.value | valnull}}
 												</el-form-item>
 											</el-col>
+
+											<!-- 	<el-col :span="18" v-else>
+												<el-form-item :label="v.name">
+													<el-input v-model="v.value" v-if="v.adr==64" maxlength="15">
+														<template slot="append"> {{v.value.length}} 15</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==65" maxlength="60">
+														<template slot="append"> {{v.value.length}} /60</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==66" maxlength="60">
+														<template slot="append"> {{v.value.length}} /60</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==67" maxlength="15">
+														<template slot="append"> {{v.value.length}} /15</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==70" maxlength="15">
+														<template slot="append"> {{v.value.length}} /15</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==71" maxlength="20">
+														<template slot="append"> {{v.value.length}} /20</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==72" maxlength="15">
+														<template slot="append"> {{v.value.length}} /15</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==73" maxlength="15">
+														<template slot="append"> {{v.value.length}} /15</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==74" maxlength="30">
+														<template slot="append"> {{v.value.length}} /30</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==75" maxlength="16">
+														<template slot="append"> {{v.value.length}} /16</template>
+													</el-input>
+												</el-form-item>
+											</el-col> -->
+
 											<el-col :span="18" v-else>
 												<el-form-item :label="v.name">
-													<el-input v-model="v.value" v-if="v.adr==64"></el-input>
-													<el-input v-model="v.value" v-if="v.adr==65"></el-input>
-													<el-input v-model="v.value" v-if="v.adr==66"></el-input>
-													<el-input v-model="v.value" v-if="v.adr==67"></el-input>
-													<el-input v-model="v.value" v-if="v.adr==70"></el-input>
-													<el-input v-model="v.value" v-if="v.adr==71"></el-input>
-													<el-input v-model="v.value" v-if="v.adr==72"></el-input>
-													<el-input v-model="v.value" v-if="v.adr==73"></el-input>
-													<el-input v-model="v.value" v-if="v.adr==74"></el-input>
-
-
-													<el-input v-model="v.value" v-if="v.adr==75"></el-input>
+													<el-input v-model="v.value" v-if="v.adr==64" maxlength="15">
+														<template slot="append"> {{v.value.length}}/ 15</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==65" maxlength="60">
+														<template slot="append"> {{v.value.length}} /60</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==66" maxlength="60">
+														<template slot="append"> {{v.value.length}} /60</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==67" maxlength="15">
+														<template slot="append"> {{v.value.length}} /15</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==70" maxlength="15">
+														<template slot="append"> {{v.value.length}} /15</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==71" maxlength="20">
+														<template slot="append"> {{v.value.length}} /20</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==72" maxlength="15">
+														<template slot="append"> {{v.value.length}} /15</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==73" maxlength="15">
+														<template slot="append"> {{v.value.length}} /15</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==74" maxlength="30">
+														<template slot="append"> {{v.value.length}} /30</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==75" maxlength="16">
+														<template slot="append"> {{v.value.length}} /16</template>
+													</el-input>
 												</el-form-item>
 											</el-col>
 										</el-row>
@@ -129,26 +184,35 @@
 
 									<div v-else>
 										<el-row :gutter="20">
-											<el-col :span="12" v-for="(v,i) in DEVICE" v-if="v.adr==68 || v.adr==69 || v.adr==64 || v.adr==65 || v.adr==66 || v.adr==67">
+											<el-col :span="12" v-for="(v,i) in DEVICE"
+												v-if="v.adr==68 || v.adr==69 || v.adr==64 || v.adr==65 || v.adr==66 || v.adr==67">
 												<el-form-item :label="v.name">
 													{{v.value | valnull}}
 												</el-form-item>
 											</el-col>
 											<el-col :span="18" v-else>
 												<el-form-item :label="v.name">
-													<el-input v-model="v.value" v-if="v.adr==70"></el-input>
-													<el-input v-model="v.value" v-if="v.adr==71"></el-input>
-													<el-input v-model="v.value" v-if="v.adr==72"></el-input>
-													<el-input v-model="v.value" v-if="v.adr==73"></el-input>
-													<el-input v-model="v.value" v-if="v.adr==74"></el-input>
+													<el-input v-model="v.value" v-if="v.adr==70" maxlength="15">
+														<template slot="append"> {{v.value.length}} /15</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==71" maxlength="20">
+														<template slot="append"> {{v.value.length}} /20</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==72" maxlength="15">
+														<template slot="append"> {{v.value.length}} /15</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==73" maxlength="15">
+														<template slot="append"> {{v.value.length}} /15</template>
+													</el-input>
+													<el-input v-model="v.value" v-if="v.adr==74" maxlength="30">
+														<template slot="append"> {{v.value.length}} /30</template>
+													</el-input>
 													<!-- 	<el-input v-model="v.value"></el-input> -->
-
 													<!-- 					<el-date-picker v-if="v.adr==74" v-model="v.value" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" type="datetime"
 													 placeholder="please"></el-date-picker> -->
-
-
-													</el-date-picker>
-													<el-input v-model="v.value" v-if="v.adr==75"></el-input>
+													<el-input v-model="v.value" v-if="v.adr==75" maxlength="16">
+														<template slot="append"> {{v.value.length}} /16</template>
+													</el-input>
 												</el-form-item>
 											</el-col>
 										</el-row>

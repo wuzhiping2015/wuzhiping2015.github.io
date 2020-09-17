@@ -1,7 +1,7 @@
 /*
- 	作者：福建京奥通信技术有限公司
- 	时间：20200725
- 	描述: 数字光纤
+	  作者：福建京奥通信技术有限公司
+	  时间：20200725
+	  描述: 数字光纤
 */
 
 var toast = new Vue({
@@ -96,7 +96,6 @@ var util = {
 				if ("1" === data.data[0].value) {
 					HeliosDev = true;
 					util.GetHeliosDevMsg();
-
 					$.ajax({
 						url: "../cgi-bin/doaction.cgi",
 						data: {
@@ -111,7 +110,7 @@ var util = {
 								var TagLen = (data1.data.indexOf(";"));
 								var sessionName = data1.data.slice(TagLen + 1, data1.data.length - 1);
 								sessionStorage.setItem('sessionName', sessionName);
-								sessionStorage.setItem('$session', user);
+								sessionStorage.setItem('$session', user.charAt(0).toUpperCase() + user.slice(1));
 								sessionStorage.setItem('url', "Status");
 
 								Helios.pwd == "";
@@ -125,7 +124,8 @@ var util = {
 									window.location.href = "Basic.html";
 								}, 2000);
 							} else {
-								util.error(`Incorrect user name or password !`);
+								util.error(data1.message);
+								/* util.error(`Incorrect user name or password !`); */
 							}
 						}
 					});
@@ -581,8 +581,104 @@ var util = {
 		}
 		return isshow;
 	},
+
+	ResTruefalse(resdata) {
+		let Enable = [];
+		if ("0" == resdata.value) {
+			Enable.push(false, false, false);
+		}
+		if ("1" == resdata.value) {
+			Enable.push(false, true, false);
+		}
+		if ("2" == resdata.value) {
+			Enable.push(true, false, true);
+		}
+		if ("3" == resdata.value) {
+			Enable.push(true, true, true);
+		}
+		return Enable;
+	},
+
+	ISmax127(value) {
+		let val;
+		val = value;
+		if (Number(value) >= 127) {
+			val = 127
+		} else if (Number(value) <= -127) {
+			val = -127
+		}
+		return val;
+	},
+
+	resnumberAarray(resdata) {
+		let make = "";
+		if (resdata.value[0] == false && resdata.value[1] == false) {
+			make = "0";
+		} else if (resdata.value[0] == false && resdata.value[1] == true) {
+			make = "1";
+		} else if (resdata.value[0] == true && resdata.value[1] == false) {
+			make = "2";
+		} else if (resdata.value[0] == true && resdata.value[1] == true) {
+			make = "3";
+		}
+		return make;
+	},
+
+
+	subdata: [],
+	readdata: [],
+	getimg: function (tag, read) {
+		var string = `114,${tag},116,${tag},117,${tag},118,${tag},98,${tag},115,${tag},131,${tag},132,${tag},126,${tag},127,${tag}`;
+		var obj = {
+			"data": string,
+			"action": "READ_SINGLE"
+		}
+		let getData = this;
+
+		((Targe, read) => {
+			$.ajax({
+				url: "../cgi-bin/doaction.cgi",
+				data: obj,
+				type: "get",
+				dataType: "json",
+				async: false,
+				cache: true,
+				success: function (data, status) {
+					let data2 = (data.data);
+					data2.forEach(function (value, index) {
+						if (value.adr == 126) {
+							let obj1 = Targe(data2[index])
+							data2[index].value = obj1;
+						} else if (value.adr == 127) {
+							let obj1 = Targe(data2[index])
+							data2[index].value = obj1;
+						}
+					});
+
+					if ("number" == typeof read) {
+						util.readdata.splice(0, util.readdata.length);
+						util.readdata.push(data2);
+					} else {
+						util.subdata.push(data2);
+					}
+
+				},
+				error: function (req, status, err) {
+					console.log(req);
+					console.log(status);
+					console.log(err);
+				}
+			});
+		})(getData, read);
+	}
 }
 util.GetHeliosDevMsg();
+
+
+
+
+
+
 
 /****************  头部 start****************/
 Vue.component('el-main-header', {
@@ -738,10 +834,10 @@ Vue.component('el-main-header', {
 					}
 				}
 			}).then(action => {
-                /* this.$message({
-                    type: 'success',
-                    message: "The update is successful"
-                }); */
+				/* this.$message({
+					type: 'success',
+					message: "The update is successful"
+				}); */
 			}).catch(() => {
 				console.log(1);
 			});
@@ -800,452 +896,7 @@ if ($("#comp-header").length > 0) {
 
 /**************** 侧导航 status****************/
 let sidebar;
-Vue.component("el-main-sidebar", {
-	props: ['siteno'],
-	data: function () {
-		return {
-			defaultProps: {
-				children: 'children',
-				label: 'label'
-			},
-			/* tagname: tagname.toUpperCase() + " - " + this.MDOTStype(), */
-			tagname: (tagname == "au" ? "MU" : tagname.toUpperCase()) + " - " + this.MDOTStype(),
-			menu: [],
-		}
-	},
 
-	beforeMount() {
-		this.MDOTStype();
-		let tempMenu = []; //主菜单
-		var param = [];
-		var sitelist;
-		var currentStation = [];
-		var currentPort = 0;
-		var stationlist = [];
-		var vue = this;
-		let tempMenu1 = [];
-		var obj = {};
-		var portlist = new Array(8);
-		portlist.fill(0);
-		/* 	$.ajax({
-				type: "GET",
-				url: "topology.json?verisn=" + Math.ceil(Math.random() * 1010),
-				dataType: "json", */
-		/* 	success: function (data1) { */
-
-		var data1 = [{
-			"site_no": "12345678",
-			"x": "79",
-			"y": "516",
-			"status": 1,
-			"device": Array[5]
-		},
-		{
-			"site_no": "23456789",
-			"x": "82",
-			"y": "216",
-			"status": 1,
-			"device": [{
-				"route": "10000000",
-				"device_id": "0100",
-				"type": "EU",
-				"x": "84",
-				"y": "62"
-			},
-			{
-				"route": "12000000",
-				"device_id": "0101",
-				"type": "RU",
-				"x": "268",
-				"y": "44"
-			},
-			{
-				"route": "2000000",
-				"device_id": "0200",
-				"type": "EU",
-				"x": "267",
-				"y": "193"
-			},
-			{
-				"route": "2100000",
-				"device_id": "0201",
-				"type": "RU",
-				"x": "390",
-				"y": "181"
-			},
-			{
-				"route": "2110000",
-				"device_id": "0202",
-				"type": "RU",
-				"x": "525",
-				"y": "168"
-			}
-			]
-		},
-		{
-			"site_no": "23456789",
-			"x": "573",
-			"y": "509",
-			"status": 1,
-			"device": [{
-				"route": "10000000",
-				"device_id": "0100",
-				"type": "EU",
-				"x": "651",
-				"y": "343"
-			},
-			{
-				"route": "12000000",
-				"device_id": "0101",
-				"type": "RU",
-				"x": "837",
-				"y": "278"
-			},
-			{
-				"route": "2000000",
-				"device_id": "0200",
-				"type": "EU",
-				"x": "654",
-				"y": "616"
-			},
-			{
-				"route": "2100000",
-				"device_id": "0201",
-				"type": "RU",
-				"x": "759",
-				"y": "578"
-			},
-			{
-				"route": "2110000",
-				"device_id": "0202",
-				"type": "RU",
-				"x": "874",
-				"y": "513"
-			}
-			]
-		}
-		]
-
-		if (undefined == data1.sites.length) {
-			//sessionStorage.setItem('TopoNull', 1);
-			return false;
-		} else {
-			let j = 0;
-			let setNodata = [];
-			let data = [];
-
-
-			/* 	console.log(data1); */
-			//	console.log(data1.sites.device.splice(0, 0));
-
-			for (var i = 0; i < data1.sites.length; i++) {
-
-				/* 	data1.sites[i].device[0].type = "au";
-					data1.sites[i].device[0].site_no = data1.sites[i].device[0].site_no; */
-				data1.sites[i].device.splice(0, 0, {
-					"device_id": "0",
-					"route": 0,
-					"type": "au",
-					"site_no": data1.sites[i].site_no,
-					"offline": 0,
-					"station": "0",
-					"status": 0,
-					"type": 0,
-				});
-				setNodata.push(data1.sites[i].device);
-			}
-
-			while (j < setNodata.length) {
-				for (var k = 0; k < setNodata[j].length; k++) {
-					setNodata[j][k].equipid = setNodata[j][k].device_id;
-					setNodata[j][k].offline = 0;
-					setNodata[j][k].station = "0",
-						setNodata[j][k].status = 0;
-					setNodata[j][k].type = 0;
-				}
-				currentStation.push(setNodata[j][0].station);
-				j++;
-			}
-
-			var offset = 0;
-			var obj = {};
-
-
-			$.each(setNodata, function (idx, item) {
-				obj = {};
-				obj.label = util.hex2int(setNodata[idx][0].site_no);
-				obj.children = [];
-				obj.offline = 0;
-				obj.station = 0;
-				obj.equipid = 0;
-				obj.type = 0;
-				obj.DEVtype = "au";
-				obj.site_no = setNodata[idx][0].site_no;
-				tempMenu1.push(obj);
-				for (var j = 0; j < item.length; j++) {
-					if (0 == item[j].station) { } else {
-						obj = {};
-						obj.label = util.hex2int(item[j].site_no);
-						obj.offline = 0;
-						obj.station = 0;
-						obj.equipid = 0;
-						obj.children = [];
-						obj.type = 1;
-						obj.site_no = item[0].site_no;
-						tempMenu1.push(obj);
-						currentStation = item[j].station;
-					}
-					if (item[j].route == "0") {
-						obj = {};
-						obj.offline = item[j].offline;
-						obj.route = item[j].route;
-						obj.equipid = item[j].equipid;
-						obj.type = item[j].type;
-						obj.station = item[j].station;
-						obj.site_no = item[0].site_no;
-						obj.stationlist = [];
-						tempMenu.push(obj);
-						stationlist.push(currentStation);
-						/* tempMenu1[j].equipid = item[j].equipid;
-						tempMenu1[j].station = item[j].station;
-						tempMenu1[j].offline = item[j].offline; */
-					}
-				}
-				//	console.log(item);
-				//console.log(tempMenu);
-
-			});
-
-			currentStation = stationlist;
-			currentpoint = [];
-			$.each(setNodata, function (idx, item) {
-				for (var j = 0; j < item.length; j++) {
-					if (item[j].route != "0") {
-						if (currentStation == item[j].station) {
-							obj1 = {};
-							obj1.offline = item[j].offline;
-							obj1.station = item[j].station;
-							obj1.route = item[j].route;
-							obj1.equipid = item[j].equipid;
-							/* 	obj.site_no = item[idx].site_no; */
-							obj1.type = item[j].type;
-							tempMenu[idx].stationlist.push(obj1);
-
-						} else {
-							currentpoint[idx] = stationlist.findIndex(function (value) {
-								return value == item[j].station
-							});
-							currentStation = item[j].station;
-							obj1 = {};
-							obj1.offline = item[j].offline;
-							obj1.station = item[j].station;
-							obj1.route = item[j].route;
-							obj1.equipid = item[j].equipid;
-							obj.site_no = item[idx].site_no;
-							obj1.type = item[j].type;
-							tempMenu[idx].stationlist.push(obj1);
-						}
-					} else {
-						//console.log(item);
-					}
-				}
-			});
-
-
-			for (var ii = 0; ii < tempMenu.length; ii++) {
-				portlist.fill(0);
-				currentPort = 0;
-
-				tempMenu[ii].stationlist.forEach(function (item, idx) {
-					var str = item.route.toString();
-					str = str.substr(0, 1);
-					if (portlist[parseInt(str)] == 0) {
-						obj = {};
-						//obj.label = str;
-						obj.label = util.hex2int(item.equipid);
-						obj.type = 1;
-						obj.offline = 0;
-						obj.station = 0;
-						obj.equipid = item.equipid;
-						obj.site_no = (tempMenu[ii].site_no);
-						obj.children = [];
-						obj.DEVtype = "eu";
-						tempMenu1[ii].children.push(obj);
-
-
-						//站点赋值进去
-						currentPort = tempMenu1[ii].children.length;
-						portlist[parseInt(str)] = currentPort;
-						obj = {};
-						obj.label = util.hex2int(item.equipid);
-						if (item.offline == 1) {
-							obj.type = 2;
-						} else {
-							obj.type = 3;
-							obj.offline = 1;
-							obj.station = item.station;
-							obj.equipid = item.equipid;
-							obj.site_no = (tempMenu[ii].site_no);
-							//obj.site_no = tempMenu[0].site_no;
-							obj.children = [];
-						}
-					} else {
-						currentPort = portlist[parseInt(str)];
-						obj = {};
-						obj.label = item.route;
-						if (item.offline == 1) {
-							obj.type = 2;
-						} else {
-							obj.DEVtype = "ru";
-							obj.type = 3;
-							obj.offline = item.offline;
-							obj.station = item.station;
-							obj.equipid = item.equipid;
-							obj.label = util.hex2int(item.equipid);
-							obj.site_no = (tempMenu[ii].site_no);
-
-							obj.children = [];
-							//	console.log(obj);
-							tempMenu1[ii].children[currentPort - 1].children.push(obj);
-
-						}
-					}
-
-				});
-			};
-
-			//	console.log(tempMenu2);
-			/* 	let tempMenu2 = [];
-				tempMenu1.forEach(function (v, i) {
-					if (v.children.length > 0) {
-						tempMenu2.push(v);
-					}
-				}); */
-			vue.menu = tempMenu1;
-		}
-		/* }, */
-		/* }); */
-	},
-
-	methods: {
-		handleNodeClick(data) {
-			var tagurl = (data.DEVtype).toLowerCase();
-			sessionStorage.setItem("url", "Status");
-			sessionStorage.setItem("equipment", tagurl);
-			let obj = [{
-				adr: 82,
-				value: util.hex2int((data.site_no + ""))
-			},
-			{
-				adr: 83,
-				value: util.hex2int((data.equipid + ""))
-			}
-			];
-
-
-
-			var MDOTS = {
-				"data": JSON.stringify([{
-					"adr": 46,
-					"value": "231"
-				},
-				{
-					"adr": 82,
-					"value": "20200728"
-				},
-				{
-					"adr": 83,
-					"value": "0"
-				}
-				]),
-				"action": "SET"
-			}
-
-
-			localStorage.setItem("MDOTS", JSON.stringify([{
-				"adr": 46,
-				"value": "231"
-			},
-			{
-				"adr": 82,
-				"value": "20200728"
-			},
-			{
-				"adr": 83,
-				"value": "0"
-			}
-			]));
-
-
-
-			util.postattrajax(MDOTS, function (data1) {
-				if (1 != data1) {
-					toast.$message({
-						message: ' Error:' + data1.message,
-						type: 'error',
-						showClose: true,
-						offset: 80
-					});
-					return false;
-				} else {
-					setTimeout(function () {
-						window.location.href = "Basic.html";
-					}, 100);
-				}
-			});
-			//	util.EquipmentID();
-		},
-
-		MDOTStype() {
-			let MDOTDATA;
-			let MDOTS = JSON.parse(localStorage.getItem("MDOTS"));
-			MDOTS.forEach(function (v, i, attr) {
-				switch (v.adr) {
-					case 83:
-						MDOTDATA = (v.value);
-						break;
-				}
-			});
-			return MDOTDATA;
-		},
-
-	},
-	/* sidebar   menu*/
-	template: ` <div class="main-sidebar">
-		 <div class="box-header with-border">
-		 	<h3 class="box-title"><i class="icon iconfont icon-caijishebeixinxichaxun"></i> {{tagname}}  {{siteno}} </h3>
-		 </div>
-		 
-		<div class="sidebar">  
-			<el-tree :data="menu" default-expand-all  :props="defaultProps" @node-click="handleNodeClick">
-					 <span class="custom-tree-node" slot-scope="{ node, data }">
-					 <i v-if="data.type=='0' ? true :false" class="icon iconfont icon-zhuji"></i> 
-					 <i v-else-if="data.type=='1' ? true :false" class="icon iconfont icon-luyouqi1"></i> 
-					 <i v-else-if="data.type=='3' ? true :false" class="icon iconfont icon-LTEjizhanyanshou"></i> 
-					 {{node.label }} 
-					</span>
-			</el-tree>
-		</div>
-	</div>`
-});
-if ($("#comp-sidebar").length > 0) {
-	let helios_sidebar;
-	let data = {
-		sitenodata: ""
-	}
-	let MDOTStype = "";
-	helios_sidebar = new Vue({
-		el: "#comp-sidebar",
-		data: data,
-		beforeMount() {
-			//helios_sidebar.sitenodata = 1222; 
-			//this.SITE_NO();
-		},
-		methods: {
-
-		}
-	})
-}
 /**************** 侧导航 end****************/
 
 
@@ -1255,7 +906,12 @@ Vue.component("el-index-slidebar", {
 		return {
 			DevType: "",
 			DevName: "",
-			Devalarm: ""
+			Devalarm: "",
+			GuiDev: {
+				name: "",
+				type: "",
+				status: ""
+			}
 		}
 	},
 	methods: {
@@ -1268,37 +924,56 @@ Vue.component("el-index-slidebar", {
 
 		let MDOTS = JSON.parse(localStorage.getItem("MDOTS1"));
 		this.DevType = MDOTS[0].devType;
-		this.DevName = "";
 		this.Devalarm = Number(MDOTS[3].value);
-		console.log(this.DevName.trim());
+
 		if (MDOTS[1].value.trim() == "" || MDOTS[1].value.trim() == undefined) {
 			this.DevName = "Site Name IS Null"
 		} else {
 			this.DevName = MDOTS[1].value;
 		}
+		setInterval(() => {
+			var adr = [70, 97, 52];
+			var obj = {
+				"data": adr.join(),
+				"action": "READ"
+			};
+			(function (GuiDev) {
+				util.getattrajax(obj, function (data) {
+					data.data.forEach(function (v, i) {
+						if (v.adr == 70) {
+							GuiDev.name = v.value;
+						}
+						if (v.adr == 97) {
+							GuiDev.type = Number(v.value) == 0 ? "MU" : "RU";
+						}
+						if (v.adr == 52) {
+							GuiDev.status = Number(v.value);
+						}
+					});
+				});
+			})(this.GuiDev)
+		}, 2500);
+
 	},
 	template: `
 				<div class="main-sidebar">
 					<div class="box-header with-border">
 						<h3 class="box-title">
-							GUI / {{DevType}}
+							GUI /{{GuiDev.type}}
 						</h3>
-
 					</div>
 					<div class="products-list product-list-in-box">
 						<li class="item" title="Site No AU1" @click="link">
 							<div class="product-img">
-								<span class="icon iconfont icon-zhuji text-green"  v-if="Devalarm==0"></span>
-								<span class="icon iconfont icon-zhuji text-red"  v-if="Devalarm!=0"></span>
+								<span class="icon iconfont icon-zhuji text-green"  v-if="GuiDev.status==0"></span>
+								<span class="icon iconfont icon-zhuji text-red"  v-if="GuiDev.status!=0"></span>
 							</div>
 							<div class="product-info">
-								<a href="javascript:void(0)" class="product-title">{{DevName}}
+								<a href="javascript:void(0)" class="product-title">{{GuiDev.name}}
 								</a> 
-								<p class="label  bg-olive"  v-if="Devalarm==0">Alarm</p>
-								<p class="label alert-danger" v-if="Devalarm!=0">Alarm</p>
-								
-								
-							</div>
+								<p class="label  bg-olive"  v-if="GuiDev.status==0">Alarm</p>
+								<p class="label alert-danger" v-if="GuiDev.status!=0">Alarm</p>
+							</div> 
 						</li> 
 					</div>
 				</div>
@@ -1432,7 +1107,7 @@ function ShowInvalidLoginMessage() {
 	localStorage.removeItem("AlarmData");
 	localStorage.removeItem("code");
 	window.location.replace("login.html");
-	parent.location.reload(); 
+	parent.location.reload();
 	window.location.href = "login.html";
 }
 

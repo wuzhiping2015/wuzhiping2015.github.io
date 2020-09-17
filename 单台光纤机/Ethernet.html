@@ -50,7 +50,7 @@
 							<a href="Ethernet.html" style="font-weight: bold;">Ethernet</a>
 						</li>
 						<li>
-							<a href="Modem.html" >Modem Info</a>
+							<a href="Modem.html">Modem Info</a>
 						</li>
 						<li>
 							<a href="SNMP.html">SNMP</a>
@@ -66,7 +66,7 @@
 					<div class="col-md-12" style="padding-left: 0px;">
 						<div class="row">
 
-							<!-- Port1 START -->
+							<!-- LAN Config START -->
 							<div class="col-md-6">
 								<div class="box">
 									<div class="box-header with-border">
@@ -78,16 +78,13 @@
 											</div>
 										</div>
 									</div>
-									<div class="clear" style="padding-top: 10px;">
+									<div class="clear" style="padding:22px 0;">
 										<div class="clear" style="padding-top: 10px;">
 											<el-form ref="Port1" label-width="180px" size="medium">
 												<div class="col-md-10" v-for="(v,i) in Port1">
 													<el-form-item :label="v.name">
 														<el-input v-model="v.value" v-if="heliosUser || v.adr!=4"></el-input>
 														<span v-else>{{v.value}}</span>
-														<!-- 
-															<el-input v-model="v.value" v-if="v.adr!=125"></el-input>
-															<span v-else>{{v.value}}</span> -->
 													</el-form-item>
 												</div>
 											</el-form>
@@ -96,42 +93,79 @@
 									</div>
 								</div>
 							</div>
-							<!-- Port1 END -->
+							<!-- LAN Config END -->
 
-
-							<!-- Port1 START -->
+							<!-- WAN Config -->
 							<div class="col-md-6">
 								<div class="box">
 									<div class="box-header with-border">
 										<h3 class="box-title">WAN Config</h3>
 										<div class="box-tools pull-right" style="top: 9px;">
-											<el-button @click="setPort2" :disabled="!Set" size="small" type="primary">Set</el-button>
+											<el-button @click="setPort2(0)" :disabled="!Set" size="small" type="primary">Set</el-button>
 											<el-button @click="getPort2(1)" :disabled="!Read" size="small">Read</el-button>
 										</div>
 									</div>
 									<div class="clear" style="padding-top: 10px;">
 										<el-form ref="Port2" label-width="180px" size="medium">
 											<div class="col-md-10" v-for="(v,i) in Port2">
-												<el-form-item :label="v.name">
-													<!--<el-input v-model="v.value" v-if="v.adr==129" disabled="disabled"></el-input>
-														<el-input v-model="v.value" v-else></el-input>-->
-													<!-- || v.adr!=129 -->
-													<el-input v-model="v.value" v-if="heliosUser  || v.adr!=8"></el-input>
-													<span v-else>{{v.value}}</span>
+												<el-form-item :label="v.name" v-if="v.adr==128">
+													<el-radio-group v-model="v.value" size="medium">
+														<el-select v-model="v.value" placeholder="">
+															<el-option key="0" label="DHCP" :value="0"> </el-option>
+															<el-option key="1" label="Staic" :value="1"></el-option>
+														</el-select>
+													</el-radio-group>
+												</el-form-item>
+												<el-form-item :label="v.name" v-else>
+													<template v-if="dhcpValue==0">
+														<el-input v-model="v.value" v-if="heliosUser  && v.adr==8"></el-input>
+														<span v-else>{{v.value}}</span>
+													</template>
+													<template v-else>
+														<el-input v-model="v.value" v-if="heliosUser  || v.adr!=8"></el-input>
+														<span v-else>{{v.value}}</span>
+													</template>
+
 												</el-form-item>
 											</div>
 										</el-form>
 									</div>
 								</div>
 							</div>
-							<!-- Port1 END -->
+							<!-- WAN Config END -->
 
+
+							<div class="col-md-6">
+								<div class="box">
+									<div class="box-header with-border">
+										<h3 class="box-title">Remote Control Mode</h3>
+										<div class="box-tools pull-right" style="top: 9px;">
+											<el-button @click="setPort2(1)" :disabled="!Set" size="small" type="primary">Set</el-button>
+											<el-button @click="getPort2(1)" :disabled="!Read" size="small">Read</el-button>
+										</div>
+									</div>
+									<div class="clear" style="padding: 40px;">
+										<el-form ref="Control" label-width="150px" size="medium">
+											<div class="col-md-10" v-for="(v,i) in Control">
+												<el-form-item :label="v.name" v-if="v.adr==129">
+													<el-radio-group v-model="v.value" size="medium">
+														<el-select v-model="v.value" placeholder="" style="width: 251px;">
+															<el-option key="0" label="Embedded wireless modem" :value="0"> </el-option>
+															<el-option key="1" label="Directly connect to WAN port" :value="1"></el-option>
+														</el-select>
+													</el-radio-group>
+												</el-form-item>
+
+											</div>
+										</el-form>
+									</div>
+								</div>
+							</div>
+							<div>
+							</div>
 						</div>
-
 					</div>
-
 				</div>
-
 
 			</section>
 			<!-- 内容区域 -->
@@ -152,18 +186,27 @@
 			Read: true,
 			Port1: [],
 			Port2: [],
+			Control: [],
 			heliosUser: heliosUser[0] == $session,
+			dhcpValue: 0
 		};
 
 		var helios = new Vue({
 			el: "#MainContext",
 			data: data,
 			beforeMount() {
-				this.getnetwork();
-				this.getPort2();
+
 			},
 			mounted() {
+				this.getnetwork();
+				this.getPort2();
 				$("body").resize();
+			},
+			updated() {
+				if (undefined == this.$data.Port2[0] || "" == this.$data.Port2[0] || null == this.$data.Port2[0]) {
+				} else {
+					this.dhcpValue = this.$data.Port2[0].value;
+				}
 			},
 			methods: {
 				getnetwork(c) {
@@ -180,7 +223,7 @@
 								helios.$data.Read = false;
 								setTimeout(() => {
 									helios.$data.Read = true;
-									util.success('success:Port 1');
+									util.success('success');
 								}, 150);
 							}
 							for (var i = 0; i < data.length; i++) {
@@ -263,9 +306,9 @@
 						util.postattrajax(obj, function (data) {
 							console.log(data);
 							if (1 != data) {
-								util.error(' Error:Port 1');
+								util.error(' Error');
 							} else {
-								util.success('success:Port 1');
+								util.success('success');
 							}
 						});
 					} else {
@@ -274,24 +317,41 @@
 				},
 
 				getPort2(c) {
-					var adr = [5, 6, 7, 8];
+					var adr = [129, 128, 5, 6, 7, 8];
 					var obj = {
 						"data": adr.join(),
 						"action": "READ"
 					};
-
 					util.getattrajax(obj, function (data) {
 						var data = data.data;
 						var data1 = [];
+						var Control = [];
 						if (data.length > 0) {
 							if (c > 0) {
 								helios.$data.Read = false;
 								setTimeout(() => {
 									helios.$data.Read = true;
-									util.success('success:Port 2');
+									util.success('success');
 								}, 150);
 							}
 							for (var i = 0; i < data.length; i++) {
+								if (129 == data[i].adr) {
+									let obj = {
+										adr: data[i].adr,
+										name: "Control Mode",
+										value: Number(data[i].value),
+									}
+									Control.push(obj);
+								}
+								if (128 == data[i].adr) {
+									let obj = {
+										adr: data[i].adr,
+										name: "DHCP",
+										value: Number(data[i].value),
+									}
+									this.dhcpValue = Number(data[i].value);
+									data1.push(obj);
+								}
 								if (5 == data[i].adr) {
 									let obj = {
 										adr: data[i].adr,
@@ -326,55 +386,79 @@
 								}
 							}
 							helios.Port2 = data1;
+							helios.Control = Control;
 						} else {
 							util.error('Error');
 						}
 					})
 				},
-				setPort2() {
-					var adrs = [5, 6, 7, 8];
-					var data = [];
-					for (var i = 0; i < helios.Port2.length; i++) {
+				setPort2(type) {
+					var adrs = [128, 5, 6, 7, 8];
+
+					if (type == 1) {
+						var data1 = [];
+						data1.push({ adr: 129, value: this.Control[0].value + "" });
 						var obj = {
-							adr: "",
-							value: ""
+							"data": JSON.stringify(data1),
+							"action": "SET"
 						}
-						if (5 == helios.Port2[i].adr) {
-							obj.adr = helios.Port2[i].adr;
-							obj.value = helios.Port2[i].value;
-							data.push(obj);
-						}
-						if (6 == helios.Port2[i].adr) {
-							obj.adr = helios.Port2[i].adr;
-							obj.value = helios.Port2[i].value;
-							data.push(obj);
-						}
-						if (7 == helios.Port2[i].adr) {
-							obj.adr = helios.Port2[i].adr;
-							obj.value = helios.Port2[i].value;
-							data.push(obj);
-						}
-						if (8 == helios.Port2[i].adr) {
-							obj.adr = helios.Port2[i].adr;
-							obj.value = helios.isValidMAC(helios.Port2[i].value);
-							data.push(obj);
-						}
-					}
-					var obj = {
-						"data": JSON.stringify(data),
-						"action": "SET"
-					}
-					if (data[3].value) {
 						util.postattrajax(obj, function (data) {
 							if (1 != data) {
-								util.error('Error:Port 2');
+								util.error('Error');
 							} else {
-								util.success('success:Port 2');
+								util.success('success');
 							}
 						});
 					} else {
-						util.error('Please enter a valid WAN MAC');
+						var data1 = [];
+						for (var i = 0; i < helios.Port2.length; i++) {
+							var obj = {
+								adr: "",
+								value: ""
+							}
+							if (128 == helios.Port2[i].adr) {
+								obj.adr = helios.Port2[i].adr;
+								obj.value = helios.Port2[i].value + "";
+								data1.push(obj);
+							}
+							if (5 == helios.Port2[i].adr) {
+								obj.adr = helios.Port2[i].adr;
+								obj.value = helios.Port2[i].value;
+								data1.push(obj);
+							}
+							if (6 == helios.Port2[i].adr) {
+								obj.adr = helios.Port2[i].adr;
+								obj.value = helios.Port2[i].value;
+								data1.push(obj);
+							}
+							if (7 == helios.Port2[i].adr) {
+								obj.adr = helios.Port2[i].adr;
+								obj.value = helios.Port2[i].value;
+								data1.push(obj);
+							}
+							if (8 == helios.Port2[i].adr) {
+								obj.adr = helios.Port2[i].adr;
+								obj.value = helios.isValidMAC(helios.Port2[i].value);
+								data1.push(obj);
+							}
+						}
+						var obj = {
+							"data": JSON.stringify(data1),
+							"action": "SET"
+						}
+						if (data1[3].value) {
+							util.postattrajax(obj, function (data) {
+								if (1 != data) {
+									util.error('Error');
+								} else {
+									util.success('success');
+								}
+							});
+						} else {
+							util.error('Please enter a valid WAN MAC');
+						}
 					}
+
 				},
 				isValidMAC(mac) {
 					var Mac_addr = mac.split(":");
